@@ -12,6 +12,7 @@
   <packaging>hpi</packaging>
   <name>Hudson Radiator View Plugin</name>
   <version>1.2-SNAPSHOT</version>
+  <url>http://wiki.hudson-ci.org/display/HUDSON/Radiator+View+Plugin</url>
   
   <properties>
     <!-- which version of Hudson is this plugin built against? -->
