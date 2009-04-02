@@ -113,7 +113,9 @@ public class RadiatorView extends ListView
     public static Result getResult(Job job)
     {
         Run lastBuild = job.getLastBuild();
-        while (lastBuild != null && (lastBuild.hasntStartedYet() || lastBuild.isBuilding()))
+        while (lastBuild != null
+                && (lastBuild.hasntStartedYet() || lastBuild.isBuilding() || lastBuild
+                        .isLogUpdated()))
         {
             lastBuild = lastBuild.getPreviousBuild();
         }
