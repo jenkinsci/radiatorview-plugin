@@ -65,11 +65,6 @@ public class RadiatorView extends ListView
     public static boolean isBuilding(Job job)
     {
         Run lastBuild = job.getLastBuild();
-        if (lastBuild != null)
-        {
-            System.out.println(job + " last build " + lastBuild.isBuilding()
-                    + lastBuild.isLogUpdated());
-        }
         return lastBuild != null && (lastBuild.isLogUpdated() || lastBuild.isBuilding());
     }
 
@@ -78,7 +73,6 @@ public class RadiatorView extends ListView
         public int compare(Job o1, Job o2)
         {
             // first compare by status
-            System.out.println("Comparing " + o1 + " to " + o2);
             Result r1 = getResult(o1);
             Result r2 = getResult(o2);
             if (r1 != null && r2 != null)

@@ -28,8 +28,6 @@
 	          <j:invokeStatic var="boxheight" className="java.lang.Math" method="floor">
 	        	<j:arg type="double" value="${boxheight}" />
 	        </j:invokeStatic>  
-	        
-	              	<!-- http://www.colortools.net/color_complementary.html -->
 	              <j:when test="${job.iconColor.image=='red.gif'}">
 	              	<j:set var="color" value="red"/>
 	              	<j:set var="textColor" value="white"/>
@@ -79,24 +77,27 @@
 	          
 	          <j:invokeStatic var="isBuilding" className="hudson.model.RadiatorView" method="isBuilding">
 	        	<j:arg type="hudson.model.Job" value="${job}" />
-	        </j:invokeStatic>   
+			  </j:invokeStatic>   
 	   
 			  <div style="margin:1%; float:left; background-color:${color}; overflow:hidden; -moz-border-radius:10px; width:${boxsize}%; height:${boxheight}%;" tooltip="${job.iconColor.description}" >
+			  
 		          <t:buildHealth td="false" style="${indenter.getRelativeShift(job)}"
 		                     link="${jobBaseUrl}${job.shortUrl}lastBuild"/>
 		           <div style="margin-left:1%;">
 		           <a style="color: ${textColor}; font-size:${fontSize}; font-weight:bold;" href="${jobBaseUrl}${job.shortUrl}lastBuild">${job.displayName}</a>
 		           
-		           <j:if test="${isBuilding}">
-		           <j:if test="${badbuild}">
-		           		  <p>Next Build: <t:progressBar tooltip="${%text(job.lastBuild.timestampString,job.lastBuild.executor.estimatedRemainingTime)}"
-                 red="${job.lastBuild.executor.isLikelyStuck()}"
-                 pos="${job.lastBuild.executor.progress}" href="${rootURL}/${job.lastBuild.url}console"/>
+		           <j:if test="${job.lastBuild != null and (job.lastBuild.isLogUpdated() or job.lastBuild.isBuilding())}">
+	           		  <p style="color: ${textColor}; float:bottom right;">Next Build: 
+		           		  	<t:progressBar tooltip="${%text(job.lastBuild.timestampString,job.lastBuild.executor.estimatedRemainingTime)}"
+				                 red="${job.lastBuild.executor.isLikelyStuck()}"
+				                 pos="${job.lastBuild.executor.progress}" href="${rootURL}/${job.lastBuild.url}console"/>
 		           		</p>
 		           </j:if>
+		           <j:if test="${job.lastBuild != null and job.lastBuild.hasntStartedYet()}">
+	           		  <p style="color: ${textColor};">Build Queued</p>
 		           </j:if>
-		           
-		          </div>
+		         
+	          </div>
 	       </div>  
         </j:forEach>
     </j:if>
