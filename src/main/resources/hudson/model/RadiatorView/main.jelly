@@ -69,13 +69,15 @@
 	          </j:choose>
 	          
 	         <j:set var="fontSize" value="smaller"/>
+	         <j:set var="badbuild" value="false"/>
 	          <j:if test="${job.iconColor.image=='red.gif' || job.iconColor.image=='red_anime.gif' || job.iconColor.image=='yellow.gif' || job.iconColor.image=='yellow_anime.gif' || job.iconColor.image=='grey.gif' || job.iconColor.image=='grey_anime.gif'}">
+	          		<j:set var="badbuild" value="true"/>
 	              	<j:set var="boxsize" value="${boxsize * 3 + 4}"/>
 	              	<j:set var="boxheight" value="${boxheight * 2 + 2}"/>
 	         	<j:set var="fontSize" value="large"/>
 	          </j:if>
 	          
-	          <j:invokeStatic var="building" className="hudson.model.RadiatorView" method="isBuilding">
+	          <j:invokeStatic var="isBuilding" className="hudson.model.RadiatorView" method="isBuilding">
 	        	<j:arg type="hudson.model.Job" value="${job}" />
 	        </j:invokeStatic>   
 	   
@@ -86,7 +88,12 @@
 		           <a style="color: ${textColor}; font-size:${fontSize}; font-weight:bold;" href="${jobBaseUrl}${job.shortUrl}lastBuild">${job.displayName}</a>
 		           
 		           <j:if test="${isBuilding}">
-		           		<img src="images/spinner.gif"/>
+		           <j:if test="${badbuild}">
+		           		  <p>Next Build: <t:progressBar tooltip="${%text(job.lastBuild.timestampString,job.lastBuild.executor.estimatedRemainingTime)}"
+                 red="${job.lastBuild.executor.isLikelyStuck()}"
+                 pos="${job.lastBuild.executor.progress}" href="${rootURL}/${job.lastBuild.url}console"/>
+		           		</p>
+		           </j:if>
 		           </j:if>
 		           
 		          </div>
