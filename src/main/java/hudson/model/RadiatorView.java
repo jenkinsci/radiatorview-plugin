@@ -2,20 +2,16 @@ package hudson.model;
 
 import hudson.Extension;
 import hudson.Util;
-import hudson.util.FormFieldValidator;
+import hudson.util.FormValidation;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import javax.servlet.ServletException;
-
 import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.StaplerRequest;
-import org.kohsuke.stapler.StaplerResponse;
+import org.kohsuke.stapler.QueryParameter;
 
 public class RadiatorView extends ListView
 {
@@ -123,11 +119,6 @@ public class RadiatorView extends ListView
         }
     }
 
-    /**
-     * Descriptor should be singleton.
-     */
-    public static final DescriptorImpl DESCRIPTOR = new DescriptorImpl();
-
     @Extension
     public static final class DescriptorImpl extends ViewDescriptor
     {
@@ -145,29 +136,20 @@ public class RadiatorView extends ListView
         /**
          * Checks if the include regular expression is valid.
          */
-        public void doCheckIncludeRegex(StaplerRequest req, StaplerResponse rsp)
-                throws IOException, ServletException, InterruptedException
-        {
-            new FormFieldValidator(req, rsp, false)
+        public FormValidation doCheckIncludeRegex(@QueryParameter String value) {
+            String v = Util.fixEmpty(value);
+            if (v != null)
             {
-                @Override
-                protected void check() throws IOException, ServletException
+                try
                 {
-                    String v = Util.fixEmpty(request.getParameter("value"));
-                    if (v != null)
-                    {
-                        try
-                        {
-                            Pattern.compile(v);
-                        }
-                        catch (PatternSyntaxException pse)
-                        {
-                            error(pse.getMessage());
-                        }
-                    }
-                    ok();
+                    Pattern.compile(v);
                 }
-            }.process();
+                catch (PatternSyntaxException pse)
+                {
+                    return FormValidation.error(pse.getMessage());
+                }
+            }
+            return FormValidation.ok();
         }
     }
 }
