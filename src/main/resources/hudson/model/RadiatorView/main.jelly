@@ -1,108 +1,88 @@
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
-  <j:choose>
-    <j:when test="${empty(items)}">
-      <st:include page="noJob.jelly" />
-    </j:when>
-    <j:otherwise>
-       <t:setIconSize/>
-  <div class="dashboard" style="overflow: visible; left: 0px; top: 35px; position: absolute; height: 100%; z-index: 9999; width: 100%; background-color: white; background-image: url(/static/0360aadc/images/hudson.png); background-repeat: no-repeat; background-position: left bottom;">
-    <j:if test="${!empty(items)}">
-      <!-- project list -->
-        <j:invokeStatic var="sortedJobs" className="hudson.model.RadiatorView" method="sortJobs">
-        	<j:arg type="java.util.Collection" value="${items}" />
-        </j:invokeStatic>
-        <j:invokeStatic var="bozsize" className="hudson.model.RadiatorView" method="getSize">
-    		<j:arg type="java.util.Collection" value="${items}" />
-    	</j:invokeStatic>
-        <j:forEach var="job" items="${sortedJobs}">
-	        <j:invokeStatic var="result" className="hudson.model.RadiatorView" method="getResult">
-	        	<j:arg type="hudson.model.Job" value="${job}" />
-	        </j:invokeStatic>     
-	         <j:choose>
-	              	<j:set var="boxsize" value="${(80 / bozsize)}"/>
-	              	<j:set var="boxheight" value="${(80 / bozsize)}"/>
-	              	
-	          <j:invokeStatic var="boxsize" className="java.lang.Math" method="floor">
-	        	<j:arg type="double" value="${boxsize}" />
-	        </j:invokeStatic>  
-	          <j:invokeStatic var="boxheight" className="java.lang.Math" method="floor">
-	        	<j:arg type="double" value="${boxheight}" />
-	        </j:invokeStatic>  
-	              <j:when test="${job.iconColor.image=='red.gif'}">
-	              	<j:set var="color" value="red"/>
-	              	<j:set var="textColor" value="white"/>
-	              </j:when>
-	              <j:when test="${job.iconColor.image=='red_anime.gif'}">
-	              	<j:set var="color" value="red"/>
-	              	<j:set var="textColor" value="white"/>
-	              </j:when>
-	              <j:when test="${job.iconColor.image=='yellow.gif'}">
-	              	<j:set var="color" value="yellow"/>
-	              	<j:set var="textColor" value="black"/>
-	              </j:when>
-	              <j:when test="${job.iconColor.image=='yellow_anime.gif'}">
-	              	<j:set var="color" value="red"/>
-	              	<j:set var="textColor" value="black"/>
-	              </j:when>
-	              <j:when test="${job.iconColor.image=='blue.gif'}">
-	              	<j:set var="color" value="#6694c7"/>
-	              	<j:set var="textColor" value="white"/>
-	              </j:when>
-	              <j:when test="${job.iconColor.image=='blue_anime.gif'}">
-	              	<j:set var="color" value="#6694c7"/>
-	              	<j:set var="textColor" value="white"/>
-	              </j:when>
-	              <j:when test="${job.iconColor.image=='grey.gif'}">
-	              	<j:set var="color" value="#ccc"/>
-	              	<j:set var="textColor" value="white"/>
-	              </j:when>
-	              <j:when test="${job.iconColor.image=='grey_anime.gif'}">
-	              	<j:set var="color" value="#ccc"/>
-	              	<j:set var="textColor" value="white"/>
-	              </j:when>
-	              <j:otherwise>
-	              	<j:set var="color" value="#ccc"/>
-	              	<j:set var="textColor" value="white"/>
-	              </j:otherwise>
-	          </j:choose>
-	          
-	         <j:set var="fontSize" value="smaller"/>
-	         <j:set var="badbuild" value="false"/>
-	          <j:if test="${job.iconColor.image=='red.gif' || job.iconColor.image=='red_anime.gif' || job.iconColor.image=='yellow.gif' || job.iconColor.image=='yellow_anime.gif' || job.iconColor.image=='grey.gif' || job.iconColor.image=='grey_anime.gif'}">
-	          		<j:set var="badbuild" value="true"/>
-	              	<j:set var="boxsize" value="${boxsize * 3 + 4}"/>
-	              	<j:set var="boxheight" value="${boxheight * 2 + 2}"/>
-	         	<j:set var="fontSize" value="large"/>
-	          </j:if>
-	          
-	          <j:invokeStatic var="isBuilding" className="hudson.model.RadiatorView" method="isBuilding">
-	        	<j:arg type="hudson.model.Job" value="${job}" />
-			  </j:invokeStatic>   
-	   
-			  <div style="margin:1%; float:left; background-color:${color}; overflow:hidden; -moz-border-radius:10px; width:${boxsize}%; height:${boxheight}%;" tooltip="${job.iconColor.description}" >
-			  
-		          <t:buildHealth td="false" style="${indenter.getRelativeShift(job)}"
-		                     link="${jobBaseUrl}${job.shortUrl}lastBuild"/>
-		           <div style="margin-left:1%;">
-		           <a style="color: ${textColor}; font-size:${fontSize}; font-weight:bold;" href="${jobBaseUrl}${job.shortUrl}lastBuild">${job.displayName}</a>
-		           
-		           <j:if test="${job.lastBuild != null and (job.lastBuild.isLogUpdated() or job.lastBuild.isBuilding())}">
-	           		  <p style="color: ${textColor}; float:bottom right;">Next Build: 
-		           		  	<t:progressBar tooltip="${%text(job.lastBuild.timestampString,job.lastBuild.executor.estimatedRemainingTime)}"
-				                 red="${job.lastBuild.executor.isLikelyStuck()}"
-				                 pos="${job.lastBuild.executor.progress}" href="${rootURL}/${job.lastBuild.url}console"/>
-		           		</p>
-		           </j:if>
-		           <j:if test="${job.lastBuild != null and job.lastBuild.hasntStartedYet()}">
-	           		  <p style="color: ${textColor};">Build Queued</p>
-		           </j:if>
-		         
-	          </div>
-	       </div>  
-        </j:forEach>
-    </j:if>
-  </div>
-    </j:otherwise>
-  </j:choose>
- 
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
+	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
+	xmlns:i="jelly:fmt">
+	<meta http-equiv="refresh" content="${from.refresh}" />
+	<j:choose>
+		<j:when test="${empty(items)}">
+			<st:include page="noJob.jelly" />
+		</j:when>
+		<j:otherwise>
+			<t:setIconSize />
+			<div class="dashboard"
+				style="overflow: visible; left: 0px; top: 34px; position: absolute; height: 95%; z-index: 9999; width: 100%; background-color: white; background-image: url(/static/0360aadc/images/hudson.png); background-repeat: no-repeat; background-position: left bottom;">
+				<j:if test="${!empty(items)}">
+					<!-- project list -->
+					<j:invoke var="failJobs" on="${from}" method="sortFailing">
+						<j:arg type="java.util.Collection" value="${items}" />
+					</j:invoke>
+					<j:invoke var="passJobs" on="${from}" method="sortPassing">
+						<j:arg type="java.util.Collection" value="${items}" />
+					</j:invoke>
+
+					<j:set var="passHeight" value="95" />
+					<j:if test="${! failJobs.isEmpty()}">
+
+						<j:invoke var="failJobRows" on="${from}" method="toRows">
+							<j:arg type="java.util.Collection" value="${failJobs}" />
+							<j:arg type="java.lang.Boolean" value="true" />
+						</j:invoke>
+
+						<j:set var="jobFont" value="xx-large" />
+						<j:set var="failFont" value="xx-large" />
+						<j:set var="infoFont" value="medium" />
+						<j:set var="buildFont" value="medium" />
+
+						<j:set var="height" value="75%" />
+						<j:if test="${!from.getShowStable()}">
+							<j:set var="height" value="95%" />
+						</j:if>
+
+						<table width="99%" height="${height}"
+							style="border: 10px; table-layout: fixed;" cellspacing="10">
+							<j:forEach var="row" items="${failJobRows}">
+								<tr>
+									<j:forEach var="job" items="${row}">
+										<st:include page="job.jelly" />
+									</j:forEach>
+								</tr>
+							</j:forEach>
+						</table>
+						<j:set var="passHeight" value="15" />
+					</j:if>
+
+					<!--
+						optionally show stable jobs if requested or there are none
+						failing.
+					-->
+					<j:if test="${from.getShowStable() || failJobs.isEmpty()}">
+						<j:invoke var="passJobRows" on="${from}" method="toRows">
+							<j:arg type="java.util.Collection" value="${passJobs}" />
+							<j:arg type="java.lang.Boolean" value="false" />
+						</j:invoke>
+
+						<j:set var="jobFont" value="x-small" />
+						<j:set var="infoFont" value="xx-small" />
+						<j:set var="buildFont" value="xx-small" />
+
+						<table width="99%" height="${passHeight}%" style="table-layout: fixed;"
+							cellspacing="5">
+							<j:forEach var="row" items="${passJobRows}">
+								<tr>
+									<j:forEach var="job" items="${row}">
+										<j:if test="${from.getShowStableDetail()}">
+											<st:include page="job.jelly" />
+										</j:if>
+										<j:if test="${!from.getShowStableDetail()}">
+											<st:include page="passJob.jelly" />
+										</j:if>
+									</j:forEach>
+								</tr>
+							</j:forEach>
+						</table>
+					</j:if>
+				</j:if>
+			</div>
+		</j:otherwise>
+	</j:choose>
+
 </j:jelly>

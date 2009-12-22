@@ -1,0 +1,13 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
+	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
+	xmlns:i="jelly:fmt">
+
+	<td
+		style="margin:1%; float:left; background-color:${job.backgroundColor};  overflow:hidden; -moz-border-radius:10px; -webkit-border-radius:10px; -border-radius:10px;"
+		tooltip="${job.name}">
+
+		<a
+			style="white-space: nowrap; color: ${job.color}; font-size: ${jobFont}; font-weight:bold;"
+			href="${job.url}">${job.name}</a>
+	</td>
+</j:jelly>

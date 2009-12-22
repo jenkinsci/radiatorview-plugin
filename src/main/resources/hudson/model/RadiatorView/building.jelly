@@ -1,0 +1,42 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
+	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
+	xmlns:i="jelly:fmt">
+	<table style="width: 100%;">
+		<j:forEach var="run" items="${job.buildsInProgress}">
+			<tr>
+				<td style="font-size: ${infoFont}; font-weight:bold; white-space: nowrap;">
+					<font color="${job.color}">BUILD ${run.displayName} ${run.executor.progress}%
+					</font>
+				</td>
+				<td style="width: 99%;">
+					<table
+						class="progress-bar ${h.ifThenElse(run.executor.isLikelyStuck(),'red',null)}"
+						style="width: 100%;">
+						<j:choose>
+							<j:when test="${run.executor.progress lt 0}">
+								<tbody>
+									<tr>
+										<td class="progress-bar-left"
+											style="width:100% height: ${infoFont}px;" />
+									</tr>
+								</tbody>
+							</j:when>
+							<j:otherwise>
+								<tbody>
+									<tr>
+										<td class="progress-bar-done"
+											style="width:${run.executor.progress}%; height: ${infoFont}px;" />
+										<td class="progress-bar-left"
+											style="width:${100-run.executor.progress}% height: ${infoFont}px;" />
+									</tr>
+								</tbody>
+							</j:otherwise>
+						</j:choose>
+					</table>
+				</td>
+			</tr>
+		</j:forEach>
+	</table>
+</j:jelly>
+ 
+ 

@@ -1,0 +1,44 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
+	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
+	xmlns:i="jelly:fmt">
+
+	<td
+		style="margin:1%; float:left; background-color:${job.backgroundColor};  overflow:hidden; -moz-border-radius:10px; -webkit-border-radius:10px; -border-radius:10px;"
+		tooltip="${job.name}">
+
+		<table>
+			<tr>
+				<td>
+					<a
+						style="white-space: nowrap; color: ${job.color}; font-size: ${jobFont}; font-weight:bold;"
+						href="${job.url}">${job.name}</a>
+				</td>
+
+				<j:set var="failColor" value="#00FF00" />
+				<j:if test="${job.failCount > 0}">
+					<j:set var="failColor" value="#FF0000" />
+				</j:if>
+				<td rowspan="2" align="center"
+					style="width: 20%; text-align=center; color: ${failColor}; font-size: ${failFont}; font-weight:bold;">
+					<j:if test="${job.broken == false}">
+						${job.failCount}
+				</j:if>
+				</td>
+			</tr>
+			<tr valign="top">
+				<j:if test="${job.building == false}">
+					<td valign="top"
+						style="color: ${job.color}; font-size: ${infoFont}; font-weight:bold; white-space: nowrap;">
+						<st:include page="notBuilding.jelly" />
+					</td>
+				</j:if>
+				<j:if test="${job.building == true}">
+					<td valign="top"
+						style="color: ${job.color}; font-size: ${buildFont}; font-weight:bold;">
+						<st:include page="building.jelly" />
+					</td>
+				</j:if>
+			</tr>
+		</table>
+	</td>
+</j:jelly>

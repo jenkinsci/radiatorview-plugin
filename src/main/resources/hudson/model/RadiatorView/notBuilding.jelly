@@ -1,0 +1,20 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
+	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
+	xmlns:i="jelly:fmt">
+	<j:if test="${job.getCulprit() != &quot; - &quot;}">
+		Last changed by: ${job.culprit}
+	</j:if>
+	<j:if test="${job.broken == false}">
+		${job.successPercentage} ${job.successCount}/${job.testCount}
+		<j:if test="${job.diff != ''}">
+			(
+			<font color="${job.diffColor}">${job.diff}</font>
+			)
+		</j:if>
+		<j:if test="${job.queued == true}">
+			<span style="float: right;">
+				Queued: #${job.queueNumber}
+            </span>
+		</j:if>
+	</j:if>
+</j:jelly>
