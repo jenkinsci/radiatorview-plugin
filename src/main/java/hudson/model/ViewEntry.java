@@ -335,6 +335,7 @@ public final class ViewEntry
         case GREY_ANIME:
         case DISABLED_ANIME:
             this.building = true;
+            break;
         default:
             this.building = false;
         }
