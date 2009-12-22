@@ -201,7 +201,15 @@ public final class ViewEntry
                 {
                     int currentSuccess = tests.getTotalCount() - tests.getFailCount();
                     int prevSuccess = prevTests.getTotalCount() - prevTests.getFailCount();
-                    return Functions.getDiffString(currentSuccess - prevSuccess);
+                    int diff = currentSuccess - prevSuccess;
+                    if (diff != 0)
+                    {
+                        return Functions.getDiffString(diff);
+                    }
+                    else
+                    {
+                        return "";
+                    }
                 }
             }
         }
