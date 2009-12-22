@@ -17,11 +17,11 @@
     </f:entry>
   </f:optionalBlock>
 
-	<f:entry title="${%Show stable builds?}" field="showStable"  help="/plugin/radiatorview/help/showstable.html">
+	<f:entry title="${%Show stable builds?}" field="showStable"  help="/plugin/radiatorviewplugin/help/showstable.html">
 		<f:checkbox name="showStable" checked="${it.showStable}" value="true" field="showStable" />
 	</f:entry>
 	
-	<f:entry title="${%Show stable detail?}" field="showStableDetail" help="/plugin/radiatorview/help/showstabledetail.html">
+	<f:entry title="${%Show stable detail?}" field="showStableDetail" help="/plugin/radiatorviewplugin/help/showstabledetail.html">
 		<f:checkbox name="showStableDetail" checked="${it.showStableDetail}" value="true" field="showStableDetail" />
 	</f:entry>
 	

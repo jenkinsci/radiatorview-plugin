@@ -37,6 +37,11 @@ public final class ViewEntry
     private Integer queueNumber;
 
     /**
+     * If the build is stable.
+     */
+    private boolean stable;
+
+    /**
      * C'tor
      * 
      * @param job
@@ -296,6 +301,7 @@ public final class ViewEntry
     {
         Result result = radiatorView.getResult(job);
 
+        this.stable = false;
         if (result.ordinal == Result.NOT_BUILT.ordinal)
         {
             this.backgroundColor = getColors().getOtherBG();
@@ -306,6 +312,7 @@ public final class ViewEntry
             this.backgroundColor = getColors().getOkBG();
             this.color = getColors().getOkFG();
             this.broken = false;
+            this.stable = true;
         }
         else if (result.ordinal == Result.UNSTABLE.ordinal)
         {
@@ -336,5 +343,33 @@ public final class ViewEntry
     private ViewEntryColors getColors()
     {
         return radiatorView.getColors();
+    }
+
+    public String getLastCompletedBuild()
+    {
+        Run build = job.getLastCompletedBuild();
+        if (build != null)
+        {
+            return build.getTimestampString() + " (" + build.getDurationString() + ")";
+        }
+        return null;
+    }
+
+    public String getLastStableBuild()
+    {
+        Run build = job.getLastStableBuild();
+        if (build != null)
+        {
+            return build.getTimestampString() + " (" + build.getDurationString() + ")";
+        }
+        return null;
+    }
+
+    /**
+     * @return <code>true</code> if the build is stable.
+     */
+    public boolean getStable()
+    {
+        return stable;
     }
 }

@@ -72,7 +72,6 @@ public class RadiatorView extends ListView
         super(name);
         this.showStable = showStable;
         this.showStableDetail = showStableDetail;
-        System.out.println(showStable + " - " + showStableDetail);
     }
 
     /**
@@ -138,11 +137,8 @@ public class RadiatorView extends ListView
     protected void submit(StaplerRequest req) throws ServletException, FormException
     {
         super.submit(req);
-
         this.showStable = Boolean.parseBoolean(req.getParameter("showStable"));
         this.showStableDetail = Boolean.parseBoolean(req.getParameter("showStableDetail"));
-
-        System.out.println("Submit " + showStable + " - " + showStableDetail);
     }
 
     public Boolean getShowStable()
