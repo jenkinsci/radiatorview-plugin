@@ -2,43 +2,37 @@
 	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
 	xmlns:i="jelly:fmt">
 
+	<j:set var="bg" value="" />
+	<j:if test="${job.building || job.queued}">
+		<j:set var="bg"
+			value="opacity: 0.8; -moz-opacity:0.8; -webkit-opacity:0.8; filter:alpha(opacity=80);" />
+	</j:if>
 	<td
-		style="margin:1%; float:left; background-color:${job.backgroundColor};  overflow:hidden; -moz-border-radius:10px; -webkit-border-radius:10px; -border-radius:10px;"
+		style="margin:1%; ${bg} background-color:${job.backgroundColor};  overflow:hidden; -moz-border-radius:10px; -webkit-border-radius:10px; -border-radius:10px; color: ${job.color}; font-size: ${infoFont}; white-space: nowrap;"
 		tooltip="${job.name}">
 
-		<table>
-			<tr>
-				<td>
-					<a
-						style="white-space: nowrap; color: ${job.color}; font-size: ${jobFont}; font-weight:bold;"
-						href="${job.url}">${job.name}</a>
-				</td>
+		<p>
+			<a
+				style="white-space: nowrap; color: ${job.color}; font-size: ${jobFont}; font-weight:bold;"
+				href="${job.url}">${job.name}</a>
 
-				<j:set var="failColor" value="#00FF00" />
-				<j:if test="${job.failCount > 0}">
-					<j:set var="failColor" value="#FF0000" />
-				</j:if>
-				<td rowspan="2" align="center"
-					style="width: 20%; text-align=center; color: ${failColor}; font-size: ${failFont}; font-weight:bold;">
-					<j:if test="${job.broken == false &amp;&amp; job.failCount > 0}">
-						${job.failCount}
-				</j:if>
-				</td>
-			</tr>
-			<tr valign="top">
-				<j:if test="${job.building == false}">
-					<td valign="top"
-						style="color: ${job.color}; font-size: ${infoFont}; font-weight:bold; white-space: nowrap;">
-						<st:include page="notBuilding.jelly" />
-					</td>
-				</j:if>
-				<j:if test="${job.building == true}">
-					<td valign="top"
-						style="color: ${job.color}; font-size: ${buildFont}; font-weight:bold;">
-						<st:include page="building.jelly" />
-					</td>
-				</j:if>
-			</tr>
-		</table>
+			<j:set var="failColor" value="#00FF00" />
+			<j:if test="${job.failCount > 0}">
+				<j:set var="failColor" value="#FF0000" />
+			</j:if>
+
+			<j:if test="${job.broken == false &amp;&amp; job.failCount > 0}">
+				<font
+					style="text-align=center; color: ${failColor}; font-size: ${failFont}; font-weight:bold;">
+					${job.failCount}
+						</font>
+			</j:if>
+		</p>
+		<j:if test="${job.building == false}">
+			<st:include page="notBuilding.jelly" />
+		</j:if>
+		<j:if test="${job.building == true}">
+			<st:include page="building.jelly" />
+		</j:if>
 	</td>
 </j:jelly>

@@ -2,30 +2,26 @@
 	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
 	xmlns:i="jelly:fmt">
 	<j:if test="${job.broken == false}">
-		Tests: ${job.successPercentage} ${job.successCount}/${job.testCount}
+		<p>Tests: ${job.successPercentage} ${job.successCount}/${job.testCount}
 		<j:if test="${job.diff != ''}">
 			(
 			<font color="${job.diffColor}">${job.diff}</font>
 			)
 		</j:if>
 		<j:if test="${job.queued == true}">
-			<span style="float: right;">
-				Queued: #${job.queueNumber}
-            </span>
+			; Build Queued: #${job.queueNumber}
 		</j:if>
+		</p>
 	</j:if>
 	<j:if test="${!job.getStable()}">
 		<j:if test="${job.getCulprit() != &quot; - &quot;}">
-			<p>
-				Last changed by: ${job.culprit}</p>
+			<p>Last changed by: ${job.culprit}</p>
 		</j:if>
-		<j:if test="${job.getLastCompletedBuild() != null}">
-			<p>
-				Last Built: ${job.getLastCompletedBuild()}</p>
+		<j:if test="${job.getLastCompletedBuild() != null &amp;&amp; job.queued != true} ">
+			<p>Last Built: ${job.getLastCompletedBuild()}</p>
 		</j:if>
 		<j:if test="${job.getLastStableBuild() != null}">
-			<p>
-				Last Stable: ${job.getLastStableBuild()}</p>
+			<p>Last Stable: ${job.getLastStableBuild()}</p>
 		</j:if>
 	</j:if>
 </j:jelly>

@@ -3,7 +3,7 @@
 	xmlns:i="jelly:fmt">
 
 	<td
-		style="margin:1%; float:left; background-color:${job.backgroundColor};  overflow:hidden; -moz-border-radius:10px; -webkit-border-radius:10px; -border-radius:10px;"
+		style="margin:1%; background-color:${job.backgroundColor};  overflow:hidden; -moz-border-radius:10px; -webkit-border-radius:10px; -border-radius:10px;"
 		tooltip="${job.name}">
 
 		<a
