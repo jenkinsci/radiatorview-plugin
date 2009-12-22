@@ -2,10 +2,10 @@
 	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
 	xmlns:i="jelly:fmt">
 	<j:if test="${job.getCulprit() != &quot; - &quot;}">
-		Last changed by: ${job.culprit}
+		Last changed by: ${job.culprit} <br />
 	</j:if>
 	<j:if test="${job.broken == false}">
-		${job.successPercentage} ${job.successCount}/${job.testCount}
+		Tests: ${job.successPercentage} ${job.successCount}/${job.testCount}
 		<j:if test="${job.diff != ''}">
 			(
 			<font color="${job.diffColor}">${job.diff}</font>

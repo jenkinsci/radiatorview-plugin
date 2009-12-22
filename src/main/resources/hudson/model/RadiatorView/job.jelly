@@ -20,7 +20,7 @@
 				</j:if>
 				<td rowspan="2" align="center"
 					style="width: 20%; text-align=center; color: ${failColor}; font-size: ${failFont}; font-weight:bold;">
-					<j:if test="${job.broken == false}">
+					<j:if test="${job.broken == false && job.failCount > 0}">
 						${job.failCount}
 				</j:if>
 				</td>
