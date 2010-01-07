@@ -11,7 +11,7 @@
   <artifactId>radiatorviewplugin</artifactId>
   <packaging>hpi</packaging>
   <name>Hudson Radiator View Plugin</name>
-  <version>1.5-SNAPSHOT</version>
+  <version>1.5</version>
   <url>http://wiki.hudson-ci.org/display/HUDSON/Radiator+View+Plugin</url>
   <description>Adds a new high visibility view of project status.</description>
   <!--
@@ -19,9 +19,9 @@
     Maven infers the wrong value if I don't specify it explicitly.
   -->
   <scm>
-    <connection>scm:svn:https://guest@svn.dev.java.net/svn/hudson/trunk/hudson/plugins/radiatorview/</connection>
-    <developerConnection>scm:svn:https://svn.dev.java.net/svn/hudson/trunk/hudson/plugins/radiatorview/</developerConnection>
-    <url>https://hudson.dev.java.net/source/browse/hudson/trunk/hudson/pluginsradiatorview/</url>
+    <connection>scm:svn:https://guest@svn.dev.java.net/svn/hudson/tags/radiatorviewplugin-1.5</connection>
+    <developerConnection>scm:svn:https://svn.dev.java.net/svn/hudson/tags/radiatorviewplugin-1.5</developerConnection>
+    <url>https://hudson.dev.java.net/source/browse/hudson/tags/radiatorviewplugin-1.5</url>
   </scm>
 
   	<repositories>
