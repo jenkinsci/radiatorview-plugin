@@ -57,17 +57,15 @@ public class RadiatorView extends ListView
     private Boolean showStableDetail = false;
 
     /**
-     * Default constructor.
-     * 
      * @param name
      *            view name.
      * @param showStable
-     *            if stable buids should be shown.
+     *            if stable builds should be shown.
      * @param showStableDetail
      *            if detail should be shown for stable builds.
      */
     @DataBoundConstructor
-    public RadiatorView(String name, Boolean showStable, boolean showStableDetail)
+    public RadiatorView(String name, Boolean showStable, Boolean showStableDetail)
     {
         super(name);
         this.showStable = showStable;
