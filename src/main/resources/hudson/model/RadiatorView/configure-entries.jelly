@@ -25,4 +25,8 @@
 		<f:checkbox name="showStableDetail" checked="${it.showStableDetail}" value="true" field="showStableDetail" />
 	</f:entry>
 	
+	<f:entry title="${%Use Dark Background?}" field="highVis" help="/plugin/radiatorviewplugin/help/highVis.html">
+		<f:checkbox name="highVis" checked="${it.highVis}" value="true" field="highVis" />
+	</f:entry>
+	
 </j:jelly>

@@ -2,14 +2,36 @@
 	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
 	xmlns:i="jelly:fmt">
 	<meta http-equiv="refresh" content="${from.refresh}" />
+	<style type="text/css">
+		#header{
+		display:none;
+		}
+		#side-panel{
+		display:none;
+		}
+		#view-message{
+		display:none;
+		}
+		#main-panel{
+		padding: 0px;
+		}
+	</style>
+
 	<j:choose>
 		<j:when test="${empty(items)}">
 			<st:include page="noJob.jelly" />
+
 		</j:when>
 		<j:otherwise>
 			<t:setIconSize />
-			<div class="dashboard"
-				style="overflow: visible; left: 0px; top: 34px; position: absolute; height: 95%; z-index: 9999; width: 100%; background-color: white; background-image: url(/static/0360aadc/images/hudson.png); background-repeat: no-repeat; background-position: left bottom;">
+
+			<j:set var="dashStyle"
+				value="overflow: visible; left: 0px; top: 0px; position: absolute; height: 100%; z-index: 9999; width: 100%; background-color: white; background-image: url(/static/0360aadc/images/hudson.png); background-repeat: no-repeat; background-position: left bottom;" />
+			<j:if test="${from.getHighVis()}">
+				<j:set var="dashStyle"
+					value="overflow: visible; left: 0px; top: 0px; position: absolute; height: 100%; z-index: 9999; width: 100%; background-color: black;" />
+			</j:if>
+			<div class="dashboard" style="${dashStyle}">
 				<j:if test="${!empty(items)}">
 					<!-- project list -->
 					<j:invoke var="failJobs" on="${from}" method="sortFailing">
@@ -19,7 +41,7 @@
 						<j:arg type="java.util.Collection" value="${items}" />
 					</j:invoke>
 
-					<j:set var="passHeight" value="95" />
+					<j:set var="passHeight" value="100" />
 					<j:if test="${! failJobs.isEmpty()}">
 
 						<j:invoke var="failJobRows" on="${from}" method="toRows">
@@ -32,12 +54,12 @@
 						<j:set var="infoFont" value="medium" />
 						<j:set var="buildFont" value="medium" />
 
-						<j:set var="height" value="75%" />
+						<j:set var="height" value="85%" />
 						<j:if test="${!from.getShowStable()}">
-							<j:set var="height" value="95%" />
+							<j:set var="height" value="100%" />
 						</j:if>
 
-						<table width="99%" height="${height}"
+						<table width="100%" height="${height}"
 							style="border: 10px; table-layout: fixed;" cellspacing="10">
 							<j:forEach var="row" items="${failJobRows}">
 								<tr>
@@ -47,7 +69,7 @@
 								</tr>
 							</j:forEach>
 						</table>
-						<j:set var="passHeight" value="15" />
+						<j:set var="passHeight" value="14" />
 					</j:if>
 
 					<!--
@@ -64,7 +86,7 @@
 						<j:set var="infoFont" value="xx-small" />
 						<j:set var="buildFont" value="xx-small" />
 
-						<table width="99%" height="${passHeight}%" style="table-layout: fixed;"
+						<table width="100%" height="${passHeight}%" style="table-layout: fixed;"
 							cellspacing="5">
 							<j:forEach var="row" items="${passJobRows}">
 								<tr>
@@ -84,5 +106,29 @@
 			</div>
 		</j:otherwise>
 	</j:choose>
-
+	<script type="text/javascript">
+		$$('.building').each(function(e) {
+		var fadeIn = new
+		YAHOO.util.Anim(e, {
+		opacity: {from: 0.5, to: 0.9},
+		'-moz-opacity':
+		{from: 0.5, to: 0.9},
+		'-webkit-opacity': {from: 0.5, to: 0.9}
+		});
+		var
+		fadeOut = new YAHOO.util.Anim(e, {
+		opacity: {from: 0.9, to: 0.5},
+		'-moz-opacity': {from: 0.9, to: 0.5},
+		'-webkit-opacity': {from: 0.9,
+		to: 0.5}
+		});
+		fadeIn.onComplete.subscribe(function() {
+		fadeOut.animate();
+		});
+		fadeOut.onComplete.subscribe(function() {
+		fadeIn.animate();
+		});
+		fadeIn.animate();
+		});
+  </script>
 </j:jelly>

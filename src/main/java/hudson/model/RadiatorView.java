@@ -57,19 +57,27 @@ public class RadiatorView extends ListView
     private Boolean showStableDetail = false;
 
     /**
+     * User configuration - high visibility mode.
+     */
+    private Boolean highVis = true;
+
+    /**
      * @param name
      *            view name.
      * @param showStable
      *            if stable builds should be shown.
      * @param showStableDetail
      *            if detail should be shown for stable builds.
+     * @param highVis
+     *            high visibility mode.
      */
     @DataBoundConstructor
-    public RadiatorView(String name, Boolean showStable, Boolean showStableDetail)
+    public RadiatorView(String name, Boolean showStable, Boolean showStableDetail, Boolean highVis)
     {
         super(name);
         this.showStable = showStable;
         this.showStableDetail = showStableDetail;
+        this.highVis = highVis;
     }
 
     /**
@@ -137,6 +145,7 @@ public class RadiatorView extends ListView
         super.submit(req);
         this.showStable = Boolean.parseBoolean(req.getParameter("showStable"));
         this.showStableDetail = Boolean.parseBoolean(req.getParameter("showStableDetail"));
+        this.highVis = Boolean.parseBoolean(req.getParameter("highVis"));
     }
 
     public Boolean getShowStable()
@@ -147,6 +156,11 @@ public class RadiatorView extends ListView
     public Boolean getShowStableDetail()
     {
         return showStableDetail;
+    }
+
+    public Boolean getHighVis()
+    {
+        return highVis;
     }
 
     public Collection<ViewEntry> sortFailing(Collection<Job> jobs)
