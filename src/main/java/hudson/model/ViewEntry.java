@@ -253,13 +253,24 @@ public final class ViewEntry
         Run<?, ?> run = this.job.getLastBuild();
         String culprit = " - ";
         Set<String> culprits = new HashSet<String>();
-        if (run instanceof AbstractBuild<?, ?>)
+        while (run != null)
         {
-            AbstractBuild<?, ?> build = (AbstractBuild<?, ?>) run;
-            Iterator<User> it = build.getCulprits().iterator();
-            while (it.hasNext())
+            if (run instanceof AbstractBuild<?, ?>)
             {
-                culprits.add(it.next().getFullName());
+
+                AbstractBuild<?, ?> build = (AbstractBuild<?, ?>) run;
+
+                Iterator<User> it = build.getCulprits().iterator();
+                while (it.hasNext())
+                {
+                    culprits.add(it.next().getFullName());
+                }
+            }
+            run = run.getPreviousBuild();
+            if (Result.SUCCESS.equals(run.getResult()))
+            {
+                // don't look for culprits in successful builds.
+                run = null;
             }
         }
         if (!culprits.isEmpty())
