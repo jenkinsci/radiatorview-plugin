@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
@@ -90,6 +91,27 @@ public class RadiatorView extends ListView
             this.colors = ViewEntryColors.DEFAULT;
         }
         return this.colors;
+    }
+
+    @Override
+    public synchronized List<TopLevelItem> getItems()
+    {
+        List<TopLevelItem> items = super.getItems();
+        // Find any disabled projects and exclude them from the view.
+        ArrayList<AbstractProject> disabledProjects = new ArrayList<AbstractProject>();
+        for (TopLevelItem item : items)
+        {
+            if (item instanceof AbstractProject)
+            {
+                AbstractProject project = (AbstractProject) item;
+                if (project.isDisabled())
+                {
+                    disabledProjects.add(project);
+                }
+            }
+        }
+        items.removeAll(disabledProjects);
+        return items;
     }
 
     /**
