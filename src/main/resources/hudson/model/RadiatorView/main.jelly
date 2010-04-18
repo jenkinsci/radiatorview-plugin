@@ -26,7 +26,7 @@
 			<t:setIconSize />
 
 			<j:set var="dashStyle"
-				value="overflow: visible; left: 0px; top: 0px; position: absolute; height: 100%; z-index: 9999; width: 100%; background-color: white; background-image: url(/static/0360aadc/images/hudson.png); background-repeat: no-repeat; background-position: left bottom;" />
+				value="overflow: visible; left: 0px; top: 0px; position: absolute; height: 100%; z-index: 9999; width: 100%; background-color: white; background-image: url(${rootURL}/static/0360aadc/images/hudson.png); background-repeat: no-repeat; background-position: left bottom;" />
 			<j:if test="${from.getHighVis()}">
 				<j:set var="dashStyle"
 					value="overflow: visible; left: 0px; top: 0px; position: absolute; height: 100%; z-index: 9999; width: 100%; background-color: black;" />
@@ -53,8 +53,15 @@
 						<j:set var="failFont" value="xx-large" />
 						<j:set var="infoFont" value="medium" />
 						<j:set var="buildFont" value="medium" />
+            <j:set var="iconSize" value="48x48" />
 
-						<j:set var="height" value="85%" />
+            <j:if test="${from.getShowStableDetail()}">
+              <j:set var="height" value="66%" />
+            </j:if>
+            <j:if test="${!from.getShowStableDetail()}">
+              <j:set var="height" value="85%" />
+            </j:if>
+
 						<j:if test="${!from.getShowStable()}">
 							<j:set var="height" value="100%" />
 						</j:if>
@@ -69,7 +76,12 @@
 								</tr>
 							</j:forEach>
 						</table>
-						<j:set var="passHeight" value="14" />
+            <j:if test="${from.getShowStableDetail()}">
+              <j:set var="passHeight" value="33" />
+            </j:if>
+            <j:if test="${!from.getShowStableDetail()}">
+              <j:set var="passHeight" value="14" />
+            </j:if>
 					</j:if>
 
 					<!--
@@ -85,9 +97,9 @@
 						<j:set var="jobFont" value="x-small" />
 						<j:set var="infoFont" value="xx-small" />
 						<j:set var="buildFont" value="xx-small" />
+            <j:set var="iconSize" value="16x16" />
 
-						<table width="100%" height="${passHeight}%" style="table-layout: fixed;"
-							cellspacing="5">
+						<table width="100%" height="${passHeight}%" style="table-layout: fixed;" cellspacing="5">
 							<j:forEach var="row" items="${passJobRows}">
 								<tr>
 									<j:forEach var="job" items="${row}">

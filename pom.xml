@@ -33,4 +33,14 @@
       <url>http://download.java.net/maven/2/</url>
     </repository>
   </repositories>
+  
+  <distributionManagement>
+    <!--  maven3 doesn't support anymore id local -->
+    <snapshotRepository>
+      <!-- prevent accidental deployment of SNAPSHOTS to repository -->
+      <id>local.repository</id>
+      <url>file:.</url>
+    </snapshotRepository>
+  </distributionManagement>  
+  
 </project>
