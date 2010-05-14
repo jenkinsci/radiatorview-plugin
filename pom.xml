@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -12,7 +11,7 @@
 	<artifactId>radiatorviewplugin</artifactId>
 	<packaging>hpi</packaging>
 	<name>Hudson Radiator View Plugin</name>
-	<version>1.8-SNAPSHOT</version>
+	<version>1.8</version>
 	<url>http://wiki.hudson-ci.org/display/HUDSON/Radiator+View+Plugin</url>
 	<description>Adds a new high visibility view of project status.</description>
 	<!--
@@ -21,9 +20,9 @@
 		don't specify it explicitly.
 	-->
 	<scm>
-		<connection>scm:svn:https://guest@svn.dev.java.net/svn/hudson/trunk/hudson/plugins/radiatorview/</connection>
-		<developerConnection>scm:svn:https://svn.dev.java.net/svn/hudson/trunk/hudson/plugins/radiatorview/</developerConnection>
-		<url>https://hudson.dev.java.net/source/browse/hudson/trunk/hudson/pluginsradiatorview/</url>
+		<connection>scm:svn:https://guest@svn.dev.java.net/svn/hudson/tags/radiatorviewplugin-1.8</connection>
+		<developerConnection>scm:svn:https://svn.dev.java.net/svn/hudson/tags/radiatorviewplugin-1.8</developerConnection>
+		<url>https://hudson.dev.java.net/source/browse/hudson/tags/radiatorviewplugin-1.8</url>
 	</scm>
 
 	<repositories>
