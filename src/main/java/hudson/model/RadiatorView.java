@@ -222,7 +222,7 @@ public class RadiatorView extends ListView
         else
         {
             // don't mind having more rows as much for passing jobs.
-            jobsPerRow = (int) Math.floor(Math.sqrt(jobs.size()) * 1.5);
+            jobsPerRow = (int) Math.floor(Math.sqrt(jobs.size()) / 1.5);
         }
         Collection<Collection<ViewEntry>> rows = new ArrayList<Collection<ViewEntry>>();
         Collection<ViewEntry> current = null;
