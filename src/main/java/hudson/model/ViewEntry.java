@@ -1,6 +1,7 @@
 package hudson.model;
 
 import hudson.Functions;
+import hudson.plugins.claim.ClaimBuildAction;
 import hudson.tasks.test.AbstractTestResultAction;
 
 import java.text.NumberFormat;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.jfree.util.Log;
 
 /**
  * Represents a job to be shown in a view. Based heavily on the XFPanelEntry in
@@ -267,7 +269,7 @@ public final class ViewEntry
                 }
             }
             run = run.getPreviousBuild();
-            if (Result.SUCCESS.equals(run.getResult()))
+            if (run != null && Result.SUCCESS.equals(run.getResult()))
             {
                 // don't look for culprits in successful builds.
                 run = null;
@@ -392,5 +394,41 @@ public final class ViewEntry
     public boolean getStable()
     {
         return stable;
+    }
+
+    /**
+     * If the claims plugin is installed, this will get details of the claimed
+     * build failures.
+     * 
+     * @return details of any claims for the broken build, or null if nobody has
+     *         claimed this build.
+     */
+    public String getClaim()
+    {
+        String claim = null;
+        if (Hudson.getInstance().getPlugin("claim") != null)
+        {
+            claim = "Not Claimed";
+            List<ClaimBuildAction> claimActionList = job.getLastBuild().getActions(
+                    ClaimBuildAction.class);
+            if (claimActionList.size() == 1)
+            {
+                ClaimBuildAction claimAction = claimActionList.get(0);
+                String by = claimAction.getClaimedByName();
+                String reason = claimAction.getReason();
+                claim = "Claimed by " + by;
+                if (reason != null)
+                {
+                    claim += ": " + reason;
+                }
+            }
+            else if (claimActionList.size() > 1)
+            {
+                claim = "Error parsing claim details";
+                Log.warn("Multiple ClaimBuildActions found for job " + job.toString());
+            }
+            claim += ".";
+        }
+        return claim;
     }
 }

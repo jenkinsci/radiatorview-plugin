@@ -6,6 +6,12 @@
 			${run.executor.estimatedRemainingTime} left</p>
 	</j:forEach>
 	<j:if test="${!job.getStable()}">
+		<j:if test="${job.getClaim() != null}">
+			<p>${job.getClaim()}</p>
+		</j:if>
+		<j:if test="${job.getCulprit() != &quot; - &quot;}">
+			<p>Possible culprit: ${job.culprit}</p>
+		</j:if>
 		<j:if test="${job.getLastStableBuild() != null}">
 			<p>Last Stable: ${job.getLastStableBuild()}</p>
 		</j:if>

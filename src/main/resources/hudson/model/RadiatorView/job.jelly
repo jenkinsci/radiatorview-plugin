@@ -25,7 +25,7 @@
         <p><font style="text-align=center; color: ${failColor}; font-size: ${failFont}; font-weight:bold;">1 test failure</font></p>
       </j:if>
       <j:if test="${job.broken == false &amp;&amp; job.failCount > 1}">
-        <p><font style="text-align=center; color: ${failColor}; font-size: ${failFont}; font-weight:bold;">${job.failCount} tests failures</font></p>
+        <p><font style="text-align=center; color: ${failColor}; font-size: ${failFont}; font-weight:bold;">${job.failCount} test failures</font></p>
       </j:if>
       <j:if test="${job.building == false}">
         <st:include page="notBuilding.jelly"/>
