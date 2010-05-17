@@ -414,12 +414,15 @@ public final class ViewEntry
             if (claimActionList.size() == 1)
             {
                 ClaimBuildAction claimAction = claimActionList.get(0);
-                String by = claimAction.getClaimedByName();
-                String reason = claimAction.getReason();
-                claim = "Claimed by " + by;
-                if (reason != null)
+                if (claimAction.isClaimed())
                 {
-                    claim += ": " + reason;
+                    String by = claimAction.getClaimedByName();
+                    String reason = claimAction.getReason();
+                    claim = "Claimed by " + by;
+                    if (reason != null)
+                    {
+                        claim += ": " + reason;
+                    }
                 }
             }
             else if (claimActionList.size() > 1)
