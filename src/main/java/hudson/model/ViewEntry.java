@@ -409,26 +409,37 @@ public final class ViewEntry
         if (Hudson.getInstance().getPlugin("claim") != null)
         {
             claim = "Not Claimed";
-            List<ClaimBuildAction> claimActionList = job.getLastBuild().getActions(
-                    ClaimBuildAction.class);
-            if (claimActionList.size() == 1)
+            Run lastBuild = job.getLastBuild();
+            if (lastBuild.isBuilding())
             {
-                ClaimBuildAction claimAction = claimActionList.get(0);
-                if (claimAction.isClaimed())
+                // claims can only be made against builds once they've finished,
+                // so check the previous build if currently building.
+                lastBuild = lastBuild.getPreviousBuild();
+            }
+            if (lastBuild != null)
+            {
+                // TODO - check previous build if currently building.
+                List<ClaimBuildAction> claimActionList = lastBuild
+                        .getActions(ClaimBuildAction.class);
+                if (claimActionList.size() == 1)
                 {
-                    String by = claimAction.getClaimedByName();
-                    String reason = claimAction.getReason();
-                    claim = "Claimed by " + by;
-                    if (reason != null)
+                    ClaimBuildAction claimAction = claimActionList.get(0);
+                    if (claimAction.isClaimed())
                     {
-                        claim += ": " + reason;
+                        String by = claimAction.getClaimedByName();
+                        String reason = claimAction.getReason();
+                        claim = "Claimed by " + by;
+                        if (reason != null)
+                        {
+                            claim += ": " + reason;
+                        }
                     }
                 }
-            }
-            else if (claimActionList.size() > 1)
-            {
-                claim = "Error parsing claim details";
-                Log.warn("Multiple ClaimBuildActions found for job " + job.toString());
+                else if (claimActionList.size() > 1)
+                {
+                    claim = "Error parsing claim details";
+                    Log.warn("Multiple ClaimBuildActions found for job " + job.toString());
+                }
             }
             claim += ".";
         }
