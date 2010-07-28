@@ -142,16 +142,19 @@ public final class ViewEntry
         List<Run<?, ?>> runs = new ArrayList<Run<?, ?>>();
 
         Run<?, ?> run = this.job.getLastBuild();
-        if (run.isBuilding())
+        if (run != null)
         {
-            runs.add(run);
-        }
+            if (run.isBuilding())
+            {
+                runs.add(run);
+            }
 
-        Run<?, ?> prev = run.getPreviousBuildInProgress();
-        while (prev != null)
-        {
-            runs.add(prev);
-            prev = prev.getPreviousBuildInProgress();
+            Run<?, ?> prev = run.getPreviousBuildInProgress();
+            while (prev != null)
+            {
+                runs.add(prev);
+                prev = prev.getPreviousBuildInProgress();
+            }
         }
 
         return runs;
@@ -383,7 +386,7 @@ public final class ViewEntry
         Run build = job.getLastStableBuild();
         if (build != null)
         {
-            return build.getTimestampString() + " (" + build.getDurationString() + ")";
+            return build.getTimestampString() + " (in " + build.getDurationString() + ")";
         }
         return null;
     }
@@ -410,7 +413,7 @@ public final class ViewEntry
         {
             claim = "Not Claimed";
             Run lastBuild = job.getLastBuild();
-            if (lastBuild.isBuilding())
+            if (lastBuild != null && lastBuild.isBuilding())
             {
                 // claims can only be made against builds once they've finished,
                 // so check the previous build if currently building.

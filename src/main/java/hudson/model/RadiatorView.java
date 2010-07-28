@@ -7,11 +7,8 @@ import hudson.util.FormValidation;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -93,41 +90,10 @@ public class RadiatorView extends ListView
         return this.colors;
     }
 
-    @Override
-    public synchronized List<TopLevelItem> getItems()
+    public RadiatorViewContents getContents()
     {
-        List<TopLevelItem> items = super.getItems();
-        // Find any disabled projects and exclude them from the view.
-        ArrayList<AbstractProject> disabledProjects = new ArrayList<AbstractProject>();
-        for (TopLevelItem item : items)
-        {
-            if (item instanceof AbstractProject)
-            {
-                AbstractProject project = (AbstractProject) item;
-                if (project.isDisabled())
-                {
-                    disabledProjects.add(project);
-                }
-            }
-        }
-        items.removeAll(disabledProjects);
-        return items;
-    }
+        RadiatorViewContents contents = new RadiatorViewContents();
 
-    /**
-     * Filters the jobs for stable jobs and sorts them.
-     * 
-     * @param jobs
-     *            all jobs
-     * @return sorted list of stable jobs.
-     */
-    public Collection<ViewEntry> sortPassing(Collection<Job> jobs)
-    {
-        return sort(jobs, true);
-    }
-
-    private Collection<ViewEntry> sort(Collection<Job> jobs, boolean successful)
-    {
         placeInQueue = new HashMap<hudson.model.Queue.Item, Integer>();
         int j = 1;
         for (hudson.model.Queue.Item i : Hudson.getInstance().getQueue().getItems())
@@ -135,20 +101,31 @@ public class RadiatorView extends ListView
             placeInQueue.put(i, j++);
         }
 
-        if (jobs != null)
+        for (TopLevelItem item : super.getItems())
         {
-            TreeSet<ViewEntry> ents = new TreeSet<ViewEntry>(new EntryComparator());
-            for (Job<?, ?> job : jobs)
+            if (item instanceof AbstractProject)
             {
-                if (getResult(job).isBetterOrEqualTo(Result.SUCCESS) == successful)
+                AbstractProject project = (AbstractProject) item;
+                if (!project.isDisabled())
                 {
-                    ents.add(new ViewEntry(this, job));
+                    ViewEntry entry = new ViewEntry(this, project);
+                    if (getResult(project).isBetterOrEqualTo(Result.SUCCESS))
+                    {
+                        contents.addPassingBuild(entry);
+                    }
+                    else if ("Not Claimed.".equals(entry.getClaim()))
+                    {
+                        contents.addFailingBuild(entry);
+                    }
+                    else
+                    {
+                        contents.addClaimedBuild(entry);
+                    }
                 }
             }
-            this.entries = ents;
-            return this.entries;
         }
-        return Collections.emptyList();
+
+        return contents;
     }
 
     /**
@@ -183,11 +160,6 @@ public class RadiatorView extends ListView
     public Boolean getHighVis()
     {
         return highVis;
-    }
-
-    public Collection<ViewEntry> sortFailing(Collection<Job> jobs)
-    {
-        return sort(jobs, false);
     }
 
     /**

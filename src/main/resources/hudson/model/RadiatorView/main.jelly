@@ -15,105 +15,135 @@
 		#main-panel{
 		padding: 0px;
 		}
-	</style>
 
+		#job
+		{
+		position:
+		absolute;
+		overflow: hidden;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		-border-radius: 10px;
+		}
+		.building
+		{
+		opacity:
+		0.6; -moz-opacity:0.6; -webkit-opacity:0.6;
+		filter:alpha(opacity=60);
+		}
+	</style>
 	<j:choose>
 		<j:when test="${empty(items)}">
 			<st:include page="noJob.jelly" />
-
 		</j:when>
 		<j:otherwise>
 			<t:setIconSize />
-
+			<!-- config option: dark or light backgrounds.  -->
 			<j:set var="dashStyle"
-				value="overflow: visible; left: 0px; top: 0px; position: absolute; height: 100%; z-index: 9999; width: 100%; background-color: white; background-image: url(${rootURL}/static/0360aadc/images/hudson.png); background-repeat: no-repeat; background-position: left bottom;" />
+				value="background-color: white; background-image: url(${rootURL}/static/0360aadc/images/hudson.png); background-repeat: no-repeat; background-position: left bottom;" />
 			<j:if test="${from.getHighVis()}">
-				<j:set var="dashStyle"
-					value="overflow: visible; left: 0px; top: 0px; position: absolute; height: 100%; z-index: 9999; width: 100%; background-color: black;" />
+				<j:set var="dashStyle" value="background-color: black;" />
 			</j:if>
-			<div class="dashboard" style="${dashStyle}">
-				<j:if test="${!empty(items)}">
-					<!-- project list -->
-					<j:invoke var="failJobs" on="${from}" method="sortFailing">
-						<j:arg type="java.util.Collection" value="${items}" />
-					</j:invoke>
-					<j:invoke var="passJobs" on="${from}" method="sortPassing">
-						<j:arg type="java.util.Collection" value="${items}" />
-					</j:invoke>
+			<!--  outer div to hide everything in the normal layout.  -->
+			<div class="dashboard"
+				style="${dashStyle} overflow: hidden; left:
+				0px; top: 0px; position: absolute; height: 100%; width: 100%; ">
 
-					<j:set var="passHeight" value="100" />
-					<j:if test="${! failJobs.isEmpty()}">
+				<!-- fetch details to add to the job -->
+				<j:invoke var="contents" on="${from}" method="getContents" />
+				<j:invoke var="passJobs" on="${contents}" method="getPassingJobs" />
+				<j:invoke var="failJobs" on="${contents}" method="getFailingJobs" />
+				<j:invoke var="failJobRows" on="${from}" method="toRows">
+					<j:arg type="java.util.Collection" value="${failJobs}" />
+					<j:arg type="java.lang.Boolean" value="true" />
+				</j:invoke>
+				<j:invoke var="passJobRows" on="${from}" method="toRows">
+					<j:arg type="java.util.Collection" value="${passJobs}" />
+					<j:arg type="java.lang.Boolean" value="false" />
+				</j:invoke>
 
-						<j:invoke var="failJobRows" on="${from}" method="toRows">
-							<j:arg type="java.util.Collection" value="${failJobs}" />
-							<j:arg type="java.lang.Boolean" value="true" />
-						</j:invoke>
+				<!--  how much space to allocate for failed and passing jobs. -->
+				<j:set var="failJobsHeight" value="100" />
+				<j:set var="passJobsHeight" value="0" />
+				<j:if
+					test="${from.getShowStable() &amp;&amp; from.getShowStableDetail()}">
+					<j:set var="failJobsHeight" value="66" />
+					<j:set var="passJobsHeight" value="34" />
+				</j:if>
+				<j:if
+					test="${from.getShowStable() &amp;&amp; !from.getShowStableDetail()}">
+					<j:set var="failJobsHeight" value="85" />
+					<j:set var="passJobsHeight" value="15" />
+				</j:if>
+				<j:if test="${failJobs.isEmpty()}">
+					<!--  just show passing jobs... -->
+					<j:set var="failJobsHeight" value="0" />
+					<j:set var="passJobsHeight" value="100" />
+				</j:if>
 
-						<j:set var="jobFont" value="xx-large" />
-						<j:set var="failFont" value="xx-large" />
-						<j:set var="infoFont" value="medium" />
-						<j:set var="buildFont" value="medium" />
-            <j:set var="iconSize" value="48x48" />
 
-            <j:if test="${from.getShowStableDetail()}">
-              <j:set var="height" value="66%" />
-            </j:if>
-            <j:if test="${!from.getShowStableDetail()}">
-              <j:set var="height" value="85%" />
-            </j:if>
+				<!-- render the failing jobs... -->
+				<j:if test="${!failJobs.isEmpty()}">
+					<j:set var="jobFont" value="xx-large" />
+					<j:set var="failFont" value="xx-large" />
+					<j:set var="infoFont" value="medium" />
+					<j:set var="buildFont" value="medium" />
+					<j:set var="iconSize" value="48x48" />
 
-						<j:if test="${!from.getShowStable()}">
-							<j:set var="height" value="100%" />
-						</j:if>
 
-						<table width="100%" height="${height}"
-							style="border: 10px; table-layout: fixed;" cellspacing="10">
-							<j:forEach var="row" items="${failJobRows}">
-								<tr>
-									<j:forEach var="job" items="${row}">
-										<st:include page="job.jelly" />
-									</j:forEach>
-								</tr>
-							</j:forEach>
-						</table>
-            <j:if test="${from.getShowStableDetail()}">
-              <j:set var="passHeight" value="33" />
-            </j:if>
-            <j:if test="${!from.getShowStableDetail()}">
-              <j:set var="passHeight" value="14" />
-            </j:if>
-					</j:if>
+					<j:set var="height" value="${(failJobsHeight / failJobRows.size())}" />
+					<j:set var="top" value="0" />
+					<j:set var="showDetail" value="true" />
+					<j:forEach var="row" items="${failJobRows}">
+						<j:set var="width" value="${(80 / row.size())}" />
+						<j:set var="left" value="0" />
+						<j:forEach var="job" items="${row}">
+							<j:set var="jobStyle"
+								value="left: ${left}%; top:${top}%; width:${width-2}%; height:${height-2}%; margin:1%; " />
+							<st:include page="job.jelly" />
+							<j:set var="left" value="${left + width}" />
+						</j:forEach>
+						<j:set var="top" value="${top + height}" />
+					</j:forEach>
+				</j:if>
 
-					<!--
-						optionally show stable jobs if requested or there are none
-						failing.
-					-->
-					<j:if test="${from.getShowStable() || failJobs.isEmpty()}">
-						<j:invoke var="passJobRows" on="${from}" method="toRows">
-							<j:arg type="java.util.Collection" value="${passJobs}" />
-							<j:arg type="java.lang.Boolean" value="false" />
-						</j:invoke>
+				<!--
+					optionally show stable jobs if requested or there are none failing.
+				-->
+				<j:if test="${from.getShowStable() || failJobs.isEmpty()}">
+					<j:set var="jobFont" value="x-small" />
+					<j:set var="infoFont" value="xx-small" />
+					<j:set var="buildFont" value="xx-small" />
+					<j:set var="iconSize" value="16x16" />
 
-						<j:set var="jobFont" value="x-small" />
-						<j:set var="infoFont" value="xx-small" />
-						<j:set var="buildFont" value="xx-small" />
-            <j:set var="iconSize" value="16x16" />
+					<j:set var="height" value="${(passJobsHeight / passJobRows.size())}" />
+					<j:set var="top" value="${failJobsHeight}" />
+					<j:forEach var="row" items="${passJobRows}">
+						<j:set var="left" value="0" />
+						<j:forEach var="job" items="${row}">
+							<j:set var="width" value="${(80 / row.size())}" />
+							<j:set var="jobStyle"
+								value="left: ${left}%; top:${top}%; width:${width-0.4}%; height:${height-0.4}%; margin: 0.2%; " />
+							<j:set var="showDetail" value="${from.getShowStableDetail()}" />
+							<st:include page="job.jelly" />
+							<j:set var="left" value="${left + width}" />
+						</j:forEach>
+						<j:set var="top" value="${top + height}" />
+					</j:forEach>
+				</j:if>
 
-						<table width="100%" height="${passHeight}%" style="table-layout: fixed;" cellspacing="5">
-							<j:forEach var="row" items="${passJobRows}">
-								<tr>
-									<j:forEach var="job" items="${row}">
-										<j:if test="${from.getShowStableDetail()}">
-											<st:include page="job.jelly" />
-										</j:if>
-										<j:if test="${!from.getShowStableDetail()}">
-											<st:include page="passJob.jelly" />
-										</j:if>
-									</j:forEach>
-								</tr>
-							</j:forEach>
-						</table>
-					</j:if>
+				<!-- Show claimed builds in the right hand column.  -->
+				<j:if test="${!contents.getClaimedBuilds().isEmpty()}">
+					<div
+						style="top:0%; right:0%; height:100%; width:20%; padding:0; margin:0; border:0; overflow-y:scroll"
+						id="job">
+						<h1 style="color:white">Claimed Builds:</h1>
+						<j:forEach var="job" items="${contents.getClaimedBuilds()}">
+							<j:set var="jobStyle"
+								value="float:bottom; position:static; width: 95%; margin: 2.5%; " />
+							<st:include page="claimedjob.jelly" />
+						</j:forEach>
+					</div>
 				</j:if>
 			</div>
 		</j:otherwise>
