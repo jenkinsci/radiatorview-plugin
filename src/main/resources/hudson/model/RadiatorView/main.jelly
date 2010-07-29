@@ -138,6 +138,7 @@
 						style="top:0%; right:0%; height:100%; width:20%; padding:0; margin:0; border:0; overflow-y:scroll"
 						id="job">
 						<h1 style="color:white">Claimed Builds:</h1>
+						<j:set var="jobFont" value="medium" />
 						<j:forEach var="job" items="${contents.getClaimedBuilds()}">
 							<j:set var="jobStyle"
 								value="float:bottom; position:static; width: 95%; margin: 2.5%; " />
@@ -152,16 +153,16 @@
 		$$('.building').each(function(e) {
 		var fadeIn = new
 		YAHOO.util.Anim(e, {
-		opacity: {from: 0.5, to: 0.9},
+		opacity: {from: 0.5, to: 0.7},
 		'-moz-opacity':
-		{from: 0.5, to: 0.9},
-		'-webkit-opacity': {from: 0.5, to: 0.9}
+		{from: 0.5, to: 0.7},
+		'-webkit-opacity': {from: 0.5, to: 0.7}
 		});
 		var
 		fadeOut = new YAHOO.util.Anim(e, {
-		opacity: {from: 0.9, to: 0.5},
-		'-moz-opacity': {from: 0.9, to: 0.5},
-		'-webkit-opacity': {from: 0.9,
+		opacity: {from: 0.7, to: 0.5},
+		'-moz-opacity': {from: 0.7, to: 0.5},
+		'-webkit-opacity': {from: 0.7,
 		to: 0.5}
 		});
 		fadeIn.onComplete.subscribe(function() {
