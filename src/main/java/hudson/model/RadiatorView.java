@@ -152,6 +152,14 @@ public class RadiatorView extends ListView {
 		if (name.contains("_"))
 		{
 			return StringUtils.substringBefore(name, "_");
+		}		
+		if (name.contains("-"))
+		{
+			return StringUtils.substringBefore(name, "-");
+		}		
+		if (name.contains(":"))
+		{
+			return StringUtils.substringBefore(name, ":");
 		}
 		else return "No Project";
 	}
