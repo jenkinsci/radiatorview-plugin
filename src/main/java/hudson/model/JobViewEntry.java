@@ -6,6 +6,7 @@ import hudson.tasks.test.AbstractTestResultAction;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -246,13 +247,10 @@ public class JobViewEntry  implements IViewEntry
         return r;
     }
 
-    /* (non-Javadoc)
-	 * @see hudson.model.IViewEntry#getCulprit()
-	 */
-    public String getCulprit()
+    
+    public Collection<String> getCulprits()
     {
-        Run<?, ?> run = this.job.getLastBuild();
-        String culprit = " - ";
+    	Run<?, ?> run = this.job.getLastBuild();
         Set<String> culprits = new HashSet<String>();
         while (run != null)
         {
@@ -274,6 +272,16 @@ public class JobViewEntry  implements IViewEntry
                 run = null;
             }
         }
+        return culprits;
+    }
+    
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getCulprit()
+	 */
+    public String getCulprit()
+    {
+        Collection<String> culprits = getCulprits();
+        String culprit = " - ";
         if (!culprits.isEmpty())
         {
             culprit = StringUtils.join(culprits, ", ");

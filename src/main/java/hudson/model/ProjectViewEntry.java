@@ -3,7 +3,10 @@
  */
 package hudson.model;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
@@ -112,7 +115,8 @@ public class ProjectViewEntry implements IViewEntry {
 	public String getClaim() {
 		String claim = "";
 		for (IViewEntry job : jobs) {
-			if (!StringUtils.isEmpty(job.getClaim()))
+			if (!StringUtils.isEmpty(job.getClaim()) && !
+					"Not Claimed.".equals(job.getClaim()))
 				claim += (job.getName() + ": " + job.getClaim() + ";");
 		}
 		return claim;
@@ -122,9 +126,23 @@ public class ProjectViewEntry implements IViewEntry {
 		return "white";
 	}
 
+
+    public Collection<String> getCulprits()
+    {
+    	Set<String> culprits = new HashSet<String>();
+    	for (IViewEntry job : getFailingJobs()) {
+    		culprits.addAll(job.getCulprits());	
+    	}
+    	return culprits;
+    }
 	public String getCulprit() {
-		// TODO Auto-generated method stub
-		return null;
+        Collection<String> culprits = getCulprits();
+        String culprit = null;
+        if (!culprits.isEmpty())
+        {
+            culprit = StringUtils.join(culprits, ", ");
+        }
+        return culprit;
 	}
 
 	public String getDiff() {

@@ -1,5 +1,7 @@
 package hudson.model;
 
+import java.util.Collection;
+
 public interface IViewEntry {
 
 	/**
@@ -65,6 +67,9 @@ public interface IViewEntry {
 	 * @return the culprit/responsible
 	 */
 	public abstract String getCulprit();
+	
+	
+    public Collection<String> getCulprits();
 
 	/**
 	 * @return color to be used to show the test diff

@@ -19,16 +19,14 @@
 		<p>
 			<j:if test="${job.broken == false &amp;&amp; job.testCount > 0}">
 				<j:if test="${job.failCount == 1}">
-					<font
-						style="text-align=center; color: #FF0000;">1/${job.testCount} test failure</font>
+					<font style="text-align=center; color: #FF0000;">1/${job.testCount} test failure</font>
 				</j:if>
 				<j:if test="${job.failCount == 0}">
-					<font
-						style="text-align=center; color: black;">${job.testCount} successful tests</font>
+					<font style="text-align=center; color: black;">${job.testCount} successful tests</font>
 				</j:if>
 				<j:if test="${ job.failCount > 1}">
-					<font
-						style="text-align=center; color: #FF0000;">${job.failCount}/${job.testCount} test failures</font>
+					<font style="text-align=center; color: #FF0000;">${job.failCount}/${job.testCount} test failures
+					</font>
 				</j:if>
 				<!--
 					<j:if test="${job.diff != null &amp;&amp; !job.diff.equals('')}"> (
@@ -48,10 +46,14 @@
 		<j:invoke var="failJobs" on="${job}" method="getFailingJobs" />
 		<j:invoke var="claimedJobs" on="${job}" method="getClaimedBuilds" />
 		<j:if test="${!failJobs.isEmpty()}">
+			<j:if test="${job.getCulprit() != null}">
+				<p>Possible Culprits: ${job.getCulprit()}</p>
+			</j:if>
 			<p>
 				Failed Jobs:
 				<j:forEach var="subjob" items="${failJobs}">
-					<a href="${subjob.url}">${subjob.name}</a>; 
+					<a href="${subjob.url}">${subjob.name}</a>
+					;
 				</j:forEach>
 			</p>
 		</j:if>
@@ -59,8 +61,9 @@
 			<p>
 				Claimed Failures:
 				<j:forEach var="subjob" items="${claimedJobs}">
-					<a href="${subjob.url}">${subjob.name}</a>; 
-			</j:forEach>
+					<a href="${subjob.url}">${subjob.name}</a>
+					${subjob.getClaim()};
+				</j:forEach>
 			</p>
 		</j:if>
 	</div>
