@@ -29,4 +29,9 @@
 		<f:checkbox name="highVis" checked="${it.highVis}" value="true" field="highVis" />
 	</f:entry>
 	
+	
+	<f:entry title="${%Show as Projects?}" field="groupByPrefix" help="/plugin/radiatorviewplugin/help/groupByPrefix.html">
+		<f:checkbox name="groupByPrefix" checked="${it.groupByPrefix}" value="true" field="groupByPrefix" />
+	</f:entry>
+	
 </j:jelly>

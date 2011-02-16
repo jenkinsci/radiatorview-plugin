@@ -1,0 +1,68 @@
+
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
+	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
+	xmlns:i="jelly:fmt">
+	<!--  Display details about a single project in the radiator -->
+
+	<!-- show in a different style if the job is building or queued.  -->
+	<j:set var="clazz" value="normal" />
+
+	<div style="${jobStyle}  background-color:${job.backgroundColor};"
+		class="${clazz}" tooltip="${job.name}" id="job">
+
+		<!--  Job Name Title -->
+		<p>
+			<a style="color: ${job.color}; font-size: ${jobFont}; font-weight:bold;"
+				href="${job.url}">${job.name}</a>
+		</p>
+		<!-- Details of any test failures -->
+		<p>
+			<j:if test="${job.broken == false &amp;&amp; job.testCount > 0}">
+				<j:if test="${job.failCount == 1}">
+					<font
+						style="text-align=center; color: #FF0000;">1/${job.testCount} test failure</font>
+				</j:if>
+				<j:if test="${job.failCount == 0}">
+					<font
+						style="text-align=center; color: black;">${job.testCount} successful tests</font>
+				</j:if>
+				<j:if test="${ job.failCount > 1}">
+					<font
+						style="text-align=center; color: #FF0000;">${job.failCount}/${job.testCount} test failures</font>
+				</j:if>
+				<!--
+					<j:if test="${job.diff != null &amp;&amp; !job.diff.equals('')}"> (
+					<font color="${job.diffColor}">${job.diff}</font> tests) </j:if>
+				-->
+			</j:if>
+		</p>
+
+		<j:if test="${!job.getStable()}">
+			<j:if
+				test="${job.getCulprit() != null &amp;&amp; !job.getCulprit().equals(&quot;&quot;) &amp;&amp; job.getCulprit() != &quot; - &quot;}">
+				<p>Possible culprit: ${job.culprit}</p>
+			</j:if>
+		</j:if>
+
+		<j:invoke var="passJobs" on="${job}" method="getPassingJobs" />
+		<j:invoke var="failJobs" on="${job}" method="getFailingJobs" />
+		<j:invoke var="claimedJobs" on="${job}" method="getClaimedBuilds" />
+		<j:if test="${!failJobs.isEmpty()}">
+			<p>
+				Failed Jobs:
+				<j:forEach var="subjob" items="${failJobs}">
+					<a href="${subjob.url}">${subjob.name}</a>; 
+				</j:forEach>
+			</p>
+		</j:if>
+		<j:if test="${!claimedJobs.isEmpty()}">
+			<p>
+				Claimed Failures:
+				<j:forEach var="subjob" items="${claimedJobs}">
+					<a href="${subjob.url}">${subjob.name}</a>; 
+			</j:forEach>
+			</p>
+		</j:if>
+	</div>
+
+</j:jelly>

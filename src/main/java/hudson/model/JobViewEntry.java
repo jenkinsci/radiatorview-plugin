@@ -20,7 +20,7 @@ import org.jfree.util.Log;
  * 
  * @author jrenaut
  */
-public final class ViewEntry
+public class JobViewEntry  implements IViewEntry
 {
 
     /**
@@ -34,7 +34,7 @@ public final class ViewEntry
 
     private String color;
 
-    private Boolean broken;
+    private Boolean broken = false;
 
     private Boolean building = false;
 
@@ -55,7 +55,7 @@ public final class ViewEntry
      * @param radiatorView
      *            TODO
      */
-    public ViewEntry(RadiatorView radiatorView, Job<?, ?> job)
+    public JobViewEntry(RadiatorView radiatorView, Job<?, ?> job)
     {
         this.radiatorView = radiatorView;
         this.job = job;
@@ -70,17 +70,17 @@ public final class ViewEntry
         return this.job;
     }
 
-    /**
-     * @return the job's name
-     */
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getName()
+	 */
     public String getName()
     {
         return job.getName();
     }
 
-    /**
-     * @return if this job is queued for build
-     */
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getQueued()
+	 */
     public Boolean getQueued()
     {
         return this.job.isInQueue();
@@ -94,41 +94,41 @@ public final class ViewEntry
         return this.radiatorView.placeInQueue.get(this.job.getQueueItem());
     }
 
-    /**
-     * @return background color for this job
-     */
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getBackgroundColor()
+	 */
     public String getBackgroundColor()
     {
         return this.backgroundColor;
     }
 
-    /**
-     * @return foreground color for this job
-     */
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getColor()
+	 */
     public String getColor()
     {
         return this.color;
     }
 
-    /**
-     * @return true se o último build está quebrado
-     */
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getBroken()
+	 */
     public Boolean getBroken()
     {
         return this.broken;
     }
 
-    /**
-     * @return true if this job is currently being built
-     */
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getBuilding()
+	 */
     public Boolean getBuilding()
     {
         return this.building;
     }
 
-    /**
-     * @return the URL for the last build
-     */
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getUrl()
+	 */
     public String getUrl()
     {
         return this.job.getUrl() + "lastBuild";
@@ -160,9 +160,9 @@ public final class ViewEntry
         return runs;
     }
 
-    /**
-     * @return total tests executed
-     */
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getTestCount()
+	 */
     public int getTestCount()
     {
         Run<?, ?> run = this.job.getLastSuccessfulBuild();
@@ -174,9 +174,9 @@ public final class ViewEntry
         return 0;
     }
 
-    /**
-     * @return total failed tests
-     */
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getFailCount()
+	 */
     public int getFailCount()
     {
         Run<?, ?> run = this.job.getLastSuccessfulBuild();
@@ -188,18 +188,17 @@ public final class ViewEntry
         return 0;
     }
 
-    /**
-     * @return total successful tests
-     */
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getSuccessCount()
+	 */
     public int getSuccessCount()
     {
         return this.getTestCount() - this.getFailCount();
     }
 
-    /**
-     * @return difference between this job's last build successful tests and the
-     *         previous'
-     */
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getDiff()
+	 */
     public String getDiff()
     {
         Run<?, ?> run = this.job.getLastSuccessfulBuild();
@@ -247,12 +246,9 @@ public final class ViewEntry
         return r;
     }
 
-    /**
-     * Elects a culprit/responsible for a broken build by choosing the last
-     * commiter of a given build
-     * 
-     * @return the culprit/responsible
-     */
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getCulprit()
+	 */
     public String getCulprit()
     {
         Run<?, ?> run = this.job.getLastBuild();
@@ -285,9 +281,9 @@ public final class ViewEntry
         return culprit;
     }
 
-    /**
-     * @return color to be used to show the test diff
-     */
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getDiffColor()
+	 */
     public String getDiffColor()
     {
         String diff = this.getDiff().trim();
@@ -305,9 +301,9 @@ public final class ViewEntry
         return "#FFFFFF";
     }
 
-    /**
-     * @return the percentage of successful tests versus the total
-     */
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getSuccessPercentage()
+	 */
     public String getSuccessPercentage()
     {
         if (this.getTestCount() > 0)
@@ -324,13 +320,14 @@ public final class ViewEntry
      */
     private void findStatus()
     {
-        Result result = radiatorView.getResult(job);
+        Result result = RadiatorUtil.getLastFinishedResult(job);
 
         this.stable = false;
         if (result.ordinal == Result.NOT_BUILT.ordinal)
         {
             this.backgroundColor = getColors().getOtherBG();
             this.color = getColors().getOtherFG();
+            this.broken = true;
         }
         else if (result.ordinal == Result.SUCCESS.ordinal)
         {
@@ -371,6 +368,9 @@ public final class ViewEntry
         return radiatorView.getColors();
     }
 
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getLastCompletedBuild()
+	 */
     public String getLastCompletedBuild()
     {
         Run build = job.getLastCompletedBuild();
@@ -381,6 +381,9 @@ public final class ViewEntry
         return null;
     }
 
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getLastStableBuild()
+	 */
     public String getLastStableBuild()
     {
         Run build = job.getLastStableBuild();
@@ -391,21 +394,17 @@ public final class ViewEntry
         return null;
     }
 
-    /**
-     * @return <code>true</code> if the build is stable.
-     */
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getStable()
+	 */
     public boolean getStable()
     {
         return stable;
     }
 
-    /**
-     * If the claims plugin is installed, this will get details of the claimed
-     * build failures.
-     * 
-     * @return details of any claims for the broken build, or null if nobody has
-     *         claimed this build.
-     */
+    /* (non-Javadoc)
+	 * @see hudson.model.IViewEntry#getClaim()
+	 */
     public String getClaim()
     {
         String claim = null;
@@ -448,4 +447,12 @@ public final class ViewEntry
         }
         return claim;
     }
+
+	public Result getLastFinishedResult() {
+		return RadiatorUtil.getLastFinishedResult(job);
+	}
+
+	public boolean hasChildren() {
+		return false;
+	}
 }

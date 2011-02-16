@@ -8,13 +8,13 @@ package hudson.model;
 
 import java.util.Comparator;
 
-final class EntryComparator implements Comparator<ViewEntry>
+final class EntryComparator implements Comparator<IViewEntry>
 {
-    public int compare(ViewEntry o1, ViewEntry o2)
+    public int compare(IViewEntry o1, IViewEntry o2)
     {
         // first compare by status
-        Result r1 = RadiatorView.getResult(o1.getJob());
-        Result r2 = RadiatorView.getResult(o2.getJob());
+        Result r1 = o1.getLastFinishedResult(); 
+        Result r2 = o2.getLastFinishedResult();
         if (r1 != null && r2 != null)
         {
             if (r1.isBetterThan(r2))
