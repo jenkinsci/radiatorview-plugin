@@ -63,7 +63,7 @@
 					<a href="${subjob.url}">${subjobShortName}</a>
 					<j:if test="${subjob.getBuilding()}">(building now)</j:if>
 					<j:if test="${subjob.getQueued()}">(build pending)</j:if>
-					;
+					${subjob.getClaim()};
 				</j:forEach>
 			</p>
 		</j:if>
