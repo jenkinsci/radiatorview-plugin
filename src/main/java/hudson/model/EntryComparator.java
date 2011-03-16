@@ -8,6 +8,9 @@ package hudson.model;
 
 import java.util.Comparator;
 
+/**
+ * Compares two {@link IViewEntry} by status and then name. 
+ */
 final class EntryComparator implements Comparator<IViewEntry>
 {
     public int compare(IViewEntry o1, IViewEntry o2)

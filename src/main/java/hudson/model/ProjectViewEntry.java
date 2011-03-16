@@ -12,6 +12,9 @@ import java.util.TreeSet;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 
+/** 
+ * Details of a project to be shown on the radiator. 
+ */
 public class ProjectViewEntry implements IViewEntry {
 	private TreeSet<IViewEntry> jobs = new TreeSet<IViewEntry>(
 			new EntryComparator());

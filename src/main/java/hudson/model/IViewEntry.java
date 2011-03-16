@@ -2,6 +2,9 @@ package hudson.model;
 
 import java.util.Collection;
 
+/**
+ * Interface for an entry on the radiator, which may be either a job or a group of jobs. 
+ */
 public interface IViewEntry {
 
 	/**

@@ -1,5 +1,8 @@
 package hudson.model;
 
+/**
+ * Utilities used by the radiator view. 
+ */
 public class RadiatorUtil {
 
 	public static Result getLastFinishedResult(Job job) {

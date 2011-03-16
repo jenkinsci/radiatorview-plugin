@@ -24,9 +24,6 @@ import org.jfree.util.Log;
 public class JobViewEntry  implements IViewEntry
 {
 
-    /**
-     * 
-     */
     private final RadiatorView radiatorView;
 
     private Job<?, ?> job;
@@ -38,10 +35,6 @@ public class JobViewEntry  implements IViewEntry
     private Boolean broken = false;
 
     private Boolean building = false;
-
-    private Boolean queued = false;
-
-    private Integer queueNumber;
 
     /**
      * If the build is stable.
