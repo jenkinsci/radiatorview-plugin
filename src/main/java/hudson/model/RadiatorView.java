@@ -5,6 +5,7 @@ import hudson.Util;
 import hudson.model.Descriptor.FormException;
 import hudson.util.FormValidation;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -176,7 +177,7 @@ public class RadiatorView extends ListView {
 	 *             if any
 	 */
 	@Override
-	protected void submit(StaplerRequest req) throws ServletException,
+	protected void submit(StaplerRequest req) throws ServletException, IOException, 
 			FormException {
 		super.submit(req);
 		this.showStable = Boolean.parseBoolean(req.getParameter("showStable"));
