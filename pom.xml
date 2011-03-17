@@ -20,9 +20,9 @@
 		don't specify it explicitly.
 	--> 
 	<scm>
-		<connection>scm:svn:http://guest@svn.jenkins-ci.org/trunk/hudson/plugins/radiatorview/</connection>
-		<developerConnection>scm:svn:http://svn.jenkins-ci.org/trunk/hudson/plugins/radiatorview/</developerConnection>
-		<url>http://svn.jenkins-ci.org/trunk/hudson/pluginsradiatorview/</url>
+		<connection>scm:svn:https://guest@svn.jenkins-ci.org/trunk/hudson/plugins/radiatorview/</connection>
+		<developerConnection>scm:svn:https://svn.jenkins-ci.org/trunk/hudson/plugins/radiatorview/</developerConnection>
+		<url>https://svn.jenkins-ci.org/trunk/hudson/pluginsradiatorview/</url>
 	</scm>
 
 	<developers>
