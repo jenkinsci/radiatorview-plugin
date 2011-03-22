@@ -10,7 +10,7 @@
 	<artifactId>radiatorviewplugin</artifactId>
 	<packaging>hpi</packaging>
 	<name>Radiator View Plugin</name>
-	<version>1.11-SNAPSHOT</version>
+	<version>1.11</version>
 	<url>http://wiki.jenkins-ci.org/display/HUDSON/Radiator+View+Plugin</url>
 	<description>Adds a new high visibility view of project status.</description>
 	<!--
@@ -19,9 +19,9 @@
 		don't specify it explicitly.
 	--> 
 	<scm>
-		<connection>scm:svn:https://guest@svn.jenkins-ci.org/trunk/hudson/plugins/radiatorview/</connection>
-		<developerConnection>scm:svn:https://svn.jenkins-ci.org/trunk/hudson/plugins/radiatorview/</developerConnection>
-		<url>https://svn.jenkins-ci.org/trunk/hudson/pluginsradiatorview/</url>
+		<connection>scm:svn:https://guest@svn.jenkins-ci.org/tags/radiatorviewplugin-1.11</connection>
+		<developerConnection>scm:svn:https://svn.jenkins-ci.org/tags/radiatorviewplugin-1.11</developerConnection>
+		<url>https://svn.jenkins-ci.org/tags/radiatorviewplugin-1.11</url>
 	</scm>
 
 	<developers>
