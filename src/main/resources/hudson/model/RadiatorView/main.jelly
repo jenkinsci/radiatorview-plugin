@@ -41,8 +41,10 @@
 			<!-- config option: dark or light backgrounds.  -->
 			<j:set var="dashStyle"
 				value="background-color: white; background-image: url(${rootURL}/static/0360aadc/images/hudson.png); background-repeat: no-repeat; background-position: left bottom;" />
+                        <j:set var="headingStyle" value="color:black" />       
 			<j:if test="${from.getHighVis()}">
 				<j:set var="dashStyle" value="background-color: black;" />
+                                <j:set var="headingStyle" value="color:white" />
 			</j:if>
 			<!--  outer div to hide everything in the normal layout.  -->
 			<div class="dashboard"
@@ -132,20 +134,26 @@
 					</j:forEach>
 				</j:if>
 
-				<!-- Show claimed builds in the right hand column.  -->
-				<j:if test="${!contents.getClaimedBuilds().isEmpty()}">
+				<!-- Create right hand side if we have claimed or building jobs.  -->
+				<j:if test="${!contents.getClaimedBuilds().isEmpty() || !contents.getBuildingJobs().isEmpty() }">
 					<div
 						style="top:0%; right:0%; height:100%; width:20%; padding:0; margin:0; border:0; overflow-y:scroll"
 						id="job">
-						<h1 style="color:white">Claimed Builds:</h1>
+						<h1 style="${headingStyle}">Claimed Builds:</h1>
 						<j:set var="jobFont" value="medium" />
 						<j:forEach var="job" items="${contents.getClaimedBuilds()}">
 							<j:set var="jobStyle"
 								value="float:bottom; position:static; width: 95%; margin: 2.5%; " />
 							<st:include page="claimedjob.jelly" />
 						</j:forEach>
+                                                <h1 style="${headingStyle}">Building Builds:</h1>
+						<j:forEach var="job" items="${contents.getBuildingJobs()}">
+							<j:set var="jobStyle"
+								value="float:bottom; position:static; width: 95%; margin: 2.5%; " />
+							<st:include page="claimedjob.jelly" />
+						</j:forEach>                                                
 					</div>
-				</j:if>
+				</j:if>                         
 			</div>
 		</j:otherwise>
 	</j:choose>

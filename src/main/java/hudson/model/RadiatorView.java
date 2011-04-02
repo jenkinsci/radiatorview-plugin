@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
+import java.util.regex.Pattern; 
 import java.util.regex.PatternSyntaxException;
 
 import javax.servlet.ServletException;
@@ -109,7 +109,10 @@ public class RadiatorView extends ListView
                 if (!project.isDisabled())
                 {
                     ViewEntry entry = new ViewEntry(this, project);
-                    if (getResult(project).isBetterOrEqualTo(Result.SUCCESS))
+                    if (entry.getBuilding()) {
+                        contents.addBuildingBuild(entry);
+                    }
+                    else if (getResult(project).isBetterOrEqualTo(Result.SUCCESS))
                     {
                         contents.addPassingBuild(entry);
                     }

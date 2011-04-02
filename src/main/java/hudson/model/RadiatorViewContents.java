@@ -24,6 +24,7 @@ public class RadiatorViewContents
     TreeSet<ViewEntry> passing = new TreeSet<ViewEntry>(new EntryComparator());
     TreeSet<ViewEntry> failing = new TreeSet<ViewEntry>(new EntryComparator());
     TreeSet<ViewEntry> claimed = new TreeSet<ViewEntry>(new EntryComparator());
+    TreeSet<ViewEntry> building = new TreeSet<ViewEntry>(new EntryComparator());
 
     /** Some details about the build nodes */
     List<String> builders;
@@ -42,6 +43,11 @@ public class RadiatorViewContents
     {
         claimed.add(build);
     }
+    
+    public void addBuildingBuild(ViewEntry build)
+    {
+        building.add(build);
+    }    
 
     public TreeSet<ViewEntry> getClaimedBuilds()
     {
@@ -57,5 +63,9 @@ public class RadiatorViewContents
     {
         return failing;
     }
+    public TreeSet<ViewEntry> getBuildingJobs()
+    {
+        return building;
+    }    
 
 }
