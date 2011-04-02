@@ -139,19 +139,23 @@
 					<div
 						style="top:0%; right:0%; height:100%; width:20%; padding:0; margin:0; border:0; overflow-y:scroll"
 						id="job">
-						<h1 style="${headingStyle}">Claimed Builds:</h1>
-						<j:set var="jobFont" value="medium" />
-						<j:forEach var="job" items="${contents.getClaimedBuilds()}">
-							<j:set var="jobStyle"
-								value="float:bottom; position:static; width: 95%; margin: 2.5%; " />
-							<st:include page="claimedjob.jelly" />
-						</j:forEach>
-                                                <h1 style="${headingStyle}">Building Builds:</h1>
-						<j:forEach var="job" items="${contents.getBuildingJobs()}">
-							<j:set var="jobStyle"
-								value="float:bottom; position:static; width: 95%; margin: 2.5%; " />
-							<st:include page="claimedjob.jelly" />
-						</j:forEach>                                                
+                                                <j:if test="${!contents.getClaimedBuilds().isEmpty()}">                                                    
+                                                    <h1 style="${headingStyle}">Claimed Builds:</h1>
+                                                    <j:set var="jobFont" value="medium" />
+                                                    <j:forEach var="job" items="${contents.getClaimedBuilds()}">
+                                                            <j:set var="jobStyle"
+                                                                    value="float:bottom; position:static; width: 95%; margin: 2.5%; " />
+                                                            <st:include page="claimedjob.jelly" />
+                                                    </j:forEach>
+                                                </j:if>                         
+                                                <j:if test="${!contents.getBuildingJobs().isEmpty() }">
+                                                    <h1 style="${headingStyle}">Building Builds:</h1>
+                                                    <j:forEach var="job" items="${contents.getBuildingJobs()}">
+                                                            <j:set var="jobStyle"
+                                                                    value="float:bottom; position:static; width: 95%; margin: 2.5%; " />
+                                                            <st:include page="claimedjob.jelly" />
+                                                    </j:forEach>                                                
+                                                </j:if>                                                                         
 					</div>
 				</j:if>                         
 			</div>

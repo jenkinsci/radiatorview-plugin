@@ -16,7 +16,7 @@
 				style="color: ${job.color}; font-size: ${jobFont}; font-weight:bold;"
 				href="${job.url}">${job.name}</a>
 		</p>
-		<j:if test="${job.getClaim() != null}">
+		<j:if test="${!job.getStable() &amp;&amp; job.getClaim() != null}">
 			<p>${job.getClaim()}</p>
 		</j:if>
 	</div>
