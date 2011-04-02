@@ -343,36 +343,41 @@ public final class ViewEntry {
      *         claimed this build.
      */
     public String getClaim() {
-        
+
         // check we have claim plugin
         if (Hudson.getInstance().getPlugin("claim") == null) {
             return null;
         }
 
-        
+
 
         Run lastBuild = job.getLastBuild();
         if (lastBuild != null && lastBuild.isBuilding()) {
             // claims can only be made against builds once they've finished,
             // so check the previous build if currently building.
             lastBuild = lastBuild.getPreviousBuild();
-        }        
+        }
         if (lastBuild == null) {
             return null;
         }
 
         // find the claim 
-        String result ="";
+        String result = "";
         if (lastBuild instanceof hudson.matrix.MatrixBuild) {
             MatrixBuild matrixBuild = (hudson.matrix.MatrixBuild) lastBuild;
-            
+
             for (MatrixRun combination : matrixBuild.getRuns()) {
-                ClaimBuildAction claimAction = getClaimForRun(combination);
-                if (claimAction != null && claimAction.isClaimed()) {
-                    result += combination.getParent().getCombination().toString() + ": "+ claimAction.getReason() + " (" + claimAction.getClaimedByName() + ").<br />";
-                } else {
-                    result += combination.getParent().getCombination().toString() + ": Not Claimed.<br />";
-                }                
+                if (combination.getResult().isWorseThan(Result.SUCCESS)) {
+                    ClaimBuildAction claimAction = getClaimForRun(combination);
+                    if (claimAction != null && claimAction.isClaimed()) {
+                        result += combination.getParent().getCombination().toString() + ": " + claimAction.getReason() + " (" + claimAction.getClaimedByName() + ").<br />";
+                    } else {
+
+                        result += combination.getParent().getCombination().toString() + ": Not Claimed.<br />";
+                    }
+                } /*else {
+                    result += combination.getParent().getCombination().toString() + ": SUCCESS";
+                }*/
             }
         } else {
             ClaimBuildAction claimAction = getClaimForRun(lastBuild);
@@ -390,7 +395,7 @@ public final class ViewEntry {
         List<ClaimBuildAction> claimActionList = run.getActions(ClaimBuildAction.class);
         if (claimActionList.size() == 1) {
             claimAction = claimActionList.get(0);
-        } else if (claimActionList.size() > 1) {            
+        } else if (claimActionList.size() > 1) {
             Log.warn("Multiple ClaimBuildActions found for job " + job.toString());
         }
         return claimAction;
