@@ -109,7 +109,7 @@ public class RadiatorView extends ListView
                 if (!project.isDisabled())
                 {
                     ViewEntry entry = new ViewEntry(this, project);
-                    if (entry.getBuilding()) {
+                    if (entry.getBuilding() || entry.getQueued()) {
                         contents.addBuildingBuild(entry);
                     }
                     else if (getResult(project).isBetterOrEqualTo(Result.SUCCESS))

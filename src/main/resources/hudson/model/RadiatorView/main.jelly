@@ -153,7 +153,7 @@
                                                     <j:forEach var="job" items="${contents.getBuildingJobs()}">
                                                             <j:set var="jobStyle"
                                                                     value="float:bottom; position:static; width: 95%; margin: 2.5%; " />
-                                                            <st:include page="claimedjob.jelly" />
+                                                            <st:include page="buildingjob.jelly" />
                                                     </j:forEach>                                                
                                                 </j:if>                                                                         
 					</div>
