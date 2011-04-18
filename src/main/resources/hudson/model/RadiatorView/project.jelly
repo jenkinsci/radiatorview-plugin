@@ -8,12 +8,12 @@
 	<j:set var="clazz" value="normal" />
 
 	<div style="${jobStyle}  background-color:${job.backgroundColor};"
-		class="${clazz}" tooltip="${job.name}" id="job">
+		class="${clazz}" tooltip="${job.title}" id="job">
 
 		<!--  Job Name Title -->
 		<p>
 			<a style="color: ${job.color}; font-size: ${jobFont}; font-weight:bold;"
-				href="${job.url}">${job.name}</a>
+				href="${job.url}" title="${job.title}">${job.name}</a>
 		</p>
 		<!-- Details of any test failures -->
 		<!--

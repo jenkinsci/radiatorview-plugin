@@ -3,6 +3,7 @@
  */
 package hudson.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -12,8 +13,8 @@ import java.util.TreeSet;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 
-/** 
- * Details of a project to be shown on the radiator. 
+/**
+ * Details of a project to be shown on the radiator.
  */
 public class ProjectViewEntry implements IViewEntry {
 	private TreeSet<IViewEntry> jobs = new TreeSet<IViewEntry>(
@@ -118,8 +119,8 @@ public class ProjectViewEntry implements IViewEntry {
 	public String getClaim() {
 		String claim = "";
 		for (IViewEntry job : jobs) {
-			if (!StringUtils.isEmpty(job.getClaim()) && !
-					"Not Claimed.".equals(job.getClaim()))
+			if (!StringUtils.isEmpty(job.getClaim())
+					&& !"Not Claimed.".equals(job.getClaim()))
 				claim += (job.getName() + ": " + job.getClaim() + ";");
 		}
 		return claim;
@@ -129,23 +130,21 @@ public class ProjectViewEntry implements IViewEntry {
 		return "white";
 	}
 
+	public Collection<String> getCulprits() {
+		Set<String> culprits = new HashSet<String>();
+		for (IViewEntry job : getFailingJobs()) {
+			culprits.addAll(job.getCulprits());
+		}
+		return culprits;
+	}
 
-    public Collection<String> getCulprits()
-    {
-    	Set<String> culprits = new HashSet<String>();
-    	for (IViewEntry job : getFailingJobs()) {
-    		culprits.addAll(job.getCulprits());	
-    	}
-    	return culprits;
-    }
 	public String getCulprit() {
-        Collection<String> culprits = getCulprits();
-        String culprit = null;
-        if (!culprits.isEmpty())
-        {
-            culprit = StringUtils.join(culprits, ", ");
-        }
-        return culprit;
+		Collection<String> culprits = getCulprits();
+		String culprit = null;
+		if (!culprits.isEmpty()) {
+			culprit = StringUtils.join(culprits, ", ");
+		}
+		return culprit;
 	}
 
 	public String getDiff() {
@@ -218,5 +217,13 @@ public class ProjectViewEntry implements IViewEntry {
 
 	public boolean hasChildren() {
 		return !jobs.isEmpty();
+	}
+
+	public String getTitle() {
+		Collection<String> jobNames = new ArrayList<String>(jobs.size());
+		for (IViewEntry job : jobs) {
+			jobNames.add(job.getName());
+		}
+		return getName() + ": " + StringUtils.join(jobNames, ", ");
 	}
 }
