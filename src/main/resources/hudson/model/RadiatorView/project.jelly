@@ -2,32 +2,82 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
 	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
 	xmlns:i="jelly:fmt">
-	<!--  Display details about a single project in the radiator -->
+	<!-- Display details about a single project in the radiator -->
 
-	<!-- show in a different style if the job is building or queued.  -->
+	<!-- show in a different style if the job is building or queued. -->
 	<j:set var="clazz" value="normal" />
 
-	<div style="${jobStyle}  background-color:${job.backgroundColor};"
+	<j:set var="bg"
+		value="
+background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.19, rgb(143,63,63)),
+    color-stop(0.6, rgb(235,26,36))
+);
+background-image: -moz-linear-gradient(
+    center bottom,
+    rgb(143,63,63) 19%,
+    rgb(235,26,36) 60%
+);" />
+
+	<j:if test="${job.getBackgroundColor().equals(&quot;green&quot;)}">
+		<j:set var="bg"
+			value="background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.05, rgb(64,122,75)),
+    color-stop(0.53, rgb(0,138,44))
+);
+background-image: -moz-linear-gradient(
+    center bottom,
+    rgb(64,122,75) 5%,
+    rgb(0,138,44) 53%
+);" />
+	</j:if>
+
+
+
+	<j:if test="${job.getBackgroundColor().equals(&quot;orange&quot;)}">
+		<j:set var="bg"
+			value="background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.25, rgb(196,172,53)),
+    color-stop(0.82, rgb(240,172,0))
+);
+background-image: -moz-linear-gradient(
+    center bottom,
+    rgb(196,172,53) 25%,
+    rgb(240,172,0) 82%
+);
+" />
+
+	</j:if>
+
+	<div
+		style="${jobStyle}  ${bg} -webkit-box-shadow:inset 0 0 10px #000000;
+   box-shadow:inset 0 0 10px #000000;"
 		class="${clazz}" tooltip="${job.title}" id="job">
 
-		<!--  Job Name Title -->
+		<!-- Job Name Title -->
 		<p>
-			<a style="color: ${job.color}; font-size: ${jobFont}; font-weight:bold;"
+			<a
+				style="color: ${job.color}; font-size: ${jobFont}; font-weight:bold; text-shadow: 1px 1px 1px #000;"
 				href="${job.url}" title="${job.title}">${job.name}</a>
 		</p>
 		<!-- Details of any test failures -->
-		<!--
-			Removed - not accurately reporting aggregator modules that do
-			incremental builds. <p> <j:if test="${job.broken == false &amp;&amp;
-			job.testCount > 0}"> <j:if test="${job.failCount == 1}"> <font
-			style="text-align=center; color: #FF0000;">1/${job.testCount} test
-			failure</font> </j:if> <j:if test="${job.failCount == 0}"> <font
-			style="text-align=center; color: black;">${job.testCount} successful
-			tests</font> </j:if> <j:if test="${ job.failCount > 1}"> <font
-			style="text-align=center; color:
-			#FF0000;">${job.failCount}/${job.testCount} test failures </font>
-			</j:if> </j:if> </p>
-		-->
+		<!-- Removed - not accurately reporting aggregator modules that do incremental 
+			builds. <p> <j:if test="${job.broken == false &amp;&amp; job.testCount > 
+			0}"> <j:if test="${job.failCount == 1}"> <font style="text-align=center; 
+			color: #FF0000;">1/${job.testCount} test failure</font> </j:if> <j:if test="${job.failCount 
+			== 0}"> <font style="text-align=center; color: black;">${job.testCount} successful 
+			tests</font> </j:if> <j:if test="${ job.failCount > 1}"> <font style="text-align=center; 
+			color: #FF0000;">${job.failCount}/${job.testCount} test failures </font> 
+			</j:if> </j:if> </p> -->
 		<j:invoke var="passJobs" on="${job}" method="getPassingJobs" />
 		<j:invoke var="failJobs" on="${job}" method="getFailingJobs" />
 		<j:invoke var="claimedJobs" on="${job}" method="getClaimedBuilds" />
@@ -37,34 +87,41 @@
 				<p>Possible Culprits: ${job.culprit}</p>
 			</j:if>
 			<p>
-				Failures:
-				<j:forEach var="subjob" items="${failJobs}">
-					<j:invokeStatic className="org.apache.commons.lang.StringUtils"
-						method="removeStart" var="subjobShortName">
-						<j:arg type="java.lang.String" value="${subjob.name}" />
-						<j:arg type="java.lang.String" value="${job.name}_" />
-					</j:invokeStatic>
-					<a href="${subjob.url}">${subjobShortName}</a>
-					<j:if test="${subjob.getBuilding()}">(building now)</j:if>
-					<j:if test="${subjob.getQueued()}">(build pending)</j:if>
-					;
-				</j:forEach>
+				Unclaimed Failures:
+				<ul>
+					<j:forEach var="subjob" items="${failJobs}">
+						<li>
+							<j:invokeStatic className="org.apache.commons.lang.StringUtils"
+								method="removeStart" var="subjobShortName">
+								<j:arg type="java.lang.String" value="${subjob.name}" />
+								<j:arg type="java.lang.String" value="${job.name}_" />
+							</j:invokeStatic>
+							<a href="${subjob.url}">${subjobShortName}</a>
+							<j:if test="${subjob.getBuilding()}">(building now)</j:if>
+							<j:if test="${subjob.getQueued()}">(build pending)</j:if>
+						</li>
+					</j:forEach>
+				</ul>
 			</p>
 		</j:if>
 		<j:if test="${!claimedJobs.isEmpty()}">
 			<p>
 				Claimed Failures:
-				<j:forEach var="subjob" items="${claimedJobs}">
-					<j:invokeStatic className="org.apache.commons.lang.StringUtils"
-						method="removeStart" var="subjobShortName">
-						<j:arg type="java.lang.String" value="${subjob.name}" />
-						<j:arg type="java.lang.String" value="${job.name}_" />
-					</j:invokeStatic>
-					<a href="${subjob.url}">${subjobShortName}</a>
-					<j:if test="${subjob.getBuilding()}">(building now)</j:if>
-					<j:if test="${subjob.getQueued()}">(build pending)</j:if>
-					${subjob.getClaim()};
-				</j:forEach>
+				<ul>
+					<j:forEach var="subjob" items="${claimedJobs}">
+						<j:invokeStatic className="org.apache.commons.lang.StringUtils"
+							method="removeStart" var="subjobShortName">
+							<j:arg type="java.lang.String" value="${subjob.name}" />
+							<j:arg type="java.lang.String" value="${job.name}_" />
+						</j:invokeStatic>
+						<li>
+							<a href="${subjob.url}">${subjobShortName}</a>
+							<j:if test="${subjob.getBuilding()}">(building now)</j:if>
+							<j:if test="${subjob.getQueued()}">(build pending)</j:if>
+							${subjob.getClaim()}
+						</li>
+					</j:forEach>
+				</ul>
 			</p>
 		</j:if>
 	</div>

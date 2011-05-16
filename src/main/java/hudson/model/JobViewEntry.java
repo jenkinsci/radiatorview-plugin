@@ -431,7 +431,8 @@ public class JobViewEntry  implements IViewEntry
                     {
                         String by = claimAction.getClaimedByName();
                         String reason = claimAction.getReason();
-                        claim = "Claimed by " + by;
+                        claim = //"Claimed by " + 
+                        		by;
                         if (reason != null)
                         {
                             claim += ": " + reason;
