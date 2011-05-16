@@ -9,12 +9,12 @@
 		<j:set var="clazz" value="building" />
 	</j:if>
 	<div style="${jobStyle}  background-color:${job.backgroundColor};"
-		class="${clazz}" tooltip="${job.name}" id="job">
+		class="job ${job.getStatus()} ${clazz}" tooltip="${job.name}" id="job">
 
 		<!--  Job Name Title -->
 		<p>
 			<a style="color: ${job.color}; font-size: ${jobFont}; font-weight:bold;"
-				href="${job.url}">${job.name}</a>
+				href="${job.lastBuildUrl}">${job.name}</a>
 		</p>
 		<!--  Build health icon -->
 		<!--  
@@ -22,6 +22,10 @@
 		<img src="${rootURL}/images/${iconSize}/${job.job.buildHealth.iconUrl}"
 			alt="${job.job.buildHealth.description}" style="float:right" />
 			-->
+		<!-- Job Claim Information -->
+		<j:if test="${job.isClaimed()}">
+			<p>${job.getClaim()}</p>
+		</j:if>
 		<!-- Details of any test failures -->
 		<p>
 			<j:if test="${job.broken == false}">

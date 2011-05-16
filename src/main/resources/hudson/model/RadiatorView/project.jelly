@@ -7,79 +7,37 @@
 	<!-- show in a different style if the job is building or queued. -->
 	<j:set var="clazz" value="normal" />
 
-	<j:set var="bg"
-		value="
-background-image: -webkit-gradient(
-    linear,
-    left bottom,
-    left top,
-    color-stop(0.19, rgb(143,63,63)),
-    color-stop(0.6, rgb(235,26,36))
-);
-background-image: -moz-linear-gradient(
-    center bottom,
-    rgb(143,63,63) 19%,
-    rgb(235,26,36) 60%
-);" />
-
-	<j:if test="${job.getBackgroundColor().equals(&quot;green&quot;)}">
-		<j:set var="bg"
-			value="background-image: -webkit-gradient(
-    linear,
-    left bottom,
-    left top,
-    color-stop(0.05, rgb(64,122,75)),
-    color-stop(0.53, rgb(0,138,44))
-);
-background-image: -moz-linear-gradient(
-    center bottom,
-    rgb(64,122,75) 5%,
-    rgb(0,138,44) 53%
-);" />
-	</j:if>
-
-
-
-	<j:if test="${job.getBackgroundColor().equals(&quot;orange&quot;)}">
-		<j:set var="bg"
-			value="background-image: -webkit-gradient(
-    linear,
-    left bottom,
-    left top,
-    color-stop(0.25, rgb(196,172,53)),
-    color-stop(0.82, rgb(240,172,0))
-);
-background-image: -moz-linear-gradient(
-    center bottom,
-    rgb(196,172,53) 25%,
-    rgb(240,172,0) 82%
-);
-" />
-
-	</j:if>
-
 	<div
-		style="${jobStyle}  ${bg} -webkit-box-shadow:inset 0 0 10px #000000;
-   box-shadow:inset 0 0 10px #000000;"
-		class="${clazz}" tooltip="${job.title}" id="job">
+		class="job ${job.status} ${clazz}" style="${jobStyle}"
+		 id="job">
 
 		<!-- Job Name Title -->
-		<p>
-			<a
-				style="color: ${job.color}; font-size: ${jobFont}; font-weight:bold; text-shadow: 1px 1px 1px #000;"
-				href="${job.url}" title="${job.title}">${job.name}</a>
-		</p>
-		<!-- Details of any test failures -->
-		<!-- Removed - not accurately reporting aggregator modules that do incremental 
-			builds. <p> <j:if test="${job.broken == false &amp;&amp; job.testCount > 
-			0}"> <j:if test="${job.failCount == 1}"> <font style="text-align=center; 
-			color: #FF0000;">1/${job.testCount} test failure</font> </j:if> <j:if test="${job.failCount 
-			== 0}"> <font style="text-align=center; color: black;">${job.testCount} successful 
-			tests</font> </j:if> <j:if test="${ job.failCount > 1}"> <font style="text-align=center; 
-			color: #FF0000;">${job.failCount}/${job.testCount} test failures </font> 
-			</j:if> </j:if> </p> -->
+		<ul class="menu" style="margin:0; padding:0;">
+			<li class="menu">
+				<a class="jobtitle"
+					style="color: ${job.color}; font-size: ${jobFont};"
+					>
+					${job.name}
+				</a>
+				<ul>
+					<j:forEach var="subjob" items="${job.getJobs()}">
+						<j:invokeStatic className="org.apache.commons.lang.StringUtils"
+							method="removeStart" var="subjobShortName">
+							<j:arg type="java.lang.String" value="${subjob.name}" />
+							<j:arg type="java.lang.String" value="${job.name}_" />
+						</j:invokeStatic>
+						<li>
+							<a href="${subjob.url}">${subjobShortName}</a> - ${subjob.status}
+							<j:if test="${subjob.getBuilding()}">(building now)</j:if>
+							<j:if test="${subjob.getQueued()}">(build pending)</j:if>
+						</li>
+					</j:forEach>
+				</ul>
+			</li>
+		</ul>
+
 		<j:invoke var="passJobs" on="${job}" method="getPassingJobs" />
-		<j:invoke var="failJobs" on="${job}" method="getFailingJobs" />
+		<j:invoke var="failJobs" on="${job}" method="getUnclaimedJobs" />
 		<j:invoke var="claimedJobs" on="${job}" method="getClaimedBuilds" />
 		<j:if test="${!failJobs.isEmpty()}">
 			<j:if
@@ -96,7 +54,7 @@ background-image: -moz-linear-gradient(
 								<j:arg type="java.lang.String" value="${subjob.name}" />
 								<j:arg type="java.lang.String" value="${job.name}_" />
 							</j:invokeStatic>
-							<a href="${subjob.url}">${subjobShortName}</a>
+							<a href="${subjob.lastBuildUrl}">${subjobShortName}</a>
 							<j:if test="${subjob.getBuilding()}">(building now)</j:if>
 							<j:if test="${subjob.getQueued()}">(build pending)</j:if>
 						</li>
@@ -115,7 +73,7 @@ background-image: -moz-linear-gradient(
 							<j:arg type="java.lang.String" value="${job.name}_" />
 						</j:invokeStatic>
 						<li>
-							<a href="${subjob.url}">${subjobShortName}</a>
+							<a href="${subjob.lastBuildUrl}">${subjobShortName}</a>
 							<j:if test="${subjob.getBuilding()}">(building now)</j:if>
 							<j:if test="${subjob.getQueued()}">(build pending)</j:if>
 							${subjob.getClaim()}

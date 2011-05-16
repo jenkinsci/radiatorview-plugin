@@ -35,8 +35,7 @@ public class ProjectViewEntry implements IViewEntry {
 				new EntryComparator());
 		for (IViewEntry job : jobs) {
 			if (job.getBroken() || job.getFailCount() > 0)
-				if (!StringUtils.isEmpty(job.getClaim())
-						&& !"Not Claimed.".equals(job.getClaim()))
+				if (job.isClaimed())
 					failing.add(job);
 		}
 		return failing;
@@ -57,8 +56,6 @@ public class ProjectViewEntry implements IViewEntry {
 				new EntryComparator());
 		for (IViewEntry job : jobs) {
 			if (job.getBroken() || job.getFailCount() > 0)
-				if (StringUtils.isEmpty(job.getClaim())
-						|| "Not Claimed.".equals(job.getClaim()))
 					failing.add(job);
 		}
 		return failing;
@@ -69,8 +66,7 @@ public class ProjectViewEntry implements IViewEntry {
 				new EntryComparator());
 		for (IViewEntry job : jobs) {
 			if ((job.getBroken() || job.getFailCount() > 0)) {
-				if (StringUtils.isEmpty(job.getClaim())
-						|| "Not Claimed.".equals(job.getClaim()))
+				if (!job.isClaimed())
 					failing.add(job);
 			}
 		}
@@ -88,6 +84,17 @@ public class ProjectViewEntry implements IViewEntry {
 	public void addBuild(IViewEntry entry) {
 		Validate.notNull(entry);
 		jobs.add(entry);
+	}
+	
+	public String getStatus()
+	{
+		if (getBroken() || getFailCount() > 0)
+			if (getUnclaimedJobs().size() == 0)
+				return "claimed";
+			else
+				return "failing";
+		else
+			return "successful";
 	}
 
 	public String getBackgroundColor() {
@@ -107,6 +114,13 @@ public class ProjectViewEntry implements IViewEntry {
 		}
 		return broken;
 	}
+	public boolean isClaimed() {
+		boolean claimed = false;
+		for (IViewEntry job : jobs) {
+			claimed|= job.isClaimed();
+		}
+		return claimed;
+	}
 
 	public Boolean getBuilding() {
 		boolean building = false;
@@ -119,8 +133,7 @@ public class ProjectViewEntry implements IViewEntry {
 	public String getClaim() {
 		String claim = "";
 		for (IViewEntry job : jobs) {
-			if (!StringUtils.isEmpty(job.getClaim())
-					&& !"Not Claimed.".equals(job.getClaim()))
+			if (job.isClaimed())
 				claim += (job.getName() + ": " + job.getClaim() + ";");
 		}
 		return claim;

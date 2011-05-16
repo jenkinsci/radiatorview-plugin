@@ -106,4 +106,6 @@ public interface IViewEntry {
 	
 	public abstract boolean hasChildren();
 
+	public abstract boolean isClaimed();
+
 }
