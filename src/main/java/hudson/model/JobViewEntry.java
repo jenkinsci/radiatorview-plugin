@@ -328,11 +328,11 @@ public class JobViewEntry implements IViewEntry {
 	private void findStatus() {
 		Result result = RadiatorUtil.getLastFinishedResult(job);
 
-		this.stable = false;
-		if (result.ordinal == Result.NOT_BUILT.ordinal) {
+		if (result.ordinal == Result.NOT_BUILT.ordinal || result.ordinal == Result.ABORTED.ordinal) {
 			this.backgroundColor = getColors().getOtherBG();
 			this.color = getColors().getOtherFG();
 			this.broken = true;
+			this.stable = false;
 		} else if (result.ordinal == Result.SUCCESS.ordinal) {
 			this.backgroundColor = getColors().getOkBG();
 			this.color = getColors().getOkFG();
@@ -342,10 +342,12 @@ public class JobViewEntry implements IViewEntry {
 			this.backgroundColor = getColors().getFailedBG();
 			this.color = getColors().getFailedFG();
 			this.broken = false;
+			this.stable = false;
 		} else {
 			this.backgroundColor = getColors().getBrokenBG();
 			this.color = getColors().getBrokenFG();
 			this.broken = true;
+			this.stable = false;
 		}
 
 		switch (this.job.getIconColor()) {
