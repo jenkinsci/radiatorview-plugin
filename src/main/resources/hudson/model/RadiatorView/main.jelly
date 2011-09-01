@@ -173,7 +173,16 @@
 		);
 		}
 
+		.unstable {
+		// placeholder for unstable builds
+		}
 
+		.aborted {
+		// placeholder for aborted builds
+		}
+		.notbuild {
+		// placeholder for unbuilt jobs
+		}
 	</style>
 	<j:choose>
 		<j:when test="${empty(items)}">

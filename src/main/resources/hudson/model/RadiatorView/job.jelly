@@ -9,7 +9,7 @@
 		<j:set var="clazz" value="building" />
 	</j:if>
 	<div style="${jobStyle}  background-color:${job.backgroundColor};"
-		class="job ${clazz}" tooltip="${job.name}" id="job">
+		class="job ${job.getStatus()} ${clazz}" tooltip="${job.name}" id="job">
 
 		<!--  Job Name Title -->
 		<p>
