@@ -240,4 +240,29 @@
 			</div>
 		</j:otherwise>
 	</j:choose>
+	<script type="text/javascript">
+		$$('.building').each(function(e) {
+		var fadeIn = new
+		YAHOO.util.Anim(e, {
+		opacity: {from: 0.5, to: 0.9},
+		'-moz-opacity':
+		{from: 0.5, to: 0.9},
+		'-webkit-opacity': {from: 0.5, to: 0.9}
+		});
+		var
+		fadeOut = new YAHOO.util.Anim(e, {
+		opacity: {from: 0.9, to: 0.5},
+		'-moz-opacity': {from: 0.9, to: 0.5},
+		'-webkit-opacity': {from: 0.9,
+		to: 0.5}
+		});
+		fadeIn.onComplete.subscribe(function() {
+		fadeOut.animate();
+		});
+		fadeOut.onComplete.subscribe(function() {
+		fadeIn.animate();
+		});
+		fadeIn.animate();
+		});
+  </script>
 </j:jelly>

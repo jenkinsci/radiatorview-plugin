@@ -342,17 +342,7 @@ public class JobViewEntry implements IViewEntry {
 			this.color = getColors().getBrokenFG();
 		}
 
-		switch (this.job.getIconColor()) {
-		case BLUE_ANIME:
-		case YELLOW_ANIME:
-		case RED_ANIME:
-		case GREY_ANIME:
-		case DISABLED_ANIME:
-			this.building = true;
-			break;
-		default:
-			this.building = false;
-		}
+		building = job.getIconColor().isAnimated();
 	}
 
 	private ViewEntryColors getColors() {
