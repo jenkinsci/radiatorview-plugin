@@ -28,7 +28,7 @@
 		</j:if>
 		<!-- Details of any test failures -->
 		<p>
-			<j:if test="${job.broken == false}">
+			<j:if test="${job.broken == false || job.unstable}">
 				<j:if test="${job.failCount == 1}">
 					<font
 						style="text-align=center; color: #FF0000; font-size: ${failFont}; font-weight:bold;">1/${job.testCount} test failure</font>

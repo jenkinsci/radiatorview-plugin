@@ -450,7 +450,7 @@ public class JobViewEntry implements IViewEntry {
 		return false;
 	}
 	
-	private boolean isUnstable() {
+	public boolean isUnstable() {
 		return Result.UNSTABLE == result;
 	}
 
