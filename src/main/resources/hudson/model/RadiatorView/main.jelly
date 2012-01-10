@@ -190,7 +190,7 @@
 			<!-- outer div to hide everything in the normal layout. -->
 			<div class="dashboard"
 				style="${dashStyle} overflow: hidden; left:
-				0px; top: 0px; position: absolute; height: 100%; width: 100%; ">
+				0px; top: 0px; position: absolute; height: 100%; width: 100%; z-index: 65535">
 
 				<div class="config">
 					<ul class="config" style="margin:0; padding:0;">
