@@ -412,7 +412,7 @@ public class JobViewEntry implements IViewEntry {
 		if (Hudson.getInstance().getPlugin("claim") != null) {
 			claim = NOT_CLAIMED;
 			Run lastBuild = job.getLastBuild();
-			if (lastBuild != null && lastBuild.isBuilding()) {
+			while (lastBuild != null && lastBuild.isBuilding()) {
 				// claims can only be made against builds once they've finished,
 				// so check the previous build if currently building.
 				lastBuild = lastBuild.getPreviousBuild();
