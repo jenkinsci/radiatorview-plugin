@@ -18,12 +18,12 @@ import org.jfree.util.Log;
 /**
  * Represents a job to be shown in a view. Based heavily on the XFPanelEntry in
  * XFPanel plugin.
- * 
+ *
  * @author jrenaut
  */
 public class JobViewEntry implements IViewEntry {
 
-	private static final String NOT_CLAIMED = "Not Claimed";
+	private static final String NOT_CLAIMED = "Not Claimed.";
 
 	private final RadiatorView radiatorView;
 
@@ -39,7 +39,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/**
 	 * C'tor
-	 * 
+	 *
 	 * @param job
 	 *            the job to be represented
 	 * @param radiatorView
@@ -60,7 +60,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getName()
 	 */
 	public String getName() {
@@ -69,7 +69,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getQueued()
 	 */
 	public Boolean getQueued() {
@@ -85,7 +85,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getBackgroundColor()
 	 */
 	public String getBackgroundColor() {
@@ -107,10 +107,10 @@ public class JobViewEntry implements IViewEntry {
 		else
 			return "successful";
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getColor()
 	 */
 	public String getColor() {
@@ -119,7 +119,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getBroken()
 	 */
 	public Boolean getBroken() {
@@ -128,7 +128,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getBuilding()
 	 */
 	public Boolean getBuilding() {
@@ -137,7 +137,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getUrl()
 	 */
 	public String getUrl() {
@@ -172,7 +172,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getTestCount()
 	 */
 	public int getTestCount() {
@@ -187,7 +187,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getFailCount()
 	 */
 	public int getFailCount() {
@@ -202,7 +202,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getSuccessCount()
 	 */
 	public int getSuccessCount() {
@@ -211,7 +211,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getDiff()
 	 */
 	public String getDiff() {
@@ -279,7 +279,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getCulprit()
 	 */
 	public String getCulprit() {
@@ -293,7 +293,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getDiffColor()
 	 */
 	public String getDiffColor() {
@@ -310,7 +310,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getSuccessPercentage()
 	 */
 	public String getSuccessPercentage() {
@@ -327,7 +327,7 @@ public class JobViewEntry implements IViewEntry {
 	 */
 	private void findStatus() {
 		result = RadiatorUtil.getLastFinishedResult(job);
-		
+
 		if (result.ordinal == Result.NOT_BUILT.ordinal || result.ordinal == Result.ABORTED.ordinal) {
 			this.backgroundColor = getColors().getOtherBG();
 			this.color = getColors().getOtherFG();
@@ -351,7 +351,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getLastCompletedBuild()
 	 */
 	public String getLastCompletedBuild() {
@@ -365,7 +365,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getLastStableBuild()
 	 */
 	public String getLastStableBuild() {
@@ -379,7 +379,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getStable()
 	 */
 	public boolean getStable() {
@@ -388,7 +388,7 @@ public class JobViewEntry implements IViewEntry {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see hudson.model.IViewEntry#getClaim()
 	 */
 	public String getClaim() {
@@ -422,14 +422,13 @@ public class JobViewEntry implements IViewEntry {
 							+ job.toString());
 				}
 			}
-			claim += ".";
 		}
 		return claim;
 	}
 
 	public boolean isClaimed() {
 		return !StringUtils.isEmpty(getClaim())
-				&& !"Not Claimed.".equals(getClaim());
+				&& !NOT_CLAIMED.equals(getClaim());
 	}
 
 	public Result getLastFinishedResult() {
@@ -439,7 +438,7 @@ public class JobViewEntry implements IViewEntry {
 	public boolean hasChildren() {
 		return false;
 	}
-	
+
 	public boolean isUnstable() {
 		return Result.UNSTABLE == result;
 	}
@@ -447,7 +446,7 @@ public class JobViewEntry implements IViewEntry {
 	private boolean isAborted() {
 		return Result.ABORTED == result;
 	}
-	
+
 	private boolean isNotBuild() {
 		return  result == null || Result.NOT_BUILT == result;
 	}
