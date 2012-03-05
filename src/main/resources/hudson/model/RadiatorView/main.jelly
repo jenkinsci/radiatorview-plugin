@@ -56,12 +56,19 @@
 		z-index:999;
 		}
 
-		.building
-		{
-		opacity:
-		0.6; -moz-opacity:0.6; -webkit-opacity:0.6;
-		filter:alpha(opacity=60);
-		}
+		.building {
+            -webkit-animation: buildAnimation 1s infinite alternate;
+            -moz-animation: buildAnimation 1s infinite alternate;
+        }
+
+        @-webkit-keyframes buildAnimation {
+            from { opacity: 0.6; }
+            to { opacity: 0.9; }
+        }
+        @-moz-keyframes buildAnimation {
+            from { opacity: 0.6; }
+            to { opacity: 0.9; }
+        }
 
 		ul.menu li.menu
 		{
