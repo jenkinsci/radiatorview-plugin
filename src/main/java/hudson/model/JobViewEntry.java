@@ -326,7 +326,7 @@ public class JobViewEntry implements IViewEntry {
 	 * wether it's building or not or broken.
 	 */
 	private void findStatus() {
-		result = RadiatorUtil.getLastFinishedResult(job);
+		result = getLastFinishedResult();
 
 		if (result.ordinal == Result.NOT_BUILT.ordinal || result.ordinal == Result.ABORTED.ordinal) {
 			this.backgroundColor = getColors().getOtherBG();
