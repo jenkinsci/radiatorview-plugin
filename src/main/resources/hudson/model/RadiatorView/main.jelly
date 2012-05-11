@@ -1,6 +1,7 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
 	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
 	xmlns:i="jelly:fmt">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta http-equiv="refresh" content="${from.refresh}" />
 	<style type="text/css">
 		#header{
@@ -55,12 +56,19 @@
 		z-index:999;
 		}
 
-		.building
-		{
-		opacity:
-		0.6; -moz-opacity:0.6; -webkit-opacity:0.6;
-		filter:alpha(opacity=60);
-		}
+		.building {
+            -webkit-animation: buildAnimation 1s infinite alternate;
+            -moz-animation: buildAnimation 1s infinite alternate;
+        }
+
+        @-webkit-keyframes buildAnimation {
+            from { opacity: 0.6; }
+            to { opacity: 0.9; }
+        }
+        @-moz-keyframes buildAnimation {
+            from { opacity: 0.6; }
+            to { opacity: 0.9; }
+        }
 
 		ul.menu li.menu
 		{
@@ -173,7 +181,16 @@
 		);
 		}
 
+		.unstable {
+		// placeholder for unstable builds
+		}
 
+		.aborted {
+		// placeholder for aborted builds
+		}
+		.notbuild {
+		// placeholder for unbuilt jobs
+		}
 	</style>
 	<j:choose>
 		<j:when test="${empty(items)}">
@@ -230,4 +247,29 @@
 			</div>
 		</j:otherwise>
 	</j:choose>
+	<script type="text/javascript">
+		$$('.building').each(function(e) {
+		var fadeIn = new
+		YAHOO.util.Anim(e, {
+		opacity: {from: 0.5, to: 0.9},
+		'-moz-opacity':
+		{from: 0.5, to: 0.9},
+		'-webkit-opacity': {from: 0.5, to: 0.9}
+		});
+		var
+		fadeOut = new YAHOO.util.Anim(e, {
+		opacity: {from: 0.9, to: 0.5},
+		'-moz-opacity': {from: 0.9, to: 0.5},
+		'-webkit-opacity': {from: 0.9,
+		to: 0.5}
+		});
+		fadeIn.onComplete.subscribe(function() {
+		fadeOut.animate();
+		});
+		fadeOut.onComplete.subscribe(function() {
+		fadeIn.animate();
+		});
+		fadeIn.animate();
+		});
+  </script>
 </j:jelly>
