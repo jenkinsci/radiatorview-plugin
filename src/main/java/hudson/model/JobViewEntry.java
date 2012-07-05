@@ -97,16 +97,19 @@ public class JobViewEntry implements IViewEntry {
 		return this.backgroundColor;
 	}
 
-	public String getStatus() {
-		if (getBroken() || getFailCount() > 0)
-			if (!StringUtils.isEmpty(getClaim())
-					&& !getClaim().equals(NOT_CLAIMED + "."))
-				return "claimed";
-			else
-				return "failing";
-		else
-			return "successful";
-	}
+    public String getStatus() {
+        if (getBroken() || getFailCount() > 0) {
+            if (!StringUtils.isEmpty(getClaim()) && !getClaim().equals(NOT_CLAIMED + ".")) {
+                return "claimed";
+            } else {
+                return "failing";
+            }
+        } else if ( !getStable() ){
+            return "unstable";
+        } else {
+            return "successful";
+        }
+    }
 
 	/*
 	 * (non-Javadoc)

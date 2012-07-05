@@ -6,7 +6,6 @@ package hudson.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -88,24 +87,30 @@ public class ProjectViewEntry implements IViewEntry {
 	
 	public String getStatus()
 	{
-		if (getBroken() || getFailCount() > 0)
-			if (getUnclaimedJobs().size() == 0)
-				return "claimed";
-			else
-				return "failing";
-		else
-			return "successful";
+        if (getBroken() || getFailCount() > 0) {
+            if (getUnclaimedJobs().isEmpty()) {
+                return "claimed";
+            } else {
+                return "failing";
+            }
+        } else if ( !getStable() ){
+            return "unstable";
+        } else {
+            return "successful";
+        }
 	}
 
-	public String getBackgroundColor() {
-		if (getBroken() || getFailCount() > 0)
-			if (getUnclaimedJobs().size() == 0)
-				return "orange";
-			else
-				return "red";
-		else
-			return "green";
-	}
+    public String getBackgroundColor() {
+        if (getBroken() || getFailCount() > 0) {
+            if (getUnclaimedJobs().isEmpty()) {
+                return "orange";
+            } else {
+                return "red";
+            }
+        } else {
+            return "green";
+        }
+    }
 
 	public Boolean getBroken() {
 		boolean broken = false;
@@ -194,8 +199,11 @@ public class ProjectViewEntry implements IViewEntry {
 	}
 
 	public boolean getStable() {
-		// TODO Auto-generated method stub
-		return false;
+		boolean stable = true;
+		for (IViewEntry job : jobs) {
+			stable &= job.getStable();
+		}
+		return stable;
 	}
 
 	public int getSuccessCount() {
