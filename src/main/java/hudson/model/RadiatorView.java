@@ -55,11 +55,11 @@ public class RadiatorView extends ListView {
 	 * User configuration - show details in stable builds.
 	 */
 	 Boolean showStableDetail = false;
-         
-        /**
-         * User configuration - show build stability icon.
-         */
-         boolean showBuildStability = false;
+
+	/**
+	* User configuration - show build stability icon.
+	*/
+	boolean showBuildStability = false;
 
 	/**
 	 * User configuration - high visibility mode.
@@ -87,13 +87,13 @@ public class RadiatorView extends ListView {
 	 */
 	@DataBoundConstructor
 	public RadiatorView(String name, Boolean showStable,
-			Boolean showStableDetail, Boolean highVis, Boolean groupByPrefix, Boolean buildStability) {
+			Boolean showStableDetail, Boolean highVis, Boolean groupByPrefix, Boolean showBuildStability) {
 		super(name);
 		this.showStable = showStable;
 		this.showStableDetail = showStableDetail;
 		this.highVis = highVis;
 		this.groupByPrefix = groupByPrefix;
-                this.showBuildStability = showBuildStability;
+		this.showBuildStability = showBuildStability;
 	}
 	
 	public RadiatorView(String name)
@@ -192,7 +192,7 @@ public class RadiatorView extends ListView {
 				.getParameter("showStableDetail"));
 		this.highVis = Boolean.parseBoolean(req.getParameter("highVis"));
 		this.groupByPrefix = Boolean.parseBoolean(req.getParameter("groupByPrefix"));
-                this.showBuildStability = Boolean.parseBoolean(req.getParameter("showBuildStability"));
+		this.showBuildStability = Boolean.parseBoolean(req.getParameter("showBuildStability"));
 	}
 
 	public Boolean getShowStable() {
@@ -211,10 +211,10 @@ public class RadiatorView extends ListView {
 	{
 		return groupByPrefix;
 	}
-        
-        public Boolean getShowBuildStability() {
-            return showBuildStability;
-        }
+
+	public Boolean getShowBuildStability() {
+		return showBuildStability;
+	}
 
 	/**
 	 * Converts a list of jobs to a list of list of jobs, suitable for display
