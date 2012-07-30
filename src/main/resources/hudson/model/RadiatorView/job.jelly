@@ -17,11 +17,10 @@
 				href="${job.lastBuildUrl}">${job.name}</a>
 		</p>
 		<!--  Build health icon -->
-		<!--  
-		I personally find that this just clutters the display (there's already too much on there). Feel free to add as a (non-default) config option though!
-		<img src="${rootURL}/images/${iconSize}/${job.job.buildHealth.iconUrl}"
-			alt="${job.job.buildHealth.description}" style="float:right" />
-			-->
+		<j:if test="${showBuildStability}">
+			<img src="${rootURL}/images/${iconSize}/${job.job.buildHealth.iconUrl}"
+				alt="${job.job.buildHealth.description}" style="float:right" />
+		</j:if>
 		<!-- Job Claim Information -->
 		<j:if test="${job.isClaimed()}">
 			<p>${job.getClaim()}</p>
