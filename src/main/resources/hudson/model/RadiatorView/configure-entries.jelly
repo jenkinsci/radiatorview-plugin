@@ -33,5 +33,9 @@
 	<f:entry title="${%Show as Projects?}" field="groupByPrefix" help="/plugin/radiatorviewplugin/help/groupByPrefix.html">
 		<f:checkbox name="groupByPrefix" checked="${it.groupByPrefix}" value="true" field="groupByPrefix" />
 	</f:entry>
+        
+        <f:entry title="${%Show build stability?}" field="showBuildStability" help="/plugin/radiatorviewplugin/help/showbuildStability.html">
+		<f:checkbox name="showBuildStability" checked="${it.showBuildStability}" value="true" field="showBuildStability" />
+	</f:entry>
 	
 </j:jelly>
