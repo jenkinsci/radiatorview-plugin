@@ -53,7 +53,7 @@ public class ProjectViewEntry implements IViewEntry {
 	 * least one failing job, then passing jobs also includes unstable ones. If
 	 * there's no failing job, then passing will only include stable jobs.
 	 * Unstable ones will be returned through {@link #getFailingJobs()}
-	 * 
+	 *
 	 * @return passing jobs (including unstable if there are jobs in failure).
 	 * @see #getFailingJobs()
 	 */
@@ -75,7 +75,7 @@ public class ProjectViewEntry implements IViewEntry {
 	 * Returns "failing" jobs. Depending on the context: failing will be jobs in
 	 * "real" failure (i.e. "red") if there are indeed some jobs of this sort.
 	 * If there aren't, then failing jobs will be unstable ones.
-	 * 
+	 *
 	 * @return "failing" jobs (unstable ones if no failing job is currently
 	 *         present).
 	 * @see #getPassingJobs()
@@ -140,6 +140,10 @@ public class ProjectViewEntry implements IViewEntry {
 	}
 
 	public String getName() {
+		return name;
+	}
+
+	public String getProjectName() {
 		return name;
 	}
 
