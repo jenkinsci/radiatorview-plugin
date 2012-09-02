@@ -75,6 +75,16 @@ public class JobViewEntry implements IViewEntry {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see hudson.model.IViewEntry#getProjectName()
+	 */
+	public String getProjectName() {
+		RadiatorProjectProperty rpp = job.getProperty(RadiatorProjectProperty.class);
+		return (rpp != null) ? rpp.projectName : "";
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see hudson.model.IViewEntry#getQueued()
 	 */
 	public Boolean getQueued() {

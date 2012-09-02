@@ -13,6 +13,11 @@ public interface IViewEntry {
 	public abstract String getName();
 
 	/**
+	 * @return the job's radiator project name
+	 */
+	public abstract String getProjectName();
+
+	/**
 	 * @return if this job is queued for build
 	 */
 	public abstract Boolean getQueued();
