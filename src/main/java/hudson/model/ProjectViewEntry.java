@@ -81,11 +81,15 @@ public class ProjectViewEntry implements IViewEntry {
 		return name;
 	}
 
+	public String getProjectName() {
+		return name;
+	}
+
 	public void addBuild(IViewEntry entry) {
 		Validate.notNull(entry);
 		jobs.add(entry);
 	}
-	
+
 	public String getStatus()
 	{
 		if (getBroken() || getFailCount() > 0)

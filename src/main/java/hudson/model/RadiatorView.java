@@ -135,7 +135,8 @@ public class RadiatorView extends ListView {
 		
 		for (IViewEntry job: allContents.getJobs())
 		{
-			String prefix = getPrefix(job.getName());
+			String projectName = job.getProjectName();
+			String prefix = StringUtils.isEmpty(projectName) ? getPrefix(job.getName()) : projectName;
 			ProjectViewEntry project = jobsByPrefix.get(prefix);
 			if (project == null)
 			{
