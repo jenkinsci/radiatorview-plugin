@@ -41,14 +41,14 @@
 
 
 		<j:set var="height" value="${(failJobsHeight / failJobRows.size())}" />
-		<j:set var="top" value="0" />
+		<j:set var="top" value="1" />
 		<j:set var="showDetail" value="true" />
 		<j:forEach var="row" items="${failJobRows}">
 			<j:set var="width" value="${(100 / row.size())}" />
 			<j:set var="left" value="0" />
 			<j:forEach var="job" items="${row}">
 				<j:set var="jobStyle"
-					value="left: ${left}%; top:${top}%; width:${width-3}%; height:${height-2}%; margin:1%; padding-left: 1%;" />
+					value="left: ${left}%; top:${top}%; width:${width-1.4}%; height:${height-2}%; margin:.2%; padding-left: 1%;" />
 				<st:include page="job.jelly" />
 				<j:set var="left" value="${left + width}" />
 			</j:forEach>
