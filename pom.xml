@@ -19,9 +19,9 @@
 		don't specify it explicitly.
 	--> 
 	<scm>
-		<connection>scm:svn:https://guest@svn.jenkins-ci.org/trunk/hudson/plugins/radiatorview/</connection>
-		<developerConnection>scm:svn:https://svn.jenkins-ci.org/trunk/hudson/plugins/radiatorview/</developerConnection>
-		<url>https://svn.jenkins-ci.org/trunk/hudson/pluginsradiatorview/</url>
+		<connection>scm:git:git://github.com/jenkinsci/radiatorview-plugin.git</connection>
+		<developerConnection>scm:git:git@github.com:jenkinsci/radiatorview-plugin.git</developerConnection>
+		<url>https://github.com/jenkinsci/radiatorview-plugin</url>
 	</scm>
 
 	<developers>
@@ -29,6 +29,11 @@
 			<id>howama</id>
 			<name>Mark Howard</name>
 			<email>mh@tildemh.com</email>
+		</developer>
+		<developer>
+			<id>david-resnick</id>
+			<name>David Resnick</name>
+			<email>abunetta@gmail.com</email>
 		</developer>
 	</developers>
 
