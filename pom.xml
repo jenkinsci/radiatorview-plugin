@@ -20,10 +20,9 @@
 	--> 
 	<scm>
 		<connection>scm:git:git://github.com/jenkinsci/radiatorview-plugin.git</connection>
-		<developerConnection>scm:git:git@github.com:jenkinsci/radiatorview-plugin.git</developerConnection>
+		<developerConnection>scm:git:ssh://git@github.com:jenkinsci/radiatorview-plugin.git</developerConnection>
 		<url>https://github.com/jenkinsci/radiatorview-plugin</url>
 	</scm>
-
 	<developers>
 		<developer>
 			<id>howama</id>
@@ -31,7 +30,7 @@
 			<email>mh@tildemh.com</email>
 		</developer>
 		<developer>
-			<id>david-resnick</id>
+			<id>david_resnick</id>
 			<name>David Resnick</name>
 			<email>abunetta@gmail.com</email>
 		</developer>
@@ -40,7 +39,7 @@
 	<repositories>
 		<repository>
 		        <id>repo.jenkins-ci.org</id>
-                        <url>http://repo.jenkins-ci.org/public/</url>
+                <url>http://repo.jenkins-ci.org/public/</url>
 		</repository>
 	</repositories>
 
