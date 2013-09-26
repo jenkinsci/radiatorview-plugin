@@ -102,6 +102,8 @@ public class JobViewEntry implements IViewEntry {
 			if (!StringUtils.isEmpty(getClaim())
 					&& !getClaim().equals(NOT_CLAIMED + "."))
 				return "claimed";
+			else if (!getBroken())
+				return "unstable";
 			else
 				return "failing";
 		else
