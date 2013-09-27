@@ -173,6 +173,20 @@
 		);
 		}
 
+		.unstable {
+		background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.6, rgb(224,224,0)),
+		color-stop(0.9, yellow)
+		);
+		background-image: -moz-linear-gradient(
+		center bottom,
+		rgb(224,224,0) 60%,
+		yellow 90%
+		);
+		}
 
 	</style>
 	<j:choose>

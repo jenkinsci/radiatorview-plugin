@@ -62,15 +62,15 @@ public class ProjectViewEntry implements IViewEntry {
 	}
 
 	public TreeSet<IViewEntry> getUnclaimedJobs() {
-		TreeSet<IViewEntry> failing = new TreeSet<IViewEntry>(
+		TreeSet<IViewEntry> unclaimed = new TreeSet<IViewEntry>(
 				new EntryComparator());
 		for (IViewEntry job : jobs) {
-			if ((job.getBroken() || job.getFailCount() > 0)) {
+			if ((!job.getStable()) || job.getFailCount() > 0) {
 				if (!job.isClaimed())
-					failing.add(job);
+					unclaimed.add(job);
 			}
 		}
-		return failing;
+		return unclaimed;
 	}
 
 	public TreeSet<IViewEntry> getJobs() {
@@ -85,16 +85,18 @@ public class ProjectViewEntry implements IViewEntry {
 		Validate.notNull(entry);
 		jobs.add(entry);
 	}
-	
-	public String getStatus()
-	{
-		if (getBroken() || getFailCount() > 0)
-			if (getUnclaimedJobs().size() == 0)
-				return "claimed";
-			else
-				return "failing";
-		else
+
+	public String getStatus() {
+		if (getStable()) {
 			return "successful";
+		}
+		if (getUnclaimedJobs().size() == 0) {
+			return "claimed";
+		}
+		if (getBroken()) {
+			return "failing";
+		}
+		return "unstable";
 	}
 
 	public String getBackgroundColor() {
@@ -194,8 +196,11 @@ public class ProjectViewEntry implements IViewEntry {
 	}
 
 	public boolean getStable() {
-		// TODO Auto-generated method stub
-		return false;
+		boolean stable = true;
+		for (IViewEntry job : jobs) {
+			stable &= job.getStable();
+		}
+		return stable;
 	}
 
 	public int getSuccessCount() {

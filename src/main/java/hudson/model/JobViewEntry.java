@@ -98,14 +98,17 @@ public class JobViewEntry implements IViewEntry {
 	}
 
 	public String getStatus() {
-		if (getBroken() || getFailCount() > 0)
-			if (!StringUtils.isEmpty(getClaim())
-					&& !getClaim().equals(NOT_CLAIMED + "."))
-				return "claimed";
-			else
-				return "failing";
-		else
+		if (getStable()) {
 			return "successful";
+		}
+		if (!StringUtils.isEmpty(getClaim())
+				&& !getClaim().equals(NOT_CLAIMED + ".")) {
+			return "claimed";
+		}
+		if (getBroken()) {
+			return "failing";
+		}
+		return "unstable";
 	}
 
 	/*

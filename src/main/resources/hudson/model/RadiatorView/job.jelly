@@ -31,11 +31,11 @@
 			<j:if test="${job.broken == false}">
 				<j:if test="${job.failCount == 1}">
 					<font
-						style="text-align=center; color: #FFFF00; font-size: ${failFont}; font-weight:bold;">1/${job.testCount} test failure</font>
+						style="text-align=center; color: #000000; font-size: ${failFont}; font-weight:bold;">1/${job.testCount} test failure</font>
 				</j:if>
 				<j:if test="${ job.failCount > 1}">
 					<font
-						style="text-align=center; color: #FFFF00; font-size: ${failFont}; font-weight:bold;">${job.failCount}/${job.testCount} test failures</font>
+						style="text-align=center; color: #000000; font-size: ${failFont}; font-weight:bold;">${job.failCount}/${job.testCount} test failures</font>
 				</j:if>
 				<j:if test="${job.diff != ''}">
 					(
