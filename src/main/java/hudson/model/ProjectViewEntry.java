@@ -35,7 +35,7 @@ public class ProjectViewEntry implements IViewEntry {
 				new EntryComparator());
 		for (IViewEntry job : jobs) {
 			if (job.getBroken() || job.getFailCount() > 0)
-				if (job.isClaimed())
+				if (job.isCompletelyClaimed())
 					failing.add(job);
 		}
 		return failing;
@@ -66,7 +66,7 @@ public class ProjectViewEntry implements IViewEntry {
 				new EntryComparator());
 		for (IViewEntry job : jobs) {
 			if ((!job.getStable()) || job.getFailCount() > 0) {
-				if (!job.isClaimed())
+				if (!job.isCompletelyClaimed())
 					unclaimed.add(job);
 			}
 		}
@@ -243,5 +243,13 @@ public class ProjectViewEntry implements IViewEntry {
 			jobNames.add(job.getName());
 		}
 		return getName() + ": " + StringUtils.join(jobNames, ", ");
+	}
+
+	public boolean isCompletelyClaimed() {
+		throw new UnsupportedOperationException();
+	}
+
+	public String getUnclaimedMatrixBuilds() {
+		throw new UnsupportedOperationException();
 	}
 }

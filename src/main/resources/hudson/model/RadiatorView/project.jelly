@@ -57,6 +57,7 @@
 							<a href="${subjob.lastBuildUrl}">${subjobShortName}</a>
 							<j:if test="${subjob.getBuilding()}">(building now)</j:if>
 							<j:if test="${subjob.getQueued()}">(build pending)</j:if>
+							${subjob.getUnclaimedMatrixBuilds()}
 						</li>
 					</j:forEach>
 				</ul>

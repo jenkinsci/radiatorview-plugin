@@ -1,6 +1,8 @@
 package hudson.model;
 
 import hudson.Functions;
+import hudson.matrix.MatrixRun;
+import hudson.matrix.MatrixBuild;
 import hudson.plugins.claim.ClaimBuildAction;
 import hudson.tasks.test.AbstractTestResultAction;
 
@@ -23,7 +25,7 @@ import org.jfree.util.Log;
  */
 public class JobViewEntry implements IViewEntry {
 
-	private static final String NOT_CLAIMED = "Not Claimed";
+	private static final String NOT_CLAIMED = "Not Claimed.";
 
 	private final RadiatorView radiatorView;
 
@@ -101,8 +103,7 @@ public class JobViewEntry implements IViewEntry {
 		if (getStable()) {
 			return "successful";
 		}
-		if (!StringUtils.isEmpty(getClaim())
-				&& !getClaim().equals(NOT_CLAIMED + ".")) {
+		if (isCompletelyClaimed()) {
 			return "claimed";
 		}
 		if (getBroken()) {
@@ -411,44 +412,114 @@ public class JobViewEntry implements IViewEntry {
 	 * @see hudson.model.IViewEntry#getClaim()
 	 */
 	public String getClaim() {
-		String claim = null;
-		if (Hudson.getInstance().getPlugin("claim") != null) {
-			claim = NOT_CLAIMED;
-			Run lastBuild = job.getLastBuild();
-			while (lastBuild != null && lastBuild.isBuilding()) {
-				// claims can only be made against builds once they've finished,
-				// so check the previous build if currently building.
-				lastBuild = lastBuild.getPreviousBuild();
-			}
-			if (lastBuild != null) {
-				// TODO - check previous build if currently building.
-				List<ClaimBuildAction> claimActionList = lastBuild
-						.getActions(ClaimBuildAction.class);
-				if (claimActionList.size() == 1) {
-					ClaimBuildAction claimAction = claimActionList.get(0);
-					if (claimAction.isClaimed()) {
-						String by = claimAction.getClaimedByName();
-						String reason = claimAction.getReason();
-						claim = // "Claimed by " +
-						by;
-						if (reason != null) {
-							claim += ": " + reason;
-						}
-					}
-				} else if (claimActionList.size() > 1) {
-					claim = "Error parsing claim details";
-					Log.warn("Multiple ClaimBuildActions found for job "
-							+ job.toString());
+		// check we have claim plugin
+		if (Hudson.getInstance().getPlugin("claim") == null) {
+			return null;
+		}
+		Run<?, ?> lastBuild = getLastCompletedRun();
+		// find the claim
+		String claim = "";
+		if (lastBuild instanceof hudson.matrix.MatrixBuild) {
+			MatrixBuild matrixBuild = (hudson.matrix.MatrixBuild) lastBuild;
+			claim = buildMatrixClaimString(matrixBuild, true);
+		} else {
+			ClaimBuildAction claimAction = getClaimForRun(lastBuild);
+			if (claimAction != null && claimAction.isClaimed()) {
+				StringBuilder sb = new StringBuilder();
+				if (claimAction.getReason() != null) {
+					sb.append(claimAction.getReason()).append(" ");
 				}
+				sb.append("(");
+				sb.append(claimAction.getClaimedByName());
+				sb.append(").");
+				claim = sb.toString();
+			} else {
+				claim = NOT_CLAIMED;
 			}
-			claim += ".";
 		}
 		return claim;
 	}
 
+	public String getUnclaimedMatrixBuilds() {
+		if (Hudson.getInstance().getPlugin("claim") == null) {
+			return "";
+		}
+		Run<?, ?> lastBuild = getLastCompletedRun();
+		if (!(lastBuild instanceof hudson.matrix.MatrixBuild)) {
+			return "";
+		}
+		MatrixBuild matrixBuild = (hudson.matrix.MatrixBuild) lastBuild;
+		return buildMatrixClaimString(matrixBuild, false);
+	}
+
+	private Run<?,?> getLastCompletedRun() {
+		Run<?, ?> run = job.getLastBuild();
+		while (run != null && run.isBuilding()) {
+			// claims can only be made against builds once they've finished,
+			// so check the previous build if currently building.
+			run = run.getPreviousBuild();
+		}
+		return run;
+	}
+
+	private String buildMatrixClaimString(MatrixBuild matrixBuild, boolean includeClaimed) {
+		StringBuilder claimed = new StringBuilder();
+		StringBuilder unclaimed = new StringBuilder();
+		for (MatrixRun combination : matrixBuild.getRuns()) {
+			Result result = combination.getResult();
+			if (!(Result.FAILURE.equals(result) || Result.UNSTABLE.equals(result))) {
+				continue;
+			}
+			ClaimBuildAction claimAction = getClaimForRun(combination);
+			if (claimAction != null && claimAction.isClaimed()) {
+				claimed.append(combination.getParent().getCombination()
+						.toString());
+				claimed.append(": ");
+				if (claimAction.getReason() != null) {
+					claimed.append(claimAction.getReason()).append(" ");
+				}
+				claimed.append("(");
+				claimed.append(claimAction.getClaimedByName());
+				claimed.append(").<br/>");
+			} else {
+				unclaimed.append(combination.getParent().getCombination().toString());
+				unclaimed.append(": ").append(NOT_CLAIMED).append("<br/>");
+			}
+		}
+
+		String claims = unclaimed.toString();
+		if (includeClaimed) {
+			claims += claimed.toString();
+		}
+		return claims;
+	}
+
+	private ClaimBuildAction getClaimForRun(Run<?, ?> run) {
+		ClaimBuildAction claimAction = null;
+		List<ClaimBuildAction> claimActionList = run
+				.getActions(ClaimBuildAction.class);
+		if (claimActionList.size() == 1) {
+			claimAction = claimActionList.get(0);
+		} else if (claimActionList.size() > 1) {
+			Log.warn("Multiple ClaimBuildActions found for job "
+					+ job.toString());
+		}
+		return claimAction;
+	}
+
 	public boolean isClaimed() {
-		return !StringUtils.isEmpty(getClaim())
-				&& !"Not Claimed.".equals(getClaim());
+		return !NOT_CLAIMED.equals(getClaim());
+	}
+
+	public boolean isCompletelyClaimed() {
+		String claim = getClaim();
+		if (StringUtils.isEmpty(claim)) {
+			return false;
+		}
+		if (NOT_CLAIMED.equals(getClaim())) {
+			return false;
+		}
+		return ! claim.contains(NOT_CLAIMED);
 	}
 
 	public Result getLastFinishedResult() {

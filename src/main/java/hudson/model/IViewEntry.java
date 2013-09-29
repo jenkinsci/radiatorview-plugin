@@ -102,10 +102,25 @@ public interface IViewEntry {
 	 */
 	public abstract String getClaim();
 
+	/**
+	 * @return Matrix subjob combination info for unclaimed broken subjobs.
+	 */
+	public abstract String getUnclaimedMatrixBuilds();
+
 	public abstract Result getLastFinishedResult();
 	
 	public abstract boolean hasChildren();
 
+	/**
+	 * @return <code>true</code> if the build is claimed or if any matrix sub-jobs have been
+	 * claimed.
+	 */
 	public abstract boolean isClaimed();
+
+	/**
+	 * @return <code>true</code> if the build is claimed or if all broken matrix sub-jobs have been
+	 * claimed.
+	 */
+	public abstract boolean isCompletelyClaimed();
 
 }
