@@ -10,7 +10,7 @@
 	<artifactId>radiatorviewplugin</artifactId>
 	<packaging>hpi</packaging>
 	<name>Radiator View Plugin</name>
-	<version>1.14</version>
+	<version>1.15-SNAPSHOT</version>
 	<url>http://wiki.jenkins-ci.org/display/JENKINS/Radiator+View+Plugin</url>
 	<description>Adds a new high visibility view of project status.</description>
 	<!--
