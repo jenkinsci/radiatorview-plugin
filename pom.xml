@@ -20,7 +20,7 @@
 	--> 
 	<scm>
 		<connection>scm:git:git://github.com/jenkinsci/radiatorview-plugin.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com:jenkinsci/radiatorview-plugin.git</developerConnection>
+		<developerConnection>scm:git:git@github.com:jenkinsci/radiatorview-plugin.git</developerConnection>
 		<url>https://github.com/jenkinsci/radiatorview-plugin</url>
 	</scm>
 	<developers>
