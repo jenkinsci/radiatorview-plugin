@@ -201,6 +201,9 @@
 			<j:if test="${from.getHighVis()}">
 				<j:set var="dashStyle" value="background-color: black;" />
 			</j:if>
+			<j:if test="${from.getShowBuildStability()}">
+				<j:set var="showBuildStability" value="true" />
+			</j:if>
 			<!-- outer div to hide everything in the normal layout. -->
 			<div class="dashboard"
 				style="${dashStyle} overflow: hidden; left:
