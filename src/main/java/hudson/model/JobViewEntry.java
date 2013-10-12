@@ -3,7 +3,6 @@ package hudson.model;
 import hudson.Functions;
 import hudson.matrix.MatrixRun;
 import hudson.matrix.MatrixBuild;
-import hudson.plugins.claim.ClaimBuildAction;
 import hudson.tasks.test.AbstractTestResultAction;
 
 import java.text.NumberFormat;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.jfree.util.Log;
 
 /**
  * Represents a job to be shown in a view. Based heavily on the XFPanelEntry in
@@ -423,14 +421,14 @@ public class JobViewEntry implements IViewEntry {
 			MatrixBuild matrixBuild = (hudson.matrix.MatrixBuild) lastBuild;
 			claim = buildMatrixClaimString(matrixBuild, true);
 		} else {
-			ClaimBuildAction claimAction = getClaimForRun(lastBuild);
-			if (claimAction != null && claimAction.isClaimed()) {
+			ClaimWrapper claimWrapper = ClaimWrapper.builder(lastBuild);
+			if (claimWrapper != null && claimWrapper.isClaimed()) {
 				StringBuilder sb = new StringBuilder();
-				if (claimAction.getReason() != null) {
-					sb.append(claimAction.getReason()).append(" ");
+				if (claimWrapper.getReason() != null) {
+					sb.append(claimWrapper.getReason()).append(" ");
 				}
 				sb.append("(");
-				sb.append(claimAction.getClaimedByName());
+				sb.append(claimWrapper.getClaimedByName());
 				sb.append(").");
 				claim = sb.toString();
 			} else {
@@ -470,16 +468,16 @@ public class JobViewEntry implements IViewEntry {
 			if (!(Result.FAILURE.equals(result) || Result.UNSTABLE.equals(result))) {
 				continue;
 			}
-			ClaimBuildAction claimAction = getClaimForRun(combination);
-			if (claimAction != null && claimAction.isClaimed()) {
+			ClaimWrapper claimWrapper = ClaimWrapper.builder(combination);
+			if (claimWrapper != null && claimWrapper.isClaimed()) {
 				claimed.append(combination.getParent().getCombination()
 						.toString());
 				claimed.append(": ");
-				if (claimAction.getReason() != null) {
-					claimed.append(claimAction.getReason()).append(" ");
+				if (claimWrapper.getReason() != null) {
+					claimed.append(claimWrapper.getReason()).append(" ");
 				}
 				claimed.append("(");
-				claimed.append(claimAction.getClaimedByName());
+				claimed.append(claimWrapper.getClaimedByName());
 				claimed.append(").<br/>");
 			} else {
 				unclaimed.append(combination.getParent().getCombination().toString());
@@ -492,19 +490,6 @@ public class JobViewEntry implements IViewEntry {
 			claims += claimed.toString();
 		}
 		return claims;
-	}
-
-	private ClaimBuildAction getClaimForRun(Run<?, ?> run) {
-		ClaimBuildAction claimAction = null;
-		List<ClaimBuildAction> claimActionList = run
-				.getActions(ClaimBuildAction.class);
-		if (claimActionList.size() == 1) {
-			claimAction = claimActionList.get(0);
-		} else if (claimActionList.size() > 1) {
-			Log.warn("Multiple ClaimBuildActions found for job "
-					+ job.toString());
-		}
-		return claimAction;
 	}
 
 	public boolean isClaimed() {
