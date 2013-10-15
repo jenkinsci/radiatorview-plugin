@@ -8,8 +8,8 @@ public class RadiatorUtil {
 	public static Result getLastFinishedResult(Job job) {
 		Run lastBuild = job.getLastBuild();
 		while (lastBuild != null
-				&& (lastBuild.hasntStartedYet() || lastBuild.isBuilding() || lastBuild
-						.isLogUpdated())) {
+				&& (lastBuild.hasntStartedYet() || lastBuild.isBuilding()
+						|| lastBuild.isLogUpdated() || lastBuild.getResult() == Result.ABORTED)) {
 			lastBuild = lastBuild.getPreviousBuild();
 		}
 		if (lastBuild != null) {
