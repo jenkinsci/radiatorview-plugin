@@ -1,6 +1,7 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
 	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
 	xmlns:i="jelly:fmt">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta http-equiv="refresh" content="${from.refresh}" />
 	<style type="text/css">
 		#header{
