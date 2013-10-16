@@ -464,6 +464,9 @@ public class JobViewEntry implements IViewEntry {
 		StringBuilder claimed = new StringBuilder();
 		StringBuilder unclaimed = new StringBuilder();
 		for (MatrixRun combination : matrixBuild.getRuns()) {
+			if (matrixBuild.getNumber() != combination.getNumber()) {
+				continue;
+			}
 			Result result = combination.getResult();
 			if (!(Result.FAILURE.equals(result) || Result.UNSTABLE.equals(result))) {
 				continue;
