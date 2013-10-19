@@ -415,6 +415,9 @@ public class JobViewEntry implements IViewEntry {
 			return null;
 		}
 		Run<?, ?> lastBuild = getLastCompletedRun();
+		if (lastBuild == null) {
+			return null;
+		}
 		// find the claim
 		String claim = "";
 		if (lastBuild instanceof hudson.matrix.MatrixBuild) {
