@@ -37,10 +37,9 @@ public class JobViewEntry implements IViewEntry {
 
 	private Boolean building = false;
 
-	/**
-	 * If the build is stable.
-	 */
-	private boolean stable;
+	private boolean stable = false;
+
+	private boolean notBuilt = false;
 
 	/**
 	 * C'tor
@@ -98,6 +97,9 @@ public class JobViewEntry implements IViewEntry {
 	}
 
 	public String getStatus() {
+		if (isNotBuilt()) {
+			return "never built";
+		}
 		if (getStable()) {
 			return "successful";
 		}
@@ -330,20 +332,17 @@ public class JobViewEntry implements IViewEntry {
 	private void findStatus() {
 		Result result = RadiatorUtil.getLastFinishedResult(job);
 
-		this.stable = false;
 		if (result.ordinal == Result.NOT_BUILT.ordinal) {
 			this.backgroundColor = getColors().getOtherBG();
 			this.color = getColors().getOtherFG();
-			this.broken = true;
+			this.notBuilt = true;
 		} else if (result.ordinal == Result.SUCCESS.ordinal) {
 			this.backgroundColor = getColors().getOkBG();
 			this.color = getColors().getOkFG();
-			this.broken = false;
 			this.stable = true;
 		} else if (result.ordinal == Result.UNSTABLE.ordinal) {
 			this.backgroundColor = getColors().getFailedBG();
 			this.color = getColors().getFailedFG();
-			this.broken = false;
 		} else {
 			this.backgroundColor = getColors().getBrokenBG();
 			this.color = getColors().getBrokenFG();
@@ -402,6 +401,10 @@ public class JobViewEntry implements IViewEntry {
 	 */
 	public boolean getStable() {
 		return stable;
+	}
+
+	public boolean isNotBuilt() {
+		return notBuilt;
 	}
 
 	/*

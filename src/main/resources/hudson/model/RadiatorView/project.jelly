@@ -38,6 +38,7 @@
 
 		<j:invoke var="passJobs" on="${job}" method="getPassingJobs" />
 		<j:invoke var="failJobs" on="${job}" method="getUnclaimedJobs" />
+		<j:invoke var="unbuiltJobs" on="${job}" method="getUnbuiltJobs" />
 		<j:invoke var="claimedJobs" on="${job}" method="getClaimedBuilds" />
 		<j:if test="${!failJobs.isEmpty()}">
 			<j:if
@@ -78,6 +79,25 @@
 							<j:if test="${subjob.getBuilding()}">(building now)</j:if>
 							<j:if test="${subjob.getQueued()}">(build pending)</j:if>
 							${subjob.getClaim()}
+						</li>
+					</j:forEach>
+				</ul>
+			</p>
+		</j:if>
+		<j:if test="${!unbuiltJobs.isEmpty()}">
+			<p>
+				Never Built:
+				<ul>
+					<j:forEach var="subjob" items="${unbuiltJobs}">
+						<j:invokeStatic className="org.apache.commons.lang.StringUtils"
+							method="removeStart" var="subjobShortName">
+							<j:arg type="java.lang.String" value="${subjob.name}" />
+							<j:arg type="java.lang.String" value="${job.name}_" />
+						</j:invokeStatic>
+						<li>
+							<a href="${subjob.lastBuildUrl}">${subjobShortName}</a>
+							<j:if test="${subjob.getBuilding()}">(building now)</j:if>
+							<j:if test="${subjob.getQueued()}">(build pending)</j:if>
 						</li>
 					</j:forEach>
 				</ul>

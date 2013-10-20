@@ -123,4 +123,6 @@ public interface IViewEntry {
 	 */
 	public abstract boolean isCompletelyClaimed();
 
+	public boolean isNotBuilt();
+
 }

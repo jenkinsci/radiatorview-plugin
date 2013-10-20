@@ -6,7 +6,6 @@ package hudson.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -65,12 +64,23 @@ public class ProjectViewEntry implements IViewEntry {
 		TreeSet<IViewEntry> unclaimed = new TreeSet<IViewEntry>(
 				new EntryComparator());
 		for (IViewEntry job : jobs) {
-			if ((!job.getStable()) || job.getFailCount() > 0) {
+			if (((!job.getStable()) || job.getFailCount() > 0) && !job.isNotBuilt()) {
 				if (!job.isCompletelyClaimed())
 					unclaimed.add(job);
 			}
 		}
 		return unclaimed;
+	}
+
+	public TreeSet<IViewEntry> getUnbuiltJobs() {
+		TreeSet<IViewEntry> unbuilt = new TreeSet<IViewEntry>(
+				new EntryComparator());
+		for (IViewEntry job : jobs) {
+			if (job.isNotBuilt()) {
+				unbuilt.add(job);
+			}
+		}
+		return unbuilt;
 	}
 
 	public TreeSet<IViewEntry> getJobs() {
@@ -250,6 +260,10 @@ public class ProjectViewEntry implements IViewEntry {
 	}
 
 	public String getUnclaimedMatrixBuilds() {
+		throw new UnsupportedOperationException();
+	}
+
+	public boolean isNotBuilt() {
 		throw new UnsupportedOperationException();
 	}
 }
