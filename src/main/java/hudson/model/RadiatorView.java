@@ -30,6 +30,9 @@ import org.kohsuke.stapler.StaplerRequest;
  * @author Mark Howard (mh@tildemh.com)
  */
 public class RadiatorView extends ListView {
+	
+	private static final int DEFAULT_CAPTION_SIZE = 36;
+
 	/**
 	 * Entries to be shown in the view.
 	 */
@@ -71,6 +74,16 @@ public class RadiatorView extends ListView {
 	 */
 	 Boolean groupByPrefix = true;
 
+	 /**
+	  * User configuration - text for the caption to be used on the radiator's headline.
+	  */
+	 String captionText;
+	 
+	 /**
+	  * User configuration - size in points (1pt = 1/72in) for the caption to be used on the radiator's headline.
+	  */
+	 Integer captionSize;
+	 
 	/**
 	 * @param name
 	 *            view name.
@@ -85,16 +98,23 @@ public class RadiatorView extends ListView {
 	 *            prefix of the job name.
 	 * @param showBuildStability
 	 *            Shows weather icon for job view when true.
+	 * @param captionText
+	 *            Caption text to be used on the radiator's headline.
+	 * @param captionSize
+	 *            Caption size for the radiator's headline.
 	 */
 	@DataBoundConstructor
 	public RadiatorView(String name, Boolean showStable,
-			Boolean showStableDetail, Boolean highVis, Boolean groupByPrefix, Boolean showBuildStability) {
+			Boolean showStableDetail, Boolean highVis, Boolean groupByPrefix,
+			Boolean showBuildStability, String captionText, Integer captionSize) {
 		super(name);
 		this.showStable = showStable;
 		this.showStableDetail = showStableDetail;
 		this.highVis = highVis;
 		this.groupByPrefix = groupByPrefix;
 		this.showBuildStability = showBuildStability;
+		this.captionText = captionText;
+		this.captionSize = captionSize;
 	}
 	
 	public RadiatorView(String name)
@@ -194,6 +214,13 @@ public class RadiatorView extends ListView {
 		this.highVis = Boolean.parseBoolean(req.getParameter("highVis"));
 		this.groupByPrefix = Boolean.parseBoolean(req.getParameter("groupByPrefix"));
 		this.showBuildStability = Boolean.parseBoolean(req.getParameter("showBuildStability"));
+		this.captionText = req.getParameter("captionText");
+		try {
+			this.captionSize = Integer.parseInt(req.getParameter("captionSize"));
+		} catch (NumberFormatException e) {
+			this.captionSize = DEFAULT_CAPTION_SIZE;
+		}
+		
 	}
 
 	public Boolean getShowStable() {
@@ -217,6 +244,14 @@ public class RadiatorView extends ListView {
 		return showBuildStability;
 	}
 
+	public String getCaptionText() {
+		return captionText;
+	}
+
+	public Integer getCaptionSize() {
+		return captionSize;
+	}
+	
 	/**
 	 * Converts a list of jobs to a list of list of jobs, suitable for display
 	 * as rows in a table.
