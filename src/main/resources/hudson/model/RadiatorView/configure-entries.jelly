@@ -3,6 +3,14 @@
 -->
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
 
+	<f:entry title="${%Caption text}" field="captionText"  help="/plugin/radiatorviewplugin/help/captionText.html">
+        <f:textbox name="captionText" field="captionText" />
+    </f:entry>
+    
+    <f:entry title="${%Caption size}" field="captionSize"  help="/plugin/radiatorviewplugin/help/captionSize.html">
+        <f:textbox name="captionSize" field="captionSize" clazz="required positive-number" default="36" />
+    </f:entry>
+
   <f:entry title="${%Recurse in subfolders}" field="recurse">
     <f:checkbox id="recurse"/>
   </f:entry>
@@ -21,14 +29,6 @@
       <f:textbox name="includeRegex" field="includeRegex" />
     </f:entry>
   </f:optionalBlock>
-
-    <f:entry title="${%Caption text}" field="captionText"  help="/plugin/radiatorviewplugin/help/captionText.html">
-        <f:textbox name="captionText" field="captionText" />
-    </f:entry>
-    
-    <f:entry title="${%Caption size}" field="captionSize"  help="/plugin/radiatorviewplugin/help/captionSize.html">
-        <f:textbox name="captionSize" field="captionSize" clazz="required positive-number" default="36" />
-    </f:entry>
     
 	<f:entry title="${%Show stable builds?}" field="showStable"  help="/plugin/radiatorviewplugin/help/showstable.html">
 		<f:checkbox name="showStable" checked="${it.showStable}" value="true" field="showStable" />
