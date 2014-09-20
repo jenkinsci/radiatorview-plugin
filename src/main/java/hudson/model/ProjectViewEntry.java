@@ -21,6 +21,14 @@ public class ProjectViewEntry implements IViewEntry {
 
 	private String name;
 
+	private TreeSet<IViewEntry> failing;
+
+	private TreeSet<IViewEntry> completelyPassing;
+
+	private TreeSet<IViewEntry> unstable;
+
+	private int jobsHashCode = -1;
+
 	public ProjectViewEntry(String name) {
 		this.name = name;
 	}
@@ -40,24 +48,68 @@ public class ProjectViewEntry implements IViewEntry {
 		return failing;
 	}
 
+	/**
+	 * Returns passing jobs. Passing depends on the context: if there is at
+	 * least one failing job, then passing jobs also includes unstable ones. If
+	 * there's no failing job, then passing will only include stable jobs.
+	 * Unstable ones will be returned through {@link #getFailingJobs()}
+	 * 
+	 * @return passing jobs (including unstable if there are jobs in failure).
+	 * @see #getFailingJobs()
+	 */
 	public TreeSet<IViewEntry> getPassingJobs() {
-		TreeSet<IViewEntry> passing = new TreeSet<IViewEntry>(
-				new EntryComparator());
-		for (IViewEntry job : jobs) {
-			if (!job.getBroken() && job.getFailCount() == 0)
-				passing.add(job);
+
+		computePassingAndFailingJobs();
+
+		if (failing.size() > 0) {
+			TreeSet<IViewEntry> aggregate = new TreeSet<IViewEntry>(
+					new EntryComparator());
+			aggregate.addAll(unstable);
+			aggregate.addAll(completelyPassing);
+			return aggregate;
 		}
-		return passing;
+		return completelyPassing;
 	}
 
+	/**
+	 * Returns "failing" jobs. Depending on the context: failing will be jobs in
+	 * "real" failure (i.e. "red") if there are indeed some jobs of this sort.
+	 * If there aren't, then failing jobs will be unstable ones.
+	 * 
+	 * @return "failing" jobs (unstable ones if no failing job is currently
+	 *         present).
+	 * @see #getPassingJobs()
+	 */
 	public TreeSet<IViewEntry> getFailingJobs() {
-		TreeSet<IViewEntry> failing = new TreeSet<IViewEntry>(
-				new EntryComparator());
-		for (IViewEntry job : jobs) {
-			if (job.getBroken() || job.getFailCount() > 0)
-					failing.add(job);
+		computePassingAndFailingJobs();
+
+		if (failing.size() > 0) {
+			return failing;
 		}
-		return failing;
+		return unstable;
+	}
+
+	/**
+	 * Computes "completelyPassing" (meaning without including unstable jobs),
+	 * unstable and failing jobs sets. If the calculation has already been made,
+	 * this method does nothing.
+	 */
+	private void computePassingAndFailingJobs() {
+		if (jobsHashCode == jobs.hashCode()) {
+			return;
+		}
+		completelyPassing = new TreeSet<IViewEntry>(new EntryComparator());
+		failing = new TreeSet<IViewEntry>(new EntryComparator());
+		unstable = new TreeSet<IViewEntry>(new EntryComparator());
+		for (IViewEntry job : jobs) {
+			if (job.getBroken() || job.getFailCount() > 0) {
+				failing.add(job);
+			} else if (!job.getStable()) {
+				unstable.add(job);
+			} else {
+				completelyPassing.add(job);
+			}
+		}
 	}
 
 	public TreeSet<IViewEntry> getUnclaimedJobs() {
