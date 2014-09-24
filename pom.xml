@@ -25,14 +25,9 @@
 	</scm>
 	<developers>
 		<developer>
-			<id>howama</id>
-			<name>Mark Howard</name>
-			<email>mh@tildemh.com</email>
-		</developer>
-		<developer>
-			<id>david_resnick</id>
-			<name>David Resnick</name>
-			<email>abunetta@gmail.com</email>
+			<id>batmat</id>
+			<name>Baptiste Mathus</name>
+			<email>batmat@batmat.net</email>
 		</developer>
 	</developers>
 
