@@ -27,7 +27,7 @@
 							<j:arg type="java.lang.String" value="${job.name}_" />
 						</j:invokeStatic>
 						<li>
-							<a href="${subjob.url}">${subjobShortName}</a> - ${subjob.status}
+							<a href="${rootURL}/${subjob.url}">${subjobShortName}</a> - ${subjob.status}
 							<j:if test="${subjob.getBuilding()}">(building now)</j:if>
 							<j:if test="${subjob.getQueued()}">(build pending)</j:if>
 						</li>
@@ -55,7 +55,7 @@
 								<j:arg type="java.lang.String" value="${subjob.name}" />
 								<j:arg type="java.lang.String" value="${job.name}_" />
 							</j:invokeStatic>
-							<a href="${subjob.lastBuildUrl}">${subjobShortName}</a>
+							<a href="${rootURL}/${subjob.lastBuildUrl}">${subjobShortName}</a>
 							<j:if test="${subjob.getBuilding()}">(building now)</j:if>
 							<j:if test="${subjob.getQueued()}">(build pending)</j:if>
 							${subjob.getUnclaimedMatrixBuilds()}
@@ -75,7 +75,7 @@
 							<j:arg type="java.lang.String" value="${job.name}_" />
 						</j:invokeStatic>
 						<li>
-							<a href="${subjob.lastBuildUrl}">${subjobShortName}</a>
+							<a href="${rootURL}/${subjob.lastBuildUrl}">${subjobShortName}</a>
 							<j:if test="${subjob.getBuilding()}">(building now)</j:if>
 							<j:if test="${subjob.getQueued()}">(build pending)</j:if>
 							${subjob.getClaim()}
@@ -95,7 +95,7 @@
 							<j:arg type="java.lang.String" value="${job.name}_" />
 						</j:invokeStatic>
 						<li>
-							<a href="${subjob.lastBuildUrl}">${subjobShortName}</a>
+							<a href="${rootURL}/${subjob.lastBuildUrl}">${subjobShortName}</a>
 							<j:if test="${subjob.getBuilding()}">(building now)</j:if>
 							<j:if test="${subjob.getQueued()}">(build pending)</j:if>
 						</li>
