@@ -149,7 +149,7 @@ public class JobViewEntry implements IViewEntry {
 	}
 
 	public String getLastBuildUrl() {
-		return this.job.getUrl() + "lastBuild";
+		return this.job.getLastBuild().getUrl();
 	}
 
 	/**
