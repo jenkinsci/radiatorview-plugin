@@ -16,11 +16,20 @@
   </f:entry>
 
   <f:entry title="${%Jobs}">
-    <j:forEach var="job" items="${app.items}">
-      <f:checkbox name="${job.name}" checked="${it.contains(job)}" />
-      ${job.name}
-      <br/>
-    </j:forEach>
+    <div class="listview-jobs">
+      <j:forEach var="job" items="${h.getAllTopLevelItems(it.ownerItemGroup)}">
+        <j:set var="spanClass" value=""/>
+        <j:set var="spanStyle" value=""/>
+        <j:if test="${job.parent!=it.ownerItemGroup}">
+          <j:set var="spanClass" value="nested"/>
+          <j:set var="spanStyle" value="${it.recurse?'':'display:none'}"/>
+        </j:if>
+        <span class="${spanClass}" style="${spanStyle}">
+          <f:checkbox name="${job.getRelativeNameFromGroup(it.ownerItemGroup)}" checked="${it.jobNamesContains(job)}" title="${h.getRelativeDisplayNameFrom(job,it.ownerItemGroup)}" tooltip="${job.fullName}" json="true"/>
+          <br/>
+        </span>
+      </j:forEach>
+    </div>
   </f:entry>
 
   <f:optionalBlock name="useincluderegex" title="${%Use a regular expression to include jobs into the view}"
@@ -50,5 +59,19 @@
 	<f:entry title="${%Show build stability?}" field="showBuildStability" help="/plugin/radiatorviewplugin/help/showbuildStability.html">
 		<f:checkbox name="showBuildStability" checked="${it.showBuildStability}" value="true" field="showBuildStability" />
 	</f:entry>
-	
+
+    <script>
+      (function() {
+        Behaviour.specify("#recurse", 'ListView', 0, function(e) {
+          var nestedElements = $$('SPAN.nested')
+          e.onclick = function() {
+            nestedElements.each(function(el) {
+              e.checked ? el.show() : el.hide();
+            });
+          }
+        });
+      }());
+    </script>
+
 </j:jelly>
+
