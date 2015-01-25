@@ -13,20 +13,12 @@
 		#view-message{
 		display:none;
 		}
-		#main-panel{
-		padding: 0px;
-		width: 99vw;
-		height: 90vh;
-		}
-
-		#job
+		
+		#radiatorconfig
 		{
-		position:
-		absolute;
-		overflow: hidden;
-		-moz-border-radius: 10px;
-		-webkit-border-radius: 10px;
-		-border-radius: 10px;
+		position:fixed;
+		right:0; top:0;
+		z-index:65535;
 		}
 
 		ul.config li.config
@@ -49,13 +41,6 @@
 		border: solid black 1px;
 		padding-left:10px;
 		padding-bottom:10px;
-		}
-
-		div.config
-		{
-		position:absolute;
-		right:0; top:0;
-		z-index:65535;
 		}
 
 		.building
@@ -125,6 +110,11 @@
 		.job {
 		-webkit-box-shadow:inset 0 0 10px #000000;
 		box-shadow:inset 0 0 10px #000000;
+		position:		absolute;
+		overflow: hidden;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		-border-radius: 10px;
 		}
 
 		.jobtitle {
@@ -198,6 +188,8 @@
 		right: 0px;
 		bottom: 0px;
 		z-index: 65530;
+		width: 99vw !important;
+		height: calc(99vh - 2em) !important;
 		}
 
 		#caption {
@@ -258,7 +250,7 @@
 			
 			<div id="caption" style="${captionPosition} ${captionStyle}">${from.getCaptionText()}</div>
 			
-			<div class="config">
+			<div id="radiatorconfig">
 				<ul class="config" style="margin:0; padding:0;">
 					<li class="config">
 						<p align="right" style="margin:0; padding:0;">
