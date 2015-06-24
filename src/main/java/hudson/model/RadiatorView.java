@@ -83,6 +83,10 @@ public class RadiatorView extends ListView {
 	  * User configuration - size in points (1pt = 1/72in) for the caption to be used on the radiator's headline.
 	  */
 	 Integer captionSize;
+	 /**
+	  * User configuration - separator mark chosen by user.
+	  */
+	 String separatorChar = "_";
 	 
 	/**
 	 * @param name
@@ -106,7 +110,7 @@ public class RadiatorView extends ListView {
 	@DataBoundConstructor
 	public RadiatorView(String name, Boolean showStable,
 			Boolean showStableDetail, Boolean highVis, Boolean groupByPrefix,
-			Boolean showBuildStability, String captionText, Integer captionSize) {
+			Boolean showBuildStability, String captionText, Integer captionSize, String separatorChar) {
 		super(name);
 		this.showStable = showStable;
 		this.showStableDetail = showStableDetail;
@@ -115,6 +119,7 @@ public class RadiatorView extends ListView {
 		this.showBuildStability = showBuildStability;
 		this.captionText = captionText;
 		this.captionSize = captionSize;
+		this.separatorChar=separatorChar;
 	}
 	
 	public RadiatorView(String name)
@@ -178,18 +183,10 @@ public class RadiatorView extends ListView {
 
 	private String getPrefix(String name) 
 	{
-		if (name.contains("_"))
+		if (name.contains(this.separatorChar))
 		{
-			return StringUtils.substringBefore(name, "_");
+			return StringUtils.substringBefore(name, this.separatorChar);
 		}		
-		if (name.contains("-"))
-		{
-			return StringUtils.substringBefore(name, "-");
-		}		
-		if (name.contains(":"))
-		{
-			return StringUtils.substringBefore(name, ":");
-		}
 		else return "No Project";
 	}
 
@@ -247,7 +244,11 @@ public class RadiatorView extends ListView {
 	public String getCaptionText() {
 		return captionText;
 	}
-
+	
+	public String getSeparatorChar() {
+		return separatorChar;
+	}
+	
 	public Integer getCaptionSize() {
 		return captionSize;
 	}
