@@ -41,8 +41,7 @@
 	<f:entry title="${%Use Dark Background?}" field="highVis" help="/plugin/radiatorviewplugin/help/highVis.html">
 		<f:checkbox name="highVis" checked="${it.highVis}" value="true" field="highVis" />
 	</f:entry>
-	
-	
+		
 	<f:entry title="${%Show as Projects?}" field="groupByPrefix" help="/plugin/radiatorviewplugin/help/groupByPrefix.html">
 		<f:checkbox name="groupByPrefix" checked="${it.groupByPrefix}" value="true" field="groupByPrefix" />
 	</f:entry>
@@ -50,5 +49,20 @@
 	<f:entry title="${%Show build stability?}" field="showBuildStability" help="/plugin/radiatorviewplugin/help/showbuildStability.html">
 		<f:checkbox name="showBuildStability" checked="${it.showBuildStability}" value="true" field="showBuildStability" />
 	</f:entry>
+
+	<f:optionalBlock name="useBackgrounds" title="${%Use background images per status}" checked="${it.useBackgrounds}" help="/plugin/radiatorviewplugin/help/backgrounds.html">
+		<f:entry title="${%URL for broken}" field="brokenImage" help="/plugin/radiatorviewplugin/help/background.html">
+	        <f:textbox name="brokenImage" field="brokenImage" />
+	    </f:entry>
+		<f:entry title="${%URL for unstable}" field="otherImage" help="/plugin/radiatorviewplugin/help/background.html">
+	        <f:textbox name="unstableImage" field="unstableImage" />
+	    </f:entry>
+		<f:entry title="${%URL for success}" field="otherImage" help="/plugin/radiatorviewplugin/help/background.html">
+	        <f:textbox name="successImage" field="successImage" />
+	    </f:entry>
+		<f:entry title="${%URL for not built}" field="otherImage" help="/plugin/radiatorviewplugin/help/background.html">
+	        <f:textbox name="otherImage" field="otherImage" />
+	    </f:entry>
+	</f:optionalBlock>
 	
 </j:jelly>

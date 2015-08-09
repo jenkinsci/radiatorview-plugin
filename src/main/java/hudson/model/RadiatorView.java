@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeSet;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -30,7 +29,7 @@ import org.kohsuke.stapler.StaplerRequest;
  * @author Mark Howard (mh@tildemh.com)
  */
 public class RadiatorView extends ListView {
-	
+
 	private static final int DEFAULT_CAPTION_SIZE = 36;
 
 	/**
@@ -52,27 +51,27 @@ public class RadiatorView extends ListView {
 	 * User configuration - show stable builds when there are some unstable
 	 * builds.
 	 */
-	 Boolean showStable = false;
+	 Boolean showStable = Boolean.FALSE;
 
 	/**
 	 * User configuration - show details in stable builds.
 	 */
-	 Boolean showStableDetail = false;
+	 Boolean showStableDetail = Boolean.FALSE;
 
 	/**
 	 * User configuration - show build stability icon.
 	 */
-	 Boolean showBuildStability = false;
+	 Boolean showBuildStability = Boolean.FALSE;
 
 	/**
 	 * User configuration - high visibility mode.
 	 */
-	 Boolean highVis = true;
+	 Boolean highVis = Boolean.TRUE;
 
 	/**
 	 * User configuration - group builds by common prefix.
 	 */
-	 Boolean groupByPrefix = true;
+	 Boolean groupByPrefix = Boolean.TRUE;
 
 	 /**
 	  * User configuration - text for the caption to be used on the radiator's headline.
@@ -83,7 +82,32 @@ public class RadiatorView extends ListView {
 	  * User configuration - size in points (1pt = 1/72in) for the caption to be used on the radiator's headline.
 	  */
 	 Integer captionSize;
+
+	 /**
+	  * User configuration - show background images per status.
+	  */
+	 Boolean useBackgrounds = Boolean.FALSE;
+
+	 /**
+	  * User configuration - background image URL for 'not built' status.
+	  */
+	 String otherImage;
 	 
+	 /**
+	  * User configuration - background image URL for successful build.
+	  */
+	 String successImage;
+
+	 /**
+	  * User configuration - background image URL for unstable build.
+	  */
+	 String unstableImage;
+
+	 /**
+	  * User configuration - background image URL for failed build.
+	  */
+	 String brokenImage;
+
 	/**
 	 * @param name
 	 *            view name.
@@ -102,11 +126,26 @@ public class RadiatorView extends ListView {
 	 *            Caption text to be used on the radiator's headline.
 	 * @param captionSize
 	 *            Caption size for the radiator's headline.
+	 * @param useBackgrounds
+	 *            if background images for status display should be used
+	 * @param otherImage
+	 *            URL for not built jobs
+	 * @param successImage
+	 *            URL for successful jobs
+	 * @param unstableImage
+	 *            URL for unstable jobs
+	 * @param brokenImage
+	 *            URL for failed jobs
 	 */
 	@DataBoundConstructor
 	public RadiatorView(String name, Boolean showStable,
 			Boolean showStableDetail, Boolean highVis, Boolean groupByPrefix,
-			Boolean showBuildStability, String captionText, Integer captionSize) {
+			Boolean showBuildStability, String captionText, Integer captionSize,
+			Boolean useBackgrounds,
+			String otherImage,
+			String successImage,
+			String unstableImage,
+			String brokenImage) {
 		super(name);
 		this.showStable = showStable;
 		this.showStableDetail = showStableDetail;
@@ -115,6 +154,11 @@ public class RadiatorView extends ListView {
 		this.showBuildStability = showBuildStability;
 		this.captionText = captionText;
 		this.captionSize = captionSize;
+		this.useBackgrounds = useBackgrounds;
+		this.otherImage = otherImage;
+		this.successImage = successImage;
+		this.unstableImage = unstableImage;
+		this.brokenImage = brokenImage;
 	}
 	
 	public RadiatorView(String name)
@@ -220,7 +264,18 @@ public class RadiatorView extends ListView {
 		} catch (NumberFormatException e) {
 			this.captionSize = DEFAULT_CAPTION_SIZE;
 		}
-		
+		this.useBackgrounds = Boolean.valueOf("on".equals(req.getParameter("useBackgrounds")));
+		if (Boolean.TRUE.equals(this.useBackgrounds)) {
+			this.brokenImage = req.getParameter("brokenImage");
+			this.unstableImage = req.getParameter("unstableImage");
+			this.successImage = req.getParameter("successImage");
+			this.otherImage = req.getParameter("otherImage");
+		} else {
+			this.brokenImage =
+			this.unstableImage =
+			this.successImage =
+			this.otherImage = "";
+		}
 	}
 
 	public Boolean getShowStable() {
@@ -251,7 +306,27 @@ public class RadiatorView extends ListView {
 	public Integer getCaptionSize() {
 		return captionSize;
 	}
-	
+
+	public Boolean getUseBackgrounds() {
+		return useBackgrounds;
+	}
+
+	public String getOtherImage() {
+		return otherImage;
+	}
+
+	public String getSuccessImage() {
+		return successImage;
+	}
+
+	public String getUnstableImage() {
+		return unstableImage;
+	}
+
+	public String getBrokenImage() {
+		return brokenImage;
+	}
+
 	/**
 	 * Converts a list of jobs to a list of list of jobs, suitable for display
 	 * as rows in a table.
