@@ -3,8 +3,8 @@
 	<parent>
 		<groupId>org.jenkins-ci.plugins</groupId>
 		<artifactId>plugin</artifactId>
-		<version>1.509.4</version>
-		<relativePath>../pom.xml</relativePath>
+		<version>2.0</version>
+		<relativePath />
 	</parent>
 
 	<artifactId>radiatorviewplugin</artifactId>
@@ -13,6 +13,13 @@
 	<version>1.25-SNAPSHOT</version>
 	<url>http://wiki.jenkins-ci.org/display/JENKINS/Radiator+View+Plugin</url>
 	<description>Adds a new high visibility view of project status.</description>
+
+	<properties>
+		<jenkins.version>1.509.4</jenkins.version>
+		<hpi-plugin.version>1.115</hpi-plugin.version>
+		<jenkins-test-harness.version>${jenkins.version}</jenkins-test-harness.version>
+	</properties>
+
 	<!--
 		We need the following because the artifactId=radiatorviewplugin but
 		directoryName=radiatorview, and Maven infers the wrong value if I
@@ -70,6 +77,41 @@
 			<version>1.7</version>
 			<optional>true</optional>
 		</dependency>
+		<dependency> <!-- note: matrix-project is bundled -->
+			<groupId>org.jenkins-ci.plugins</groupId>
+			<artifactId>matrix-project</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jenkins-ci.main</groupId>
+			<artifactId>jenkins-core</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.sonatype.sisu</groupId>
+					<artifactId>sisu-guice</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.jenkins-ci.main</groupId>
+			<artifactId>jenkins-test-harness</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.sonatype.sisu</groupId>
+					<artifactId>sisu-guice</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- waiting for https://github.com/jenkinsci/plugin-pom/commit/d6088c211c531ed4499da0c85dcc150d7db199ad
+		     to remove this dependency -->
+		<dependency>
+			<groupId>org.jenkins-ci.main</groupId>
+			<artifactId>jenkins-war</artifactId>
+			<version>${jenkins.version}</version>
+			<type>war</type>
+			<scope>test</scope>
+		</dependency>
+		<!-- end remove after https://github.com/jenkinsci/plugin-pom/commit/d6088c211c531ed4499da0c85dcc150d7db199ad -->
 	</dependencies>
 
     <pluginRepositories>
