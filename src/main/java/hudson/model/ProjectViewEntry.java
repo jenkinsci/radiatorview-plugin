@@ -195,12 +195,13 @@ public class ProjectViewEntry implements IViewEntry {
 	}
 
 	public String getClaim() {
-		String claim = "";
+		StringBuilder claim = new StringBuilder();
 		for (IViewEntry job : jobs) {
-			if (job.isClaimed())
-				claim += (job.getName() + ": " + job.getClaim() + ";");
+			if (job.isClaimed()) {
+				claim.append(job.getName()).append(": ").append(job.getClaim()).append(";");
+			}
 		}
-		return claim;
+		return claim.toString();
 	}
 
 	public String getColor() {
@@ -243,18 +244,15 @@ public class ProjectViewEntry implements IViewEntry {
 	}
 
 	public String getLastCompletedBuild() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	public String getLastStableBuild() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	public Boolean getQueued() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	public boolean getStable() {
