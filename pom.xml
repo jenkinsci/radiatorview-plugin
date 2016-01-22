@@ -77,11 +77,6 @@
 			<version>1.7</version>
 			<optional>true</optional>
 		</dependency>
-		<dependency> <!-- note: matrix-project is bundled -->
-			<groupId>org.jenkins-ci.plugins</groupId>
-			<artifactId>matrix-project</artifactId>
-			<version>1.0</version>
-		</dependency>
 	</dependencies>
 
     <pluginRepositories>
