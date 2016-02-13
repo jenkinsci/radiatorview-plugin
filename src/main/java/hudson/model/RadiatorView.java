@@ -143,7 +143,7 @@ public class RadiatorView extends ListView {
 		}
 
 		for (TopLevelItem item : super.getItems()) {
-			if(!isDisabled(item)) {
+			if(item instanceof Job && !isDisabled(item)) {
 				IViewEntry entry = new JobViewEntry(this, (Job<?, ?>) item);
 				contents.addBuild(entry);
 			}
