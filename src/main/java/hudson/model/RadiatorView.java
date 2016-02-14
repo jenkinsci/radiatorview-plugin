@@ -51,17 +51,17 @@ public class RadiatorView extends ListView {
 	 * User configuration - show stable builds when there are some unstable
 	 * builds.
 	 */
-	 Boolean showStable = Boolean.FALSE;
+	 Boolean showStable = false;
 
 	/**
 	 * User configuration - show details in stable builds.
 	 */
-	 Boolean showStableDetail = Boolean.FALSE;
+	 Boolean showStableDetail = false;
 
 	/**
 	 * User configuration - show build stability icon.
 	 */
-	 Boolean showBuildStability = Boolean.FALSE;
+	 Boolean showBuildStability = false;
 
 	/**
 	 * User configuration - high visibility mode.
@@ -86,7 +86,7 @@ public class RadiatorView extends ListView {
 	 /**
 	  * User configuration - show background images per status.
 	  */
-	 Boolean useBackgrounds = Boolean.FALSE;
+	 Boolean useBackgrounds = false;
 
 	 /**
 	  * User configuration - background image URL for 'not built' status.
