@@ -6,13 +6,16 @@
  */
 package hudson.model;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
  * Compares two {@link IViewEntry} by status and then name. 
  */
-final class EntryComparator implements Comparator<IViewEntry>
+final class EntryComparator implements Comparator<IViewEntry>, Serializable
 {
+    private static final long serialVersionUID = 1L;
+
     public int compare(IViewEntry o1, IViewEntry o2)
     {
         // first compare by status

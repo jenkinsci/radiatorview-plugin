@@ -254,13 +254,27 @@ public class JobViewEntry implements IViewEntry {
 	 * @return the last successful run prior to the given run
 	 */
 	private Run<?, ?> getLastSuccessfulFrom(Run<?, ?> run) {
-		Run<?, ?> r = run.getPreviousBuild();
-		while (r != null
-				&& (r.isBuilding() || r.getResult() == null || r.getResult()
-						.isWorseThan(Result.UNSTABLE))) {
-			r = r.getPreviousBuild();
+		Run<?, ?> previousBuild = run.getPreviousBuild();
+		while (hasPreviousBuildBuildingOrWithResultWorseThanUnstable(previousBuild)) {
+			previousBuild = previousBuild.getPreviousBuild();
 		}
-		return r;
+		return previousBuild;
+	}
+
+	private boolean hasPreviousBuildBuildingOrWithResultWorseThanUnstable(Run<?, ?> previousBuild) {
+		if (previousBuild != null) {
+			if (previousBuild.isBuilding()) {
+				return true;
+			}
+			final Result result = previousBuild.getResult();
+			if (result == null) {
+				return true;
+			}
+			if (result.isWorseThan(Result.UNSTABLE)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public Collection<String> getCulprits() {

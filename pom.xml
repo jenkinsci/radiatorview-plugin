@@ -3,16 +3,23 @@
 	<parent>
 		<groupId>org.jenkins-ci.plugins</groupId>
 		<artifactId>plugin</artifactId>
-		<version>1.509.4</version>
-		<relativePath>../pom.xml</relativePath>
+		<version>2.1</version>
+		<relativePath />
 	</parent>
 
 	<artifactId>radiatorviewplugin</artifactId>
 	<packaging>hpi</packaging>
 	<name>Radiator View Plugin</name>
-	<version>1.25-SNAPSHOT</version>
+	<version>1.26-SNAPSHOT</version>
 	<url>http://wiki.jenkins-ci.org/display/JENKINS/Radiator+View+Plugin</url>
 	<description>Adds a new high visibility view of project status.</description>
+
+	<properties>
+		<jenkins.version>1.532.1</jenkins.version>
+		<hpi-plugin.version>1.115</hpi-plugin.version>
+		<jenkins-test-harness.version>${jenkins.version}</jenkins-test-harness.version>
+	</properties>
+
 	<!--
 		We need the following because the artifactId=radiatorviewplugin but
 		directoryName=radiatorview, and Maven infers the wrong value if I

@@ -187,18 +187,18 @@ public class RadiatorView extends ListView {
 		}
 
 		for (TopLevelItem item : super.getItems()) {
-			if (item instanceof AbstractProject) {
-				AbstractProject project = (AbstractProject) item;
-				if (!project.isDisabled()) {
-					IViewEntry entry = new JobViewEntry(this, project);
-					contents.addBuild(entry);
-				}
+			if(item instanceof Job && !isDisabled(item)) {
+				IViewEntry entry = new JobViewEntry(this, (Job<?, ?>) item);
+				contents.addBuild(entry);
 			}
 		}
-
 		return contents;
 	}
-	
+
+	private boolean isDisabled(TopLevelItem item) {
+		return item instanceof AbstractProject && ((AbstractProject) item).isDisabled();
+	}
+
 	public ProjectViewEntry getContentsByPrefix()
 	{
 		ProjectViewEntry contents = new ProjectViewEntry();
