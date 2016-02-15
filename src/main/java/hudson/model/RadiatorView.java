@@ -29,7 +29,7 @@ import org.kohsuke.stapler.StaplerRequest;
  * @author Mark Howard (mh@tildemh.com)
  */
 public class RadiatorView extends ListView {
-
+	
 	private static final int DEFAULT_CAPTION_SIZE = 36;
 
 	/**
@@ -66,12 +66,12 @@ public class RadiatorView extends ListView {
 	/**
 	 * User configuration - high visibility mode.
 	 */
-	 Boolean highVis = Boolean.TRUE;
+	 Boolean highVis = true;
 
 	/**
 	 * User configuration - group builds by common prefix.
 	 */
-	 Boolean groupByPrefix = Boolean.TRUE;
+	 Boolean groupByPrefix = true;
 
 	 /**
 	  * User configuration - text for the caption to be used on the radiator's headline.
