@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 
 import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
@@ -52,76 +53,54 @@ public class RadiatorView extends ListView {
 	 * User configuration - show stable builds when there are some unstable
 	 * builds.
 	 */
+	 @DataBoundSetter
 	 Boolean showStable = false;
 
 	/**
 	 * User configuration - show details in stable builds.
 	 */
+	 @DataBoundSetter
 	 Boolean showStableDetail = false;
 
 	/**
 	 * User configuration - show build stability icon.
 	 */
+	 @DataBoundSetter
 	 Boolean showBuildStability = false;
 
 	/**
 	 * User configuration - high visibility mode.
 	 */
+	 @DataBoundSetter
 	 Boolean highVis = true;
 
 	/**
 	 * User configuration - group builds by common prefix.
 	 */
+	 @DataBoundSetter
 	 Boolean groupByPrefix = true;
 
 	 /**
 	  * User configuration - text for the caption to be used on the radiator's headline.
 	  */
+	 @DataBoundSetter
 	 String captionText;
-	 
+
 	 /**
 	  * User configuration - size in points (1pt = 1/72in) for the caption to be used on the radiator's headline.
 	  */
+	 @DataBoundSetter
 	 Integer captionSize;
 	 
 	/**
 	 * @param name
 	 *            view name.
-	 * @param showStable
-	 *            if stable builds should be shown.
-	 * @param showStableDetail
-	 *            if detail should be shown for stable builds.
-	 * @param highVis
-	 *            high visibility mode.
-	 * @param groupByPrefix
-	 *            If true, builds will be shown grouped together based on the
-	 *            prefix of the job name.
-	 * @param showBuildStability
-	 *            Shows weather icon for job view when true.
-	 * @param captionText
-	 *            Caption text to be used on the radiator's headline.
-	 * @param captionSize
-	 *            Caption size for the radiator's headline.
 	 */
 	@DataBoundConstructor
-	public RadiatorView(String name, Boolean showStable,
-			Boolean showStableDetail, Boolean highVis, Boolean groupByPrefix,
-			Boolean showBuildStability, String captionText, Integer captionSize) {
+	public RadiatorView(String name) {
 		super(name);
-		this.showStable = showStable;
-		this.showStableDetail = showStableDetail;
-		this.highVis = highVis;
-		this.groupByPrefix = groupByPrefix;
-		this.showBuildStability = showBuildStability;
-		this.captionText = captionText;
-		this.captionSize = captionSize;
 	}
 	
-	public RadiatorView(String name)
-	{
-		super(name);
-	}
-
 	/**
 	 * @return the colors to use
 	 */
