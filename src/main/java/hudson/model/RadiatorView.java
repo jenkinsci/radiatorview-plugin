@@ -173,23 +173,12 @@ public class RadiatorView extends ListView {
 	}
 
 
-	/**
-	 * Gets from the request the configuration parameters
-	 * 
-	 * @param req
-	 *            {@link StaplerRequest}
-	 * @throws ServletException
-	 *             if any
-	 * @throws FormException
-	 *             if any
-	 */
 	@Override
 	protected void submit(StaplerRequest req) throws ServletException, IOException, 
 			FormException {
 		super.submit(req);
 		this.showStable = Boolean.parseBoolean(req.getParameter("showStable"));
-		this.showStableDetail = Boolean.parseBoolean(req
-				.getParameter("showStableDetail"));
+		this.showStableDetail = Boolean.parseBoolean(req.getParameter("showStableDetail"));
 		this.highVis = Boolean.parseBoolean(req.getParameter("highVis"));
 		this.groupByPrefix = Boolean.parseBoolean(req.getParameter("groupByPrefix"));
 		this.showBuildStability = Boolean.parseBoolean(req.getParameter("showBuildStability"));
