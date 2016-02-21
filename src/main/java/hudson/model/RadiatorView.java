@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -17,6 +18,7 @@ import javax.servlet.ServletException;
 
 import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
@@ -51,121 +53,84 @@ public class RadiatorView extends ListView {
 	 * User configuration - show stable builds when there are some unstable
 	 * builds.
 	 */
+	 @DataBoundSetter
 	 Boolean showStable = false;
 
 	/**
 	 * User configuration - show details in stable builds.
 	 */
+	 @DataBoundSetter
 	 Boolean showStableDetail = false;
 
 	/**
 	 * User configuration - show build stability icon.
 	 */
+	 @DataBoundSetter
 	 Boolean showBuildStability = false;
 
 	/**
 	 * User configuration - high visibility mode.
 	 */
+	 @DataBoundSetter
 	 Boolean highVis = true;
 
 	/**
 	 * User configuration - group builds by common prefix.
 	 */
+	 @DataBoundSetter
 	 Boolean groupByPrefix = true;
 
 	 /**
 	  * User configuration - text for the caption to be used on the radiator's headline.
 	  */
+	 @DataBoundSetter
 	 String captionText;
-	 
+
 	 /**
 	  * User configuration - size in points (1pt = 1/72in) for the caption to be used on the radiator's headline.
 	  */
+	 @DataBoundSetter
 	 Integer captionSize;
 
 	 /**
 	  * User configuration - show background images per status.
 	  */
+	 @DataBoundSetter
 	 Boolean useBackgrounds = false;
 
 	 /**
 	  * User configuration - background image URL for 'not built' status.
 	  */
+	 @DataBoundSetter
 	 String otherImage;
 	 
 	 /**
 	  * User configuration - background image URL for successful build.
 	  */
+	 @DataBoundSetter
 	 String successImage;
 
 	 /**
 	  * User configuration - background image URL for unstable build.
 	  */
+	 @DataBoundSetter
 	 String unstableImage;
 
 	 /**
 	  * User configuration - background image URL for failed build.
 	  */
+	 @DataBoundSetter
 	 String brokenImage;
 
 	/**
 	 * @param name
 	 *            view name.
-	 * @param showStable
-	 *            if stable builds should be shown.
-	 * @param showStableDetail
-	 *            if detail should be shown for stable builds.
-	 * @param highVis
-	 *            high visibility mode.
-	 * @param groupByPrefix
-	 *            If true, builds will be shown grouped together based on the
-	 *            prefix of the job name.
-	 * @param showBuildStability
-	 *            Shows weather icon for job view when true.
-	 * @param captionText
-	 *            Caption text to be used on the radiator's headline.
-	 * @param captionSize
-	 *            Caption size for the radiator's headline.
-	 * @param useBackgrounds
-	 *            if background images for status display should be used
-	 * @param otherImage
-	 *            URL for not built jobs
-	 * @param successImage
-	 *            URL for successful jobs
-	 * @param unstableImage
-	 *            URL for unstable jobs
-	 * @param brokenImage
-	 *            URL for failed jobs
 	 */
 	@DataBoundConstructor
-	public RadiatorView(String name, Boolean showStable,
-			Boolean showStableDetail, Boolean highVis, Boolean groupByPrefix,
-			Boolean showBuildStability, String captionText, Integer captionSize,
-			Boolean useBackgrounds,
-			String otherImage,
-			String successImage,
-			String unstableImage,
-			String brokenImage) {
+	public RadiatorView(String name) {
 		super(name);
-		this.showStable = showStable;
-		this.showStableDetail = showStableDetail;
-		this.highVis = highVis;
-		this.groupByPrefix = groupByPrefix;
-		this.showBuildStability = showBuildStability;
-		this.captionText = captionText;
-		this.captionSize = captionSize;
-		this.useBackgrounds = useBackgrounds;
-		this.otherImage = otherImage;
-		this.successImage = successImage;
-		this.unstableImage = unstableImage;
-		this.brokenImage = brokenImage;
 	}
 	
-	public RadiatorView(String name)
-	{
-		super(name);
-	}
-
 	/**
 	 * @return the colors to use
 	 */
@@ -238,23 +203,12 @@ public class RadiatorView extends ListView {
 	}
 
 
-	/**
-	 * Gets from the request the configuration parameters
-	 * 
-	 * @param req
-	 *            {@link StaplerRequest}
-	 * @throws ServletException
-	 *             if any
-	 * @throws FormException
-	 *             if any
-	 */
 	@Override
 	protected void submit(StaplerRequest req) throws ServletException, IOException, 
 			FormException {
 		super.submit(req);
 		this.showStable = Boolean.parseBoolean(req.getParameter("showStable"));
-		this.showStableDetail = Boolean.parseBoolean(req
-				.getParameter("showStableDetail"));
+		this.showStableDetail = Boolean.parseBoolean(req.getParameter("showStableDetail"));
 		this.highVis = Boolean.parseBoolean(req.getParameter("highVis"));
 		this.groupByPrefix = Boolean.parseBoolean(req.getParameter("groupByPrefix"));
 		this.showBuildStability = Boolean.parseBoolean(req.getParameter("showBuildStability"));
