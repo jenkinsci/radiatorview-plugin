@@ -24,7 +24,7 @@
 		We need the following because the artifactId=radiatorviewplugin but
 		directoryName=radiatorview, and Maven infers the wrong value if I
 		don't specify it explicitly.
-	--> 
+	-->
 	<scm>
 		<connection>scm:git:git://github.com/jenkinsci/radiatorview-plugin.git</connection>
 		<developerConnection>scm:git:git@github.com:jenkinsci/radiatorview-plugin.git</developerConnection>
@@ -40,34 +40,39 @@
 	</developers>
 
 	<repositories>
-		<repository>
-		        <id>repo.jenkins-ci.org</id>
-                <url>http://repo.jenkins-ci.org/public/</url>
-		</repository>
-	</repositories>
+    <repository>
+      <id>repo.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
-    <build>
-    	<pluginManagement>
-    		<plugins>
-    			<plugin>
-    				<groupId>org.apache.maven.plugins</groupId>
-    				<artifactId>maven-release-plugin</artifactId>
-    				<version>2.5.1</version>
-    			</plugin>
-    		</plugins>
-    	</pluginManagement>
-    </build>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.5.1</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 	<distributionManagement>
-		<!--  maven3 doesn't support anymore id local -->
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>maven.jenkins-ci.org</id>
+			<url>https://repo.jenkins-ci.org/releases/</url>
+		</repository>
 		<snapshotRepository>
-			<!-- prevent accidental deployment of SNAPSHOTS to repository -->
-			<id>local.repository</id>
-			<url>file:.</url>
+			<id>maven.jenkins-ci.org</id>
+			<url>https://repo.jenkins-ci.org/snapshots/</url>
 		</snapshotRepository>
-	    <repository>
-	      <id>maven.jenkins-ci.org</id>
-	      <url>http://maven.jenkins-ci.org:8081/content/repositories/releases/</url>
-	    </repository>
 	</distributionManagement>
 
 	<dependencies>
@@ -79,11 +84,16 @@
 		</dependency>
 	</dependencies>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>repo.jenkins-ci.org</id>
-            <url>http://repo.jenkins-ci.org/public/</url>
-        </pluginRepository>
-    </pluginRepositories>
-</project>  
-
+	<pluginRepositories>
+    <pluginRepository>
+      <id>repo.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+</project>
