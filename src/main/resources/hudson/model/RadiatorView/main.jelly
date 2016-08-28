@@ -218,7 +218,7 @@
 					<j:set var="captionStyle" value="background-color: black; color: white;" />
 				</j:when>
 				<j:otherwise>
-					<j:set var="dashStyle" value="background-color: white; background-image: url(${rootURL}/static/0360aadc/images/hudson.png);
+					<j:set var="dashStyle" value="background-color: white; background-image: url(${rootURL}/static/0360aadc/images/jenkins.png);
 							background-repeat: no-repeat; background-position: left bottom;" />
 					<j:set var="captionStyle" value="background-color: white; color: #c0c0c0;" />
 				</j:otherwise>
