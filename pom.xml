@@ -15,7 +15,7 @@
 	<description>Adds a new high visibility view of project status.</description>
 
 	<properties>
-		<jenkins.version>1.554.1</jenkins.version>
+		<jenkins.version>1.642.3</jenkins.version>
 		<hpi-plugin.version>1.115</hpi-plugin.version>
 		<jenkins-test-harness.version>${jenkins.version}</jenkins-test-harness.version>
 	</properties>
@@ -81,6 +81,16 @@
 			<artifactId>claim</artifactId>
 			<version>1.7</version>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.jenkins-ci.plugins</groupId>
+			<artifactId>junit</artifactId>
+			<version>1.19</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jenkins-ci.plugins</groupId>
+			<artifactId>matrix-project</artifactId>
+			<version>1.4.1</version>
 		</dependency>
 	</dependencies>
 
