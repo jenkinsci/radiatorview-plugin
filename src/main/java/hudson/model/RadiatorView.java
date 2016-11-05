@@ -1,26 +1,26 @@
 package hudson.model;
 
+import com.cloudbees.hudson.plugins.folder.AbstractFolder;
 import hudson.Extension;
 import hudson.Util;
 import hudson.model.Descriptor.FormException;
 import hudson.util.FormValidation;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeSet;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
-import javax.servlet.ServletException;
-
+import jenkins.model.Jenkins;
 import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * A configurable Radiator-Style job view suitable for use in extreme feedback
@@ -33,6 +33,8 @@ import org.kohsuke.stapler.StaplerRequest;
 public class RadiatorView extends ListView {
 	
 	private static final int DEFAULT_CAPTION_SIZE = 36;
+
+	private static final Logger LOGGER = Logger.getLogger(RadiatorView.class.getName());
 
 	/**
 	 * Entries to be shown in the view.
@@ -112,22 +114,31 @@ public class RadiatorView extends ListView {
 	}
 
 	public ProjectViewEntry getContents() {
-		ProjectViewEntry contents = new ProjectViewEntry();
+		ProjectViewEntry content = new ProjectViewEntry();
 
 		placeInQueue = new HashMap<hudson.model.Queue.Item, Integer>();
 		int j = 1;
-		for (hudson.model.Queue.Item i : Hudson.getInstance().getQueue()
+		for (hudson.model.Queue.Item i : Jenkins.getActiveInstance().getQueue()
 				.getItems()) {
 			placeInQueue.put(i, j++);
 		}
 
-		for (TopLevelItem item : super.getItems()) {
-			if(item instanceof Job && !isDisabled(item)) {
+		LOGGER.fine("Collecting items for view " + getViewName());
+		addItems(getItems(), content);
+		return content;
+	}
+
+	private void addItems(Collection<TopLevelItem> items, ProjectViewEntry content) {
+		for (TopLevelItem item : items) {
+			LOGGER.fine(item.getName() + " (" + item.getClass() + ")");
+			if (item instanceof AbstractFolder) {
+				addItems(((AbstractFolder) item).getItems(), content);
+			}
+			if (item instanceof Job && !isDisabled(item)) {
 				IViewEntry entry = new JobViewEntry(this, (Job<?, ?>) item);
-				contents.addBuild(entry);
+				content.addBuild(entry);
 			}
 		}
-		return contents;
 	}
 
 	private boolean isDisabled(TopLevelItem item) {

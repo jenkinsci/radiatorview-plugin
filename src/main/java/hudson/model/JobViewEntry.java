@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import jenkins.model.Jenkins;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -68,7 +69,7 @@ public class JobViewEntry implements IViewEntry {
 	 * @see hudson.model.IViewEntry#getName()
 	 */
 	public String getName() {
-		return job.getName();
+		return job.getFullName();
 	}
 
 	/*
@@ -432,7 +433,7 @@ public class JobViewEntry implements IViewEntry {
 	 */
 	public String getClaim() {
 		// check we have claim plugin
-		if (Hudson.getInstance().getPlugin("claim") == null) {
+		if (Jenkins.getActiveInstance().getPlugin("claim") == null) {
 			return null;
 		}
 		Run<?, ?> lastBuild = getLastCompletedRun();
@@ -463,7 +464,7 @@ public class JobViewEntry implements IViewEntry {
 	}
 
 	public String getUnclaimedMatrixBuilds() {
-		if (Hudson.getInstance().getPlugin("claim") == null) {
+		if (Jenkins.getActiveInstance().getPlugin("claim") == null) {
 			return "";
 		}
 		Run<?, ?> lastBuild = getLastCompletedRun();
