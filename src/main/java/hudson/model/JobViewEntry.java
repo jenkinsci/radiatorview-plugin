@@ -69,7 +69,7 @@ public class JobViewEntry implements IViewEntry {
 	 * @see hudson.model.IViewEntry#getName()
 	 */
 	public String getName() {
-		return job.getName();
+		return job.getFullName();
 	}
 
 	/*
