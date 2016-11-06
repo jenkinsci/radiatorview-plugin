@@ -61,7 +61,7 @@ public class ProjectViewEntry implements IViewEntry {
 
 		computePassingAndFailingJobs();
 
-		if (failing.size() > 0) {
+		if (!failing.isEmpty()) {
 			TreeSet<IViewEntry> aggregate = new TreeSet<IViewEntry>(
 					new EntryComparator());
 			aggregate.addAll(unstable);
@@ -83,7 +83,7 @@ public class ProjectViewEntry implements IViewEntry {
 	public TreeSet<IViewEntry> getFailingJobs() {
 		computePassingAndFailingJobs();
 
-		if (failing.size() > 0) {
+		if (!failing.isEmpty()) {
 			return failing;
 		}
 		return unstable;
@@ -152,7 +152,7 @@ public class ProjectViewEntry implements IViewEntry {
 		if (getStable()) {
 			return "successful";
 		}
-		if (getUnclaimedJobs().size() == 0) {
+		if (getUnclaimedJobs().isEmpty()) {
 			return "claimed";
 		}
 		if (getBroken()) {
@@ -162,13 +162,16 @@ public class ProjectViewEntry implements IViewEntry {
 	}
 
 	public String getBackgroundColor() {
-		if (getBroken() || getFailCount() > 0)
-			if (getUnclaimedJobs().size() == 0)
+		if (getBroken() || getFailCount() > 0) {
+			if (getUnclaimedJobs().isEmpty()) {
 				return "orange";
-			else
+			} else {
 				return "red";
-		else
+			}
+		}
+		else {
 			return "green";
+		}
 	}
 
 	public Boolean getBroken() {
@@ -272,7 +275,7 @@ public class ProjectViewEntry implements IViewEntry {
 	}
 
 	public String getSuccessPercentage() {
-		return "" + 100 * getSuccessCount() / getTestCount();
+		return Integer.toString(100 * getSuccessCount() / getTestCount());
 	}
 
 	public int getTestCount() {

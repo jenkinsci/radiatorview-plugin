@@ -441,7 +441,7 @@ public class JobViewEntry implements IViewEntry {
 			return null;
 		}
 		// find the claim
-		String claim = "";
+		final String claim;
 		if (lastBuild instanceof hudson.matrix.MatrixBuild) {
 			MatrixBuild matrixBuild = (hudson.matrix.MatrixBuild) lastBuild;
 			claim = buildMatrixClaimString(matrixBuild, true);
