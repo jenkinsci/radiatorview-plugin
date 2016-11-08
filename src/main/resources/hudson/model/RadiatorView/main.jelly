@@ -4,6 +4,39 @@
 	xmlns:i="jelly:fmt">
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta http-equiv="refresh" content="${from.refresh}" />
+	<j:choose>
+		<j:when test="${empty from.getBrokenImage()}">
+			<j:set var="brokenBackground" value="" />
+		</j:when>
+		<j:otherwise>
+			<j:set var="brokenBackground" value="background-image: url(${from.getBrokenImage()}); background-size: contain; background-repeat: no-repeat; background-position: center center;" />
+		</j:otherwise>
+	</j:choose>
+	<j:choose>
+		<j:when test="${empty from.getUnstableImage()}">
+			<j:set var="unstableBackground" value="" />
+		</j:when>
+		<j:otherwise>
+			<j:set var="unstableBackground" value="background-image: url(${from.getUnstableImage()}); background-size: contain; background-repeat: no-repeat; background-position: center center;" />
+		</j:otherwise>
+	</j:choose>
+	<j:choose>
+		<j:when test="${empty from.getSuccessImage()}">
+			<j:set var="successBackground" value="" />
+		</j:when>
+		<j:otherwise>
+			<j:set var="successBackground" value="background-image: url(${from.getSuccessImage()}); background-size: contain; background-repeat: no-repeat; background-position: center center;" />
+		</j:otherwise>
+	</j:choose>
+	<j:choose>
+		<j:when test="${empty from.getOtherImage()}">
+			<j:set var="otherBackground" value="" />
+		</j:when>
+		<j:otherwise>
+			<j:set var="otherBackground" value="background-image: url(${from.getOtherImage()}); background-size: contain; background-repeat: no-repeat; background-position: center center;" />
+		</j:otherwise>
+	</j:choose>
+
 	<style type="text/css">
 		#header{
 		display:none;
@@ -135,6 +168,7 @@
 		rgb(193,63,63) 19%,
 		rgb(235,26,36) 60%
 		);
+		${brokenBackground}
 		}
 
 		.successful {
@@ -150,6 +184,7 @@
 		rgb(64,122,75) 5%,
 		rgb(0,138,44) 53%
 		);
+		${successBackground}
 		}
 
 		.claimed {
@@ -180,6 +215,11 @@
 		rgb(224,224,0) 60%,
 		yellow 90%
 		);
+		${unstableBackground}
+		}
+
+		.never {
+		${otherBackground}
 		}
 
 		.dashboard {

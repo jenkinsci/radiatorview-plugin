@@ -93,7 +93,37 @@ public class RadiatorView extends ListView {
 	  */
 	 @DataBoundSetter
 	 Integer captionSize;
+
+	 /**
+	  * User configuration - show background images per status.
+	  */
+	 @DataBoundSetter
+	 Boolean useBackgrounds = false;
+
+	 /**
+	  * User configuration - background image URL for 'not built' status.
+	  */
+	 @DataBoundSetter
+	 String otherImage;
 	 
+	 /**
+	  * User configuration - background image URL for successful build.
+	  */
+	 @DataBoundSetter
+	 String successImage;
+
+	 /**
+	  * User configuration - background image URL for unstable build.
+	  */
+	 @DataBoundSetter
+	 String unstableImage;
+
+	 /**
+	  * User configuration - background image URL for failed build.
+	  */
+	 @DataBoundSetter
+	 String brokenImage;
+
 	/**
 	 * @param name
 	 *            view name.
@@ -199,7 +229,18 @@ public class RadiatorView extends ListView {
 		} catch (NumberFormatException e) {
 			this.captionSize = DEFAULT_CAPTION_SIZE;
 		}
-		
+		this.useBackgrounds = Boolean.valueOf("on".equals(req.getParameter("useBackgrounds")));
+		if (Boolean.TRUE.equals(this.useBackgrounds)) {
+			this.brokenImage = req.getParameter("brokenImage");
+			this.unstableImage = req.getParameter("unstableImage");
+			this.successImage = req.getParameter("successImage");
+			this.otherImage = req.getParameter("otherImage");
+		} else {
+			this.brokenImage =
+			this.unstableImage =
+			this.successImage =
+			this.otherImage = "";
+		}
 	}
 
 	public Boolean getShowStable() {
@@ -230,7 +271,27 @@ public class RadiatorView extends ListView {
 	public Integer getCaptionSize() {
 		return captionSize;
 	}
-	
+
+	public Boolean getUseBackgrounds() {
+		return useBackgrounds;
+	}
+
+	public String getOtherImage() {
+		return otherImage;
+	}
+
+	public String getSuccessImage() {
+		return successImage;
+	}
+
+	public String getUnstableImage() {
+		return unstableImage;
+	}
+
+	public String getBrokenImage() {
+		return brokenImage;
+	}
+
 	/**
 	 * Converts a list of jobs to a list of list of jobs, suitable for display
 	 * as rows in a table.
