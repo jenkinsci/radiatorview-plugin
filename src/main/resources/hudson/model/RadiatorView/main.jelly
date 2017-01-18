@@ -15,6 +15,10 @@
 		display:none;
 		}
 
+		a {
+			text-decoration: none !important;
+		}
+
 		#radiatorconfig
 		{
 		position:fixed;
