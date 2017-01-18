@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -93,7 +94,10 @@ public class RadiatorView extends ListView {
 	  */
 	 @DataBoundSetter
 	 Integer captionSize;
-	 
+
+	 @DataBoundSetter
+	 String excludeRegex;
+
 	/**
 	 * @param name
 	 *            view name.
@@ -134,11 +138,18 @@ public class RadiatorView extends ListView {
 			if (item instanceof AbstractFolder) {
 				addItems(((AbstractFolder) item).getItems(), content);
 			}
-			if (item instanceof Job && !isDisabled(item)) {
+			if (item instanceof Job && !isDisabled(item) && !isExcluded(item)) {
 				IViewEntry entry = new JobViewEntry(this, (Job<?, ?>) item);
 				content.addBuild(entry);
 			}
 		}
+	}
+
+	private boolean isExcluded(TopLevelItem item) {
+		final boolean matches = Pattern.matches(excludeRegex, item.getFullName());
+		LOGGER.log(Level.FINE, "Checking {0}, fullName={1}, excluded={2}",
+		           new String[]{item.getName(), item.getFullName(), String.valueOf(matches)});
+		return matches;
 	}
 
 	private boolean isDisabled(TopLevelItem item) {
@@ -184,6 +195,10 @@ public class RadiatorView extends ListView {
 	}
 
 
+	public String getExcludeRegex() {
+		return excludeRegex;
+	}
+
 	@Override
 	protected void submit(StaplerRequest req) throws ServletException, IOException, 
 			FormException {
@@ -194,6 +209,7 @@ public class RadiatorView extends ListView {
 		this.groupByPrefix = Boolean.parseBoolean(req.getParameter("groupByPrefix"));
 		this.showBuildStability = Boolean.parseBoolean(req.getParameter("showBuildStability"));
 		this.captionText = req.getParameter("captionText");
+		this.excludeRegex = req.getParameter("excludeRegex");
 		try {
 			this.captionSize = Integer.parseInt(req.getParameter("captionSize"));
 		} catch (NumberFormatException e) {

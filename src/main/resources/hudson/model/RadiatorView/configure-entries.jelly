@@ -40,6 +40,14 @@
     </f:entry>
   </f:optionalBlock>
 
+
+    <f:optionalBlock name="useexcluderegex" title="${%Use a regular expression to exclude jobs from the view}"
+                     checked="${it.excludeRegex != null}" >
+        <f:entry title="${%Regular expression}">
+            <f:textbox name="excludeRegex" field="excludeRegex" />
+        </f:entry>
+    </f:optionalBlock>
+
 	<f:entry title="${%Show stable builds?}" field="showStable"  help="/plugin/radiatorviewplugin/help/showstable.html">
 		<f:checkbox name="showStable" checked="${it.showStable}" value="true" field="showStable" />
 	</f:entry>
