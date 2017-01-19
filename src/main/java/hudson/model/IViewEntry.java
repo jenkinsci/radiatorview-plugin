@@ -3,7 +3,7 @@ package hudson.model;
 import java.util.Collection;
 
 /**
- * Interface for an entry on the radiator, which may be either a job or a group of jobs. 
+ * Interface for an entry on the radiator, which may be either a job or a group of jobs.
  */
 public interface IViewEntry {
 
@@ -11,6 +11,11 @@ public interface IViewEntry {
 	 * @return the job's name
 	 */
 	public abstract String getName();
+
+	/**
+	 * @return the job's radiator project name
+	 */
+	public abstract String getProjectName();
 
 	/**
 	 * @return if this job is queued for build
@@ -66,12 +71,12 @@ public interface IViewEntry {
 	/**
 	 * Elects a culprit/responsible for a broken build by choosing the last
 	 * commiter of a given build
-	 * 
+	 *
 	 * @return the culprit/responsible
 	 */
 	public abstract String getCulprit();
-	
-	
+
+
     public Collection<String> getCulprits();
 
 	/**
@@ -96,7 +101,7 @@ public interface IViewEntry {
 	/**
 	 * If the claims plugin is installed, this will get details of the claimed
 	 * build failures.
-	 * 
+	 *
 	 * @return details of any claims for the broken build, or null if nobody has
 	 *         claimed this build.
 	 */
@@ -108,7 +113,7 @@ public interface IViewEntry {
 	public abstract String getUnclaimedMatrixBuilds();
 
 	public abstract Result getLastFinishedResult();
-	
+
 	public abstract boolean hasChildren();
 
 	/**
