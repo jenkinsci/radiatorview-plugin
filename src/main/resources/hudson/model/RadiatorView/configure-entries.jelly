@@ -69,6 +69,10 @@
 		<f:checkbox name="showBuildStability" checked="${it.showBuildStability}" value="true" field="showBuildStability" />
 	</f:entry>
 
+ 	<f:entry title="${%Flexible rows?}" field="flexibleRows" help="/plugin/radiatorviewplugin/help/flexibleRows.html">
+		<f:checkbox name="flexibleRows" checked="${it.flexibleRows}" value="true" field="flexibleRows" />
+	</f:entry>
+ 
     <script>
       (function() {
         Behaviour.specify("#recurse", 'ListView', 0, function(e) {

@@ -115,6 +115,6 @@ public final class ViewEntryColors
         return otherFG;
     }
 
-    public static final ViewEntryColors DEFAULT = new ViewEntryColors("#88ff88", "black", "yellow", "black",
+    public static final ViewEntryColors DEFAULT = new ViewEntryColors("#88ff88", "white", "yellow", "white",
             "red", "white", "#CCCCCC", "#FFFFFF");
 }

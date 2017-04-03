@@ -65,7 +65,13 @@ public class RadiatorView extends ListView {
 	 @DataBoundSetter
 	 Boolean showStableDetail = false;
 
-	/**
+	 /**
+	  * User configuration - show flexible rows.
+	  */
+	 @DataBoundSetter
+	 Boolean flexibleRows = false;
+
+		 /**
 	 * User configuration - show build stability icon.
 	 */
 	 @DataBoundSetter
@@ -205,6 +211,7 @@ public class RadiatorView extends ListView {
 		super.submit(req);
 		this.showStable = Boolean.parseBoolean(req.getParameter("showStable"));
 		this.showStableDetail = Boolean.parseBoolean(req.getParameter("showStableDetail"));
+		this.flexibleRows = Boolean.parseBoolean(req.getParameter("flexibleRows"));
 		this.highVis = Boolean.parseBoolean(req.getParameter("highVis"));
 		this.groupByPrefix = Boolean.parseBoolean(req.getParameter("groupByPrefix"));
 		this.showBuildStability = Boolean.parseBoolean(req.getParameter("showBuildStability"));
@@ -224,6 +231,10 @@ public class RadiatorView extends ListView {
 
 	public Boolean getShowStableDetail() {
 		return showStableDetail;
+	}
+
+	public Boolean getFlexibleRows() {
+		return flexibleRows;
 	}
 
 	public Boolean getHighVis() {
@@ -292,9 +303,8 @@ public class RadiatorView extends ListView {
 		return rows;
 	}
 
-
 	@Extension
-	public static final class DescriptorImpl extends ViewDescriptor {
+	public static class DescriptorImpl extends ViewDescriptor {
 		public DescriptorImpl() {
 			super(RadiatorView.class);
 		}
@@ -304,9 +314,9 @@ public class RadiatorView extends ListView {
 			return "Radiator";
 		}
 
-		/**
-		 * Checks if the include regular expression is valid.
-		 */
+
+		// Checks if the include regular expression is valid.
+
 		public FormValidation doCheckIncludeRegex(@QueryParameter String value) {
 			String v = Util.fixEmpty(value);
 			if (v != null) {
