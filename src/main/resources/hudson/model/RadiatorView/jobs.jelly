@@ -15,37 +15,53 @@
 	</j:invoke>
 
 	<!--  how much space to allocate for failed and passing jobs. -->
-
 	<j:choose>
 		<j:when test="${passJobs.isEmpty() || !from.getShowStable()}">
 			<j:set var="passJobsHeight" value="0" />
 		</j:when>
 		<j:otherwise>
-			<j:if test="${from.getShowStableDetail()}">
-				<j:set var="passJobsHeight" value="34" />
-			</j:if>
-			<j:if test="${!from.getShowStableDetail()}">
-				<j:set var="passJobsHeight" value="15" />
-			</j:if>
-			<j:if test="${from.getFlexibleRows()}">
-				<j:set var="passJobsHeight" value="${100 * passJobRows.size() / (passJobRows.size() + failJobRows.size())}" />
-			</j:if>
+			<j:choose>
+				<j:when test="${failJobs.isEmpty()}">
+					<j:set var="passJobsHeight" value="100" />
+				</j:when>
+				<j:otherwise>
+					<j:set var="passJobsHeight" value="${from.getShowStableDetail() ? 34 : 15}" />
+					<j:if test="${from.getFlexibleRows()}">
+						<j:set var="passJobsHeight" value="${100 * passJobRows.size() / (passJobRows.size() + failJobRows.size())}" />
+					</j:if>
+				</j:otherwise>
+			</j:choose>
 		</j:otherwise>
 	</j:choose>
 		
 	<j:set var="failJobsHeight" value="${100 - passJobsHeight}" />
+
+
+	<!--  set size of health icon  -->
+	<j:if test="${from.getFlexibleRows()}">
+		<j:set var="helthIconSize" value="16x16" />
+		<j:if test="${from.getFontSize() > 20}">
+			<j:set var="helthIconSize" value="24x24" />
+		</j:if>
+		<j:if test="${from.getFontSize() > 26}">
+			<j:set var="helthIconSize" value="32x32" />
+		</j:if>
+		<j:if test="${from.getFontSize() > 40}">
+			<j:set var="helthIconSize" value="48x48" />
+		</j:if>
+	</j:if>
 	
 	<!-- render the failing jobs... -->
 	<j:if test="${!failJobs.isEmpty()}">
-		<j:set var="jobFont" value="xx-large" />
-		<j:set var="failFont" value="xx-large" />
+		<j:set var="jobFont" value="${from.getFlexibleRows() ? from.getFontSize()+'px' : 'xx-large'}" />
+		<j:set var="failFont" value="${from.getFlexibleRows() ? from.getFontSize()+'px' : 'xx-large'}" />
 		<j:set var="infoFont" value="medium" />
 		<j:set var="buildFont" value="medium" />
-		<j:set var="iconSize" value="48x48" />
+		<j:set var="iconSize" value="${from.getFlexibleRows() ? helthIconSize : '48x48'}" />
 
 
 		<j:set var="height" value="${(failJobsHeight / failJobRows.size())}" />
-		<j:set var="top" value="1" />
+		<j:set var="top" value="0" />
 		<j:set var="showDetail" value="true" />
 		<j:forEach var="row" items="${failJobRows}">
 			<j:set var="width" value="${(100 / row.size())}" />
@@ -64,10 +80,10 @@
 		optionally show stable jobs if requested or there are none failing.
 	-->
 	<j:if test="${from.getShowStable() || failJobs.isEmpty()}">
-		<j:set var="jobFont" value="xx-medium" />
-		<j:set var="infoFont" value="medium" />
-		<j:set var="buildFont" value="medium" />
-		<j:set var="iconSize" value="32x32" />
+		<j:set var="jobFont" value="${from.getFlexibleRows() ? from.getFontSize()+'px' : 'x-small'}" />
+		<j:set var="infoFont" value="xx-small" />
+		<j:set var="buildFont" value="xx-small" />
+		<j:set var="iconSize" value="${from.getFlexibleRows() ? helthIconSize : '16x16'}" />
 
 		<j:set var="height" value="${(passJobsHeight / passJobRows.size())}" />
 		<j:set var="top" value="${failJobsHeight}" />

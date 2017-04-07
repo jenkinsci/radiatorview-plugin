@@ -69,9 +69,12 @@
 		<f:checkbox name="showBuildStability" checked="${it.showBuildStability}" value="true" field="showBuildStability" />
 	</f:entry>
 
- 	<f:entry title="${%Flexible rows?}" field="flexibleRows" help="/plugin/radiatorviewplugin/help/flexibleRows.html">
-		<f:checkbox name="flexibleRows" checked="${it.flexibleRows}" value="true" field="flexibleRows" />
-	</f:entry>
+	<f:optionalBlock name="flexibleRows" title="${%Flexible rows?}"
+                   checked="${it.getFlexibleRows()}" inline="true" help="/plugin/radiatorviewplugin/help/flexibleRows.html">
+	    <f:entry title="${%Font size}" field="fontSize"  help="/plugin/radiatorviewplugin/help/fontSize.html">
+	        <f:textbox name="fontSize" field="fontSize" clazz="required positive-number" default="16" />
+	    </f:entry>
+    </f:optionalBlock>
  
     <script>
       (function() {

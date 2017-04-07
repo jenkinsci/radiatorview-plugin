@@ -1,0 +1,67 @@
+<?jelly escape-by-default='true'?>
+<st:compress xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
+<l:layout type="full-screen" css="/plugin/radiatorviewplugin/css/radiatorview.css"
+	title="${it.class.name=='hudson.model.AllView' ? '%Dashboard' : it.viewName}${not empty it.ownerItemGroup.fullDisplayName?' ['+it.ownerItemGroup.fullDisplayName+']':''}" norefresh="${!it.automaticRefreshEnabled}">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <l:main-panel>
+
+	  <j:set var="items" value="${it.items}"/>
+
+		<div id="radiatorconfig">
+			<ul class="config" style="margin:0; padding:0;">
+				<li class="config">
+					<p align="right" style="margin:0; padding:0;">
+						<img src="${rootURL}/images/16x16/help.png" style="vertical-align:top"/>
+					</p>
+					<h2>Radiator View</h2>
+					<ul>
+						<li>
+							<a href="configure">Configure View</a>
+						</li>
+						<li>
+							<a href="delete">Delete View</a>
+						</li>
+						<li>
+							<a href="../../">Jenkins Home</a>
+						</li>
+						<li>
+							<a href="https://wiki.jenkins-ci.org/display/JENKINS/Radiator+View+Plugin">About</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+
+		<j:choose>
+			<j:when test="${empty(items)}">
+				<st:include page="noJob.jelly" />
+			</j:when>
+			<j:otherwise>
+				
+				<!-- config option: dark or light backgrounds. -->
+				<j:choose>
+					<j:when test="${it.getHighVis()}">
+						<j:set var="backgroundStyle" value="background-color: black; color: white;" />
+					</j:when>
+					<j:otherwise>
+						<j:set var="backgroundStyle" value="background-color: white; color: #c0c0c0;" />
+					</j:otherwise>
+				</j:choose>
+				
+				<j:if test="${not empty it.getCaptionText()}">
+					<j:set var="captionSize" value="${empty it.getCaptionSize() ? 36 : it.getCaptionSize()}" />
+					<div id="caption" style="${backgroundStyle} font-size: ${captionSize}px; height: ${captionSize * 5 / 3}px">
+						<a>${it.getCaptionText()}</a>
+					</div>
+				</j:if>
+
+				<div class="dashboard" style="${backgroundStyle} height: calc(100% - ${captionSize * 5 / 3}px)">
+					<st:include page="main.jelly"/>
+			 	</div>
+				
+				
+			</j:otherwise>
+		</j:choose>
+	</l:main-panel>
+</l:layout>
+</st:compress>

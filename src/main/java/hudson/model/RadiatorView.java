@@ -6,6 +6,8 @@ import hudson.Util;
 import hudson.model.Descriptor.FormException;
 import hudson.util.FormValidation;
 import jenkins.model.Jenkins;
+import net.sf.json.JSONObject;
+
 import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
@@ -34,6 +36,7 @@ import java.util.regex.PatternSyntaxException;
 public class RadiatorView extends ListView {
 	
 	private static final int DEFAULT_CAPTION_SIZE = 36;
+	private static final int DEFAULT_FONT_SIZE = 16;
 
 	private static final Logger LOGGER = Logger.getLogger(RadiatorView.class.getName());
 
@@ -71,7 +74,13 @@ public class RadiatorView extends ListView {
 	 @DataBoundSetter
 	 Boolean flexibleRows = false;
 
-		 /**
+	 /**
+	  * User configuration - font size in points (1pt = 1/72in) for the job's titles to be used on the radiator.
+	  */
+	 @DataBoundSetter
+	 Integer fontSize;
+
+	 /**
 	 * User configuration - show build stability icon.
 	 */
 	 @DataBoundSetter
@@ -152,6 +161,8 @@ public class RadiatorView extends ListView {
 	}
 
 	private boolean isExcluded(TopLevelItem item) {
+		if (excludeRegex == null)
+			return false;
 		final boolean matches = Pattern.matches(excludeRegex, item.getFullName());
 		LOGGER.log(Level.FINE, "Checking {0}, fullName={1}, excluded={2}",
 		           new String[]{item.getName(), item.getFullName(), String.valueOf(matches)});
@@ -205,24 +216,36 @@ public class RadiatorView extends ListView {
 		return excludeRegex;
 	}
 
+
 	@Override
 	protected void submit(StaplerRequest req) throws ServletException, IOException, 
 			FormException {
 		super.submit(req);
+
+        JSONObject json = req.getSubmittedForm();
+
+        if(json.optBoolean("flexibleRows", json.has("fontSize"))) {
+            this.flexibleRows = true;
+        	fontSize = json.optInt("fontSize");
+        }
+        else {
+            this.flexibleRows = false;
+        	fontSize = DEFAULT_FONT_SIZE;
+        }
+
+		this.excludeRegex = req.getParameter("useexcluderegex") != null ? Util.nullify(req.getParameter("excludeRegex")) : null;
+
 		this.showStable = Boolean.parseBoolean(req.getParameter("showStable"));
 		this.showStableDetail = Boolean.parseBoolean(req.getParameter("showStableDetail"));
-		this.flexibleRows = Boolean.parseBoolean(req.getParameter("flexibleRows"));
 		this.highVis = Boolean.parseBoolean(req.getParameter("highVis"));
 		this.groupByPrefix = Boolean.parseBoolean(req.getParameter("groupByPrefix"));
 		this.showBuildStability = Boolean.parseBoolean(req.getParameter("showBuildStability"));
 		this.captionText = req.getParameter("captionText");
-		this.excludeRegex = req.getParameter("excludeRegex");
 		try {
 			this.captionSize = Integer.parseInt(req.getParameter("captionSize"));
 		} catch (NumberFormatException e) {
 			this.captionSize = DEFAULT_CAPTION_SIZE;
 		}
-		
 	}
 
 	public Boolean getShowStable() {
@@ -235,6 +258,10 @@ public class RadiatorView extends ListView {
 
 	public Boolean getFlexibleRows() {
 		return flexibleRows;
+	}
+
+	public Integer getFontSize() {
+		return fontSize;
 	}
 
 	public Boolean getHighVis() {

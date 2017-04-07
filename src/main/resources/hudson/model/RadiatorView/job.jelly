@@ -9,7 +9,7 @@
 	<j:if test="${job.building || job.queued}">
 		<j:set var="clazz" value="building" />
 	</j:if>
-	<div style="${jobStyle}  background-color:${job.backgroundColor}; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+	<div style="${jobStyle} font-size: ${jobFont}; font-weight: bold; background-color:${job.backgroundColor}; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
 		class="job ${job.getStatus()} ${clazz}" tooltip="${job.name}">
 
 		<!--  Build health icon -->
@@ -19,7 +19,7 @@
 		</j:if>
 			
 		<!--  Job Name Title -->
-		<a style="color: ${job.color}; font-size: ${jobFont}; font-weight: bold; padding-left: 1%;"
+		<a style="color: ${job.color}; padding-left: 1%;"
 				href="${rootURL}/${job.lastBuildUrl}">${job.name.replaceAll('/',' ∕ ')}</a>
 		<!-- the slash above if present is the Unicode "Division Character, not the typical one, looking nicer
 		 See http://www.fileformat.info/info/unicode/char/2215/index.htm-->
