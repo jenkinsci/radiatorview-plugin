@@ -9,7 +9,7 @@
 #main-panel {
 	margin-left: 0px;
 	padding: 0px 0px 0px 0px;
-	height: 100vh;
+	position: absolute;
 }
 
 #view-message {
@@ -164,12 +164,11 @@ a:hover span {
 	right: 0px;
 	bottom: 0px;
 	z-index: 65530;
-	width: 99vw !important;
-	height: inherit;
+	width: 100vw !important;
 }
 
 #caption {
-	width: 99vw !important;
+	width: 100vw !important;
 	font-weight: bold;
 	text-align: center;
 	text-shadow: 2px 2px 5px #909090;

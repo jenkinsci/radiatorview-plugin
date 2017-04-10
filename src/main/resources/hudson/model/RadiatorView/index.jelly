@@ -2,10 +2,11 @@
 <st:compress xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
 <l:layout type="full-screen" css="/plugin/radiatorviewplugin/css/radiatorview.css"
 	title="${it.class.name=='hudson.model.AllView' ? '%Dashboard' : it.viewName}${not empty it.ownerItemGroup.fullDisplayName?' ['+it.ownerItemGroup.fullDisplayName+']':''}" norefresh="${!it.automaticRefreshEnabled}">
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <l:main-panel>
 
-	  <j:set var="items" value="${it.items}"/>
+  	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<j:set var="items" value="${it.items}"/>
+	
+  	<l:main-panel>
 
 		<div id="radiatorconfig">
 			<ul class="config" style="margin:0; padding:0;">
@@ -31,7 +32,7 @@
 				</li>
 			</ul>
 		</div>
-
+	
 		<j:choose>
 			<j:when test="${empty(items)}">
 				<st:include page="noJob.jelly" />
@@ -54,8 +55,8 @@
 						<a>${it.getCaptionText()}</a>
 					</div>
 				</j:if>
-
-				<div class="dashboard" style="${backgroundStyle} height: calc(100% - ${captionSize * 5 / 3}px)">
+	
+				<div class="dashboard" style="${backgroundStyle} height: calc(100vh - ${captionSize * 5 / 3}px)">
 					<st:include page="main.jelly"/>
 			 	</div>
 				
