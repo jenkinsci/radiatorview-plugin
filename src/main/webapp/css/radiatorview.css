@@ -16,15 +16,6 @@
 	display: none;
 }
 
-a {
-	text-decoration: none !important;
-	vertical-align: -webkit-baseline-middle;
-}
-
-img {
-	vertical-align: -webkit-baseline-middle;
-}
-
 #radiatorconfig {
 	position: fixed;
 	right: 0;
@@ -50,13 +41,6 @@ ul.config li.config:hover {
 	border: solid black 1px;
 	padding-left: 10px;
 	padding-bottom: 10px;
-}
-
-.building {
-	opacity: 0.6;
-	-moz-opacity: 0.6;
-	-webkit-opacity: 0.6;
-	filter: alpha(opacity = 60);
 }
 
 ul.menu li.menu {
@@ -87,46 +71,11 @@ ul.menu	li.menu:hover {
 	padding-bottom: 10px;
 }
 
-a.nolink {
-	text-decoration: none;
-}
-
-a:hover {
-	position: relative;
-}
-
-a span {
-	display: none;
-}
-
-a:hover span {
-	display: block;
-	position: absolute;
-	top: 10px;
-	left: 0;
-	/* formatting only styles */
-	padding: 5px;
-	margin: 10px;
-	z-index: 100;
-	background: #f0f0f0;
-	border: 1px dotted #c0c0c0;
-	opacity: 0.9;
-	/* end formatting */
-}
-
-.job {
-	-webkit-box-shadow: inset 0 0 10px #000000;
-	box-shadow: inset 0 0 10px #000000;
-	position: absolute;
-	overflow: hidden;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	-border-radius: 10px;
-}
-
-.jobtitle {
-	font-weight: bold;
-	text-shadow: 1px 1px 1px #000;
+.building {
+	opacity: 0.6;
+	-moz-opacity: 0.6;
+	-webkit-opacity: 0.6;
+	filter: alpha(opacity = 60);
 }
 
 .failing {
@@ -173,3 +122,4 @@ a:hover span {
 	text-align: center;
 	text-shadow: 2px 2px 5px #909090;
 }
+

@@ -2,6 +2,63 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
 	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
 	xmlns:i="jelly:fmt">
+
+	<st:once>
+    <style type="text/css">
+
+		a {
+			text-decoration: none !important;
+			vertical-align: middle;
+		}
+		
+		a.nolink {
+			text-decoration: none;
+		}
+		
+		a:hover {
+			position: relative;
+		}
+		
+		a span {
+			display: none;
+		}
+		
+		a:hover span {
+			display: block;
+			position: absolute;
+			top: 10px;
+			left: 0;
+			/* formatting only styles */
+			padding: 5px;
+			margin: 10px;
+			z-index: 100;
+			background: #f0f0f0;
+			border: 1px dotted #c0c0c0;
+			opacity: 0.9;
+			/* end formatting */
+		}
+
+		img {
+			vertical-align: middle;
+		}
+
+		.job {
+			-webkit-box-shadow: inset 0 0 10px #000000;
+			box-shadow: inset 0 0 10px #000000;
+			position: absolute;
+			overflow: hidden;
+			-moz-border-radius: 10px;
+			-webkit-border-radius: 10px;
+			-border-radius: 10px;
+		}
+		
+		.jobtitle {
+			font-weight: bold;
+			text-shadow: 1px 1px 1px #000;
+		}
+    </style>
+	</st:once>
+
 	<j:if test="${from.getShowBuildStability()}">
 		<j:set var="showBuildStability" value="true" />
 	</j:if>
@@ -16,5 +73,5 @@
 				<j:invoke var="contents" on="${from}" method="getContents" />
 				<st:include page="jobs.jelly" />
 			</j:otherwise>
-		</j:choose>
+		</j:choose>		
 </j:jelly>

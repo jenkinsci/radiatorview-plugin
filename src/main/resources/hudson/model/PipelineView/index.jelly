@@ -39,29 +39,36 @@
 			</j:when>
 			<j:otherwise>
 				
-				<!-- config option: dark or light backgrounds. -->
-				<j:choose>
-					<j:when test="${it.getHighVis()}">
-						<j:set var="backgroundStyle" value="background-color: black; color: white;" />
-					</j:when>
-					<j:otherwise>
-						<j:set var="backgroundStyle" value="background-color: white; color: #c0c0c0;" />
-					</j:otherwise>
-				</j:choose>
-				
-				<j:set var="captionSize" value="${empty it.getCaptionText() ? 0 : it.getCaptionSize()}" />
+			<j:set var="captionSize" value="${empty it.getCaptionText() ? 0 : it.getCaptionSize()}" />
 
-				<div id="caption" style="${backgroundStyle} font-size: ${captionSize}px; height: calc(${captionSize}px + 5px);">
-					<a>${it.getCaptionText()}</a>
+			<div id="caption" style="font-size: ${captionSize}px;">
+				<a>${it.getCaptionText()}</a>
+			</div>
+
+			<j:forEach var="job" items="${items}">
+				<j:set var="jobUrl" value="${job.getShortUrl()}" />
+				<j:invoke var="totalRuns" on="${it}" method="getTestCount">
+					<j:arg type="hudson.model.TopLevelItem" value="${job}" />
+				</j:invoke>
+				<j:invoke var="failedRuns" on="${it}" method="getFailCount">
+					<j:arg type="hudson.model.TopLevelItem" value="${job}" />
+				</j:invoke>
+				<j:invoke var="successRuns" on="${it}" method="getPassCount">
+					<j:arg type="hudson.model.TopLevelItem" value="${job}" />
+				</j:invoke>
+				<j:invoke var="ratio" on="${it}" method="getSuccessPercentage">
+					<j:arg type="hudson.model.TopLevelItem" value="${job}" />
+				</j:invoke>
+				<div style="width: 100%; display: flex; flex-flow: row nowrap; border-bottom: 2px dotted lightgray;">
+					<div style="flex-grow: 0.5;">
+						<st:include page="stats.jelly" />
+					</div>
+					<div class="cbwf-stage-view" style="flex-grow: 9.5; padding-left: 10px;">
+				        <div cbwf-controller="pipeline-staged" objectUrl="${rootURL}/${job.getShortUrl()}" fragCaption="${job.getName()}" />
+				        <st:adjunct includes="org.jenkinsci.pipeline.stageview_adjunct"/>
+				    </div>
 				</div>
-	
-				<div class="dashboard" style="${backgroundStyle} height: calc(100vh - ${captionSize}px - 85px);">
-					<st:include page="main.jelly"/>
-			 	</div>
-				
-				<div class="dashboard" style="${backgroundStyle} height: 80px;">
-					<st:include page="stats.jelly" />
-			 	</div>
+			</j:forEach>
 				
 			</j:otherwise>
 		</j:choose>
