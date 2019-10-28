@@ -46,6 +46,7 @@
 			</div>
 
 			<j:forEach var="job" items="${items}">
+
 				<j:set var="jobUrl" value="${job.getShortUrl()}" />
 				<j:invoke var="totalRuns" on="${it}" method="getTestCount">
 					<j:arg type="hudson.model.TopLevelItem" value="${job}" />
@@ -59,15 +60,35 @@
 				<j:invoke var="ratio" on="${it}" method="getSuccessPercentage">
 					<j:arg type="hudson.model.TopLevelItem" value="${job}" />
 				</j:invoke>
+				<j:invoke var="isPipeline" on="${it}" method="isPipelineJob">
+					<j:arg type="hudson.model.TopLevelItem" value="${job}" />
+				</j:invoke>
+				
+
+		<j:choose>
+			<j:when test="${isPipeline}">
 				<div style="width: 100%; display: flex; flex-flow: row nowrap; border-bottom: 2px dotted lightgray;">
 					<div style="flex-grow: 0.5;">
-						<st:include page="stats.jelly" />
+						<st:include page="statsV.jelly" />
 					</div>
 					<div class="cbwf-stage-view" style="flex-grow: 9.5; padding-left: 10px;">
 				        <div cbwf-controller="pipeline-staged" objectUrl="${rootURL}/${job.getShortUrl()}" fragCaption="${job.getName()}" />
 				        <st:adjunct includes="org.jenkinsci.pipeline.stageview_adjunct"/>
 				    </div>
 				</div>
+			</j:when>
+			<j:otherwise>
+				<div style="width: 100%; display: flex; flex-flow: row nowrap; border-bottom: 2px dotted lightgray;">
+					<div style="width: 40%;">
+						<st:include page="statsH.jelly" />
+					</div>
+					<div id="jobCaption" style="width: 60%;">
+						<h2>${job.getName()}</h2>
+				    </div>
+				</div>
+			</j:otherwise>
+		</j:choose>
+
 			</j:forEach>
 				
 			</j:otherwise>

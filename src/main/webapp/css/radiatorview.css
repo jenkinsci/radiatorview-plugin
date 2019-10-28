@@ -123,3 +123,9 @@ ul.menu	li.menu:hover {
 	text-shadow: 2px 2px 5px #909090;
 }
 
+#jobCaption {
+	font-weight: bold;
+	text-align: left;
+	padding-left: 10px;
+}
+
