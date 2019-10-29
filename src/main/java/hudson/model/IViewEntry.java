@@ -53,6 +53,11 @@ public interface IViewEntry {
 	public abstract int getFailCount();
 
 	/**
+	 * @return total skipped tests
+	 */
+	public abstract int getSkipCount();
+	
+	/**
 	 * @return total successful tests
 	 */
 	public abstract int getSuccessCount();
