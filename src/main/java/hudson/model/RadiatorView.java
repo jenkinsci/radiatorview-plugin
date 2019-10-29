@@ -33,8 +33,9 @@ import java.util.regex.PatternSyntaxException;
  * 
  * @author Mark Howard (mh@tildemh.com)
  */
-public class RadiatorView extends ListView {
-	
+public class RadiatorView extends ListView
+{
+
 	private static final int DEFAULT_CAPTION_SIZE = 36;
 	private static final int DEFAULT_FONT_SIZE = 16;
 
@@ -56,89 +57,94 @@ public class RadiatorView extends ListView {
 	transient ViewEntryColors colors;
 
 	/**
-	 * User configuration - show stable builds when there are some unstable
-	 * builds.
+	 * User configuration - show stable builds when there are some unstable builds.
 	 */
-	 @DataBoundSetter
-	 Boolean showStable = false;
+	@DataBoundSetter
+	Boolean showStable = false;
 
 	/**
 	 * User configuration - show details in stable builds.
 	 */
-	 @DataBoundSetter
-	 Boolean showStableDetail = false;
+	@DataBoundSetter
+	Boolean showStableDetail = false;
 
-	 /**
-	  * User configuration - show flexible rows.
-	  */
-	 @DataBoundSetter
-	 Boolean flexibleRows = false;
+	/**
+	 * User configuration - show flexible rows.
+	 */
+	@DataBoundSetter
+	Boolean flexibleRows = false;
 
-	 /**
-	  * User configuration - font size in points (1pt = 1/72in) for the job's titles to be used on the radiator.
-	  */
-	 @DataBoundSetter
-	 Integer fontSize;
+	/**
+	 * User configuration - font size in points (1pt = 1/72in) for the job's titles
+	 * to be used on the radiator.
+	 */
+	@DataBoundSetter
+	Integer fontSize;
 
-	 /**
+	/**
 	 * User configuration - show build stability icon.
 	 */
-	 @DataBoundSetter
-	 Boolean showBuildStability = false;
+	@DataBoundSetter
+	Boolean showBuildStability = false;
 
 	/**
 	 * User configuration - high visibility mode.
 	 */
-	 @DataBoundSetter
-	 Boolean highVis = true;
+	@DataBoundSetter
+	Boolean highVis = true;
 
 	/**
 	 * User configuration - group builds by common prefix.
 	 */
-	 @DataBoundSetter
-	 Boolean groupByPrefix = true;
-
-	 /**
-	  * User configuration - text for the caption to be used on the radiator's headline.
-	  */
-	 @DataBoundSetter
-	 String captionText;
-
-	 /**
-	  * User configuration - size in points (1pt = 1/72in) for the caption to be used on the radiator's headline.
-	  */
-	 @DataBoundSetter
-	 Integer captionSize;
-
-	 @DataBoundSetter
-	 String excludeRegex;
+	@DataBoundSetter
+	Boolean groupByPrefix = true;
 
 	/**
-	 * @param name
-	 *            view name.
+	 * User configuration - text for the caption to be used on the radiator's
+	 * headline.
+	 */
+	@DataBoundSetter
+	String captionText;
+
+	/**
+	 * User configuration - size in points (1pt = 1/72in) for the caption to be used
+	 * on the radiator's headline.
+	 */
+	@DataBoundSetter
+	Integer captionSize;
+
+	@DataBoundSetter
+	String excludeRegex;
+
+	/**
+	 * @param name view name.
 	 */
 	@DataBoundConstructor
-	public RadiatorView(String name) {
+	public RadiatorView(String name)
+	{
 		super(name);
 	}
-	
+
 	/**
 	 * @return the colors to use
 	 */
-	public ViewEntryColors getColors() {
-		if (this.colors == null) {
+	public ViewEntryColors getColors()
+	{
+		if (this.colors == null)
+		{
 			this.colors = ViewEntryColors.DEFAULT;
 		}
 		return this.colors;
 	}
 
-	public ProjectViewEntry getContents() {
+	public ProjectViewEntry getContents()
+	{
 		ProjectViewEntry content = new ProjectViewEntry();
 
 		placeInQueue = new HashMap<hudson.model.Queue.Item, Integer>();
 		int j = 1;
-		for (hudson.model.Queue.Item i : Jenkins.getActiveInstance().getQueue()
-				.getItems()) {
+		for (hudson.model.Queue.Item i : Jenkins.getActiveInstance().getQueue().getItems())
+		{
 			placeInQueue.put(i, j++);
 		}
 
@@ -147,29 +153,34 @@ public class RadiatorView extends ListView {
 		return content;
 	}
 
-	private void addItems(Collection<TopLevelItem> items, ProjectViewEntry content) {
-		for (TopLevelItem item : items) {
+	private void addItems(Collection<TopLevelItem> items, ProjectViewEntry content)
+	{
+		for (TopLevelItem item : items)
+		{
 			LOGGER.fine(item.getName() + " (" + item.getClass() + ")");
-			if (item instanceof AbstractFolder) {
+			if (item instanceof AbstractFolder)
+			{
 				addItems(((AbstractFolder) item).getItems(), content);
 			}
-			if (item instanceof Job && !isDisabled(item) && !isExcluded(item)) {
+			if (item instanceof Job && !isDisabled(item) && !isExcluded(item))
+			{
 				IViewEntry entry = new JobViewEntry(this, (Job<?, ?>) item);
 				content.addBuild(entry);
 			}
 		}
 	}
 
-	private boolean isExcluded(TopLevelItem item) {
-		if (excludeRegex == null)
-			return false;
+	private boolean isExcluded(TopLevelItem item)
+	{
+		if (excludeRegex == null) return false;
 		final boolean matches = Pattern.matches(excludeRegex, item.getFullName());
 		LOGGER.log(Level.FINE, "Checking {0}, fullName={1}, excluded={2}",
-		           new String[]{item.getName(), item.getFullName(), String.valueOf(matches)});
+				new String[] { item.getName(), item.getFullName(), String.valueOf(matches) });
 		return matches;
 	}
 
-	private boolean isDisabled(TopLevelItem item) {
+	private boolean isDisabled(TopLevelItem item)
+	{
 		return item instanceof AbstractProject && ((AbstractProject) item).isDisabled();
 	}
 
@@ -178,8 +189,8 @@ public class RadiatorView extends ListView {
 		ProjectViewEntry contents = new ProjectViewEntry();
 		ProjectViewEntry allContents = getContents();
 		Map<String, ProjectViewEntry> jobsByPrefix = new HashMap<String, ProjectViewEntry>();
-		
-		for (IViewEntry job: allContents.getJobs())
+
+		for (IViewEntry job : allContents.getJobs())
 		{
 			String prefix = getPrefix(job.getName());
 			ProjectViewEntry project = jobsByPrefix.get(prefix);
@@ -194,46 +205,40 @@ public class RadiatorView extends ListView {
 		return contents;
 	}
 
-	private String getPrefix(String name) 
+	private String getPrefix(String name)
 	{
-		if (name.contains("_"))
-		{
-			return StringUtils.substringBefore(name, "_");
-		}		
-		if (name.contains("-"))
-		{
-			return StringUtils.substringBefore(name, "-");
-		}		
+		if (name.contains("_")) { return StringUtils.substringBefore(name, "_"); }
+		if (name.contains("-")) { return StringUtils.substringBefore(name, "-"); }
 		if (name.contains(":"))
 		{
 			return StringUtils.substringBefore(name, ":");
-		}
-		else return "No Project";
+		} else return "No Project";
 	}
 
-
-	public String getExcludeRegex() {
+	public String getExcludeRegex()
+	{
 		return excludeRegex;
 	}
 
-
 	@Override
-	protected void submit(StaplerRequest req) throws ServletException, IOException, 
-			FormException {
+	protected void submit(StaplerRequest req) throws ServletException, IOException, FormException
+	{
 		super.submit(req);
 
-        JSONObject json = req.getSubmittedForm();
+		JSONObject json = req.getSubmittedForm();
 
-        if(json.optBoolean("flexibleRows", json.has("fontSize"))) {
-            this.flexibleRows = true;
-        	fontSize = json.optInt("fontSize");
-        }
-        else {
-            this.flexibleRows = false;
-        	fontSize = DEFAULT_FONT_SIZE;
-        }
+		if (json.optBoolean("flexibleRows", json.has("fontSize")))
+		{
+			this.flexibleRows = true;
+			fontSize = json.optInt("fontSize");
+		} else
+		{
+			this.flexibleRows = false;
+			fontSize = DEFAULT_FONT_SIZE;
+		}
 
-		this.excludeRegex = req.getParameter("useexcluderegex") != null ? Util.nullify(req.getParameter("excludeRegex")) : null;
+		this.excludeRegex = req.getParameter("useexcluderegex") != null ? Util.nullify(req.getParameter("excludeRegex"))
+				: null;
 
 		this.showStable = Boolean.parseBoolean(req.getParameter("showStable"));
 		this.showStableDetail = Boolean.parseBoolean(req.getParameter("showStableDetail"));
@@ -241,89 +246,105 @@ public class RadiatorView extends ListView {
 		this.groupByPrefix = Boolean.parseBoolean(req.getParameter("groupByPrefix"));
 		this.showBuildStability = Boolean.parseBoolean(req.getParameter("showBuildStability"));
 		this.captionText = req.getParameter("captionText");
-		try {
+		try
+		{
 			this.captionSize = Integer.parseInt(req.getParameter("captionSize"));
-		} catch (NumberFormatException e) {
+		} catch (NumberFormatException e)
+		{
 			this.captionSize = DEFAULT_CAPTION_SIZE;
 		}
 	}
 
-	public Boolean getShowStable() {
+	public Boolean getShowStable()
+	{
 		return showStable;
 	}
 
-	public Boolean getShowStableDetail() {
+	public Boolean getShowStableDetail()
+	{
 		return showStableDetail;
 	}
 
-	public Boolean getFlexibleRows() {
+	public Boolean getFlexibleRows()
+	{
 		return flexibleRows;
 	}
 
-	public Integer getFontSize() {
+	public Integer getFontSize()
+	{
 		return fontSize;
 	}
 
-	public Boolean getHighVis() {
+	public Boolean getHighVis()
+	{
 		return highVis;
 	}
-	
+
 	public Boolean getGroupByPrefix()
 	{
 		return groupByPrefix;
 	}
 
-	public Boolean getShowBuildStability() {
+	public Boolean getShowBuildStability()
+	{
 		return showBuildStability;
 	}
 
-	public String getCaptionText() {
+	public String getCaptionText()
+	{
 		return captionText;
 	}
 
-	public Integer getCaptionSize() {
+	public Integer getCaptionSize()
+	{
 		return captionSize;
 	}
-	
+
 	/**
-	 * Converts a list of jobs to a list of list of jobs, suitable for display
-	 * as rows in a table.
+	 * Converts a list of jobs to a list of list of jobs, suitable for display as
+	 * rows in a table.
 	 * 
-	 * @param jobs
-	 *            the jobs to include.
-	 * @param failingJobs
-	 *            if this is a list of failing jobs, in which case fewer jobs
-	 *            should be used per row.
+	 * @param jobs        the jobs to include.
+	 * @param failingJobs if this is a list of failing jobs, in which case fewer
+	 *                    jobs should be used per row.
 	 * @return a list of fixed size view entry lists.
 	 */
-	public Collection<Collection<IViewEntry>> toRows(Collection<IViewEntry> jobs,
-			Boolean failingJobs) {
+	public Collection<Collection<IViewEntry>> toRows(Collection<IViewEntry> jobs, Boolean failingJobs)
+	{
 		int jobsPerRow = 1;
-		if (failingJobs.booleanValue()) {
-			if (jobs.size() > 3) {
+		if (failingJobs.booleanValue())
+		{
+			if (jobs.size() > 3)
+			{
 				jobsPerRow = 2;
 			}
-			if (jobs.size() > 9) {
+			if (jobs.size() > 9)
+			{
 				jobsPerRow = 3;
 			}
-			if (jobs.size() > 15) {
+			if (jobs.size() > 15)
+			{
 				jobsPerRow = 4;
 			}
-		} else {
+		} else
+		{
 			// don't mind having more rows as much for passing jobs.
 			jobsPerRow = (int) Math.floor(Math.sqrt(jobs.size()) / 1.5);
 		}
 		Collection<Collection<IViewEntry>> rows = new ArrayList<Collection<IViewEntry>>();
 		Collection<IViewEntry> current = null;
 		int i = 0;
-		for (IViewEntry job : jobs) {
-			if (i == 0) {
+		for (IViewEntry job : jobs)
+		{
+			if (i == 0)
+			{
 				current = new ArrayList<IViewEntry>();
 				rows.add(current);
 			}
 			current.add(job);
 			i++;
-			if (i >= jobsPerRow) {
+			if (i >= jobsPerRow)
+			{
 				i = 0;
 			}
 		}
@@ -331,25 +352,31 @@ public class RadiatorView extends ListView {
 	}
 
 	@Extension
-	public static class DescriptorImpl extends ViewDescriptor {
-		public DescriptorImpl() {
+	public static class DescriptorImpl extends ViewDescriptor
+	{
+		public DescriptorImpl()
+		{
 			super(RadiatorView.class);
 		}
 
 		@Override
-		public String getDisplayName() {
+		public String getDisplayName()
+		{
 			return "Radiator";
 		}
 
-
 		// Checks if the include regular expression is valid.
 
-		public FormValidation doCheckIncludeRegex(@QueryParameter String value) {
+		public FormValidation doCheckIncludeRegex(@QueryParameter String value)
+		{
 			String v = Util.fixEmpty(value);
-			if (v != null) {
-				try {
+			if (v != null)
+			{
+				try
+				{
 					Pattern.compile(v);
-				} catch (PatternSyntaxException pse) {
+				} catch (PatternSyntaxException pse)
+				{
 					return FormValidation.error(pse.getMessage());
 				}
 			}

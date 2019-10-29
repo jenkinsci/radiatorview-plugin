@@ -15,7 +15,7 @@ public class PipelineViewJobFilter extends ViewJobFilter
 	public PipelineViewJobFilter()
 	{
 	}
-	
+
 	@Override
 	public List<TopLevelItem> filter(List<TopLevelItem> added, List<TopLevelItem> all, View filteringView)
 	{
