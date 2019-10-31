@@ -70,10 +70,10 @@
 					<div style="width: 100%; display: flex; flex-flow: row nowrap; border-bottom: 2px dotted lightgray;">
 					<j:choose>
 						<j:when test="${isPipeline}">
-							<div style="height: 100%;">
+							<div style="height: 100%; width: 10%; padding-left: 2px;">
 								<st:include page="statsV.jelly" />
 							</div>
-							<div class="cbwf-stage-view" style="padding-left: 10px;">
+							<div class="cbwf-stage-view" style="height: 100%; width: 90%; padding-left: 10px;">
 						        <div cbwf-controller="pipeline-staged" objectUrl="${rootURL}/${job.getShortUrl()}" fragCaption="${lastBuild}" />
 						        <st:adjunct includes="org.jenkinsci.pipeline.stageview_adjunct"/>
 						    </div>

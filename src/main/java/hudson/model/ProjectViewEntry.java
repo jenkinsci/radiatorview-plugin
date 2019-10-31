@@ -323,8 +323,8 @@ public class ProjectViewEntry implements IViewEntry
 	public String getSuccessPercentage()
 	{
 		int testCount = getTestCount();
-		if (testCount > 0) return Integer.toString(100 * getSuccessCount() / testCount);
-		else return "0";
+		if (testCount > 0) return Integer.toString(100 * getSuccessCount() / testCount)+"%";
+		else return "0%";
 	}
 
 	public int getTestCount()

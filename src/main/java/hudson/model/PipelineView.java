@@ -127,12 +127,9 @@ public class PipelineView extends ListView
 
 	public String getSuccessPercentage(TopLevelItem item)
 	{
-		if (this.getTestCount(item) > 0)
-		{
-			Double perc = this.getPassCount(item) / (this.getTestCount(item) * 1D);
-			return NumberFormat.getPercentInstance().format(perc);
-		}
-		return "0%";
+		int testCount = getTestCount(item);
+		if (testCount > 0) return Integer.toString(100 * getPassCount(item) / testCount)+"%";
+		else return "0%";
 	}
 
 	public boolean isPipelineJob(TopLevelItem item)

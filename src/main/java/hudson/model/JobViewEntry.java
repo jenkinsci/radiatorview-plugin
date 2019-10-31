@@ -367,12 +367,9 @@ public class JobViewEntry implements IViewEntry
 	 */
 	public String getSuccessPercentage()
 	{
-		if (this.getTestCount() > 0)
-		{
-			Double perc = this.getSuccessCount() / (this.getTestCount() * 1D);
-			return NumberFormat.getPercentInstance().format(perc);
-		}
-		return "";
+		int testCount = getTestCount();
+		if (testCount > 0) return Integer.toString(100 * getSuccessCount() / testCount)+"%";
+		else return "0%";
 	}
 
 	/**
