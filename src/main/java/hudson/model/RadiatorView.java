@@ -1,29 +1,25 @@
 package hudson.model;
 
-import com.cloudbees.hudson.plugins.folder.AbstractFolder;
-import hudson.Extension;
-import hudson.Util;
-import hudson.model.Descriptor.FormException;
-import hudson.util.FormValidation;
-import jenkins.model.Jenkins;
-import net.sf.json.JSONObject;
-
-import org.apache.commons.lang.StringUtils;
-import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.DataBoundSetter;
-import org.kohsuke.stapler.QueryParameter;
-import org.kohsuke.stapler.StaplerRequest;
-
-import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
+
+import javax.servlet.ServletException;
+
+import org.apache.commons.lang.StringUtils;
+import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
+import org.kohsuke.stapler.StaplerRequest;
+
+import com.cloudbees.hudson.plugins.folder.AbstractFolder;
+
+import hudson.Extension;
+import hudson.model.Descriptor.FormException;
+import jenkins.model.Jenkins;
+import net.sf.json.JSONObject;
 
 /**
  * A configurable Radiator-Style job view suitable for use in extreme feedback
@@ -40,11 +36,6 @@ public class RadiatorView extends ListView
 	private static final int DEFAULT_FONT_SIZE = 16;
 
 	private static final Logger LOGGER = Logger.getLogger(RadiatorView.class.getName());
-
-	/**
-	 * Entries to be shown in the view.
-	 */
-	private transient Collection<IViewEntry> entries;
 
 	/**
 	 * Cache of location of jobs in the build queue.
@@ -113,9 +104,6 @@ public class RadiatorView extends ListView
 	@DataBoundSetter
 	Integer captionSize;
 
-	@DataBoundSetter
-	String excludeRegex;
-
 	/**
 	 * @param name view name.
 	 */
@@ -125,25 +113,13 @@ public class RadiatorView extends ListView
 		super(name);
 	}
 
-	/**
-	 * @return the colors to use
-	 */
-	public ViewEntryColors getColors()
-	{
-		if (this.colors == null)
-		{
-			this.colors = ViewEntryColors.DEFAULT;
-		}
-		return this.colors;
-	}
-
 	public ProjectViewEntry getContents()
 	{
 		ProjectViewEntry content = new ProjectViewEntry();
 
 		placeInQueue = new HashMap<hudson.model.Queue.Item, Integer>();
 		int j = 1;
-		for (hudson.model.Queue.Item i : Jenkins.getActiveInstance().getQueue().getItems())
+		for (hudson.model.Queue.Item i : Jenkins.get().getQueue().getItems())
 		{
 			placeInQueue.put(i, j++);
 		}
@@ -162,26 +138,12 @@ public class RadiatorView extends ListView
 			{
 				addItems(((AbstractFolder) item).getItems(), content);
 			}
-			if (item instanceof Job && !isDisabled(item) && !isExcluded(item))
+			if (item instanceof Job)
 			{
-				IViewEntry entry = new JobViewEntry(this, (Job<?, ?>) item);
+				IViewEntry entry = new JobViewEntry((Job<?, ?>) item);
 				content.addBuild(entry);
 			}
 		}
-	}
-
-	private boolean isExcluded(TopLevelItem item)
-	{
-		if (excludeRegex == null) return false;
-		final boolean matches = Pattern.matches(excludeRegex, item.getFullName());
-		LOGGER.log(Level.FINE, "Checking {0}, fullName={1}, excluded={2}",
-				new String[] { item.getName(), item.getFullName(), String.valueOf(matches) });
-		return matches;
-	}
-
-	private boolean isDisabled(TopLevelItem item)
-	{
-		return item instanceof AbstractProject && ((AbstractProject) item).isDisabled();
 	}
 
 	public ProjectViewEntry getContentsByPrefix()
@@ -215,11 +177,6 @@ public class RadiatorView extends ListView
 		} else return "No Project";
 	}
 
-	public String getExcludeRegex()
-	{
-		return excludeRegex;
-	}
-
 	@Override
 	protected void submit(StaplerRequest req) throws ServletException, IOException, FormException
 	{
@@ -236,9 +193,6 @@ public class RadiatorView extends ListView
 			this.flexibleRows = false;
 			fontSize = DEFAULT_FONT_SIZE;
 		}
-
-		this.excludeRegex = req.getParameter("useexcluderegex") != null ? Util.nullify(req.getParameter("excludeRegex"))
-				: null;
 
 		this.showStable = Boolean.parseBoolean(req.getParameter("showStable"));
 		this.showStableDetail = Boolean.parseBoolean(req.getParameter("showStableDetail"));
@@ -352,35 +306,12 @@ public class RadiatorView extends ListView
 	}
 
 	@Extension
-	public static class DescriptorImpl extends ViewDescriptor
+	public static class DescriptorImpl extends ListView.DescriptorImpl
 	{
-		public DescriptorImpl()
-		{
-			super(RadiatorView.class);
-		}
-
 		@Override
 		public String getDisplayName()
 		{
 			return "Radiator";
-		}
-
-		// Checks if the include regular expression is valid.
-
-		public FormValidation doCheckIncludeRegex(@QueryParameter String value)
-		{
-			String v = Util.fixEmpty(value);
-			if (v != null)
-			{
-				try
-				{
-					Pattern.compile(v);
-				} catch (PatternSyntaxException pse)
-				{
-					return FormValidation.error(pse.getMessage());
-				}
-			}
-			return FormValidation.ok();
 		}
 	}
 }

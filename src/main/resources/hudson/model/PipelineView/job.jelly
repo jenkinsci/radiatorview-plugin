@@ -1,0 +1,93 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
+
+	<!--  Display details about a single job in the radiator -->
+
+	<st:once>
+    <style type="text/css">
+
+		.entry {
+			height: 100%;
+			margin: 0%;
+			padding: 0.2%;
+			font-weight: bold;
+			display: block;
+			-webkit-box-shadow: inset 0 0 10px #000000;
+			box-shadow: inset 0 0 10px #000000;
+			-moz-border-radius: 10px;
+			-webkit-border-radius: 10px;
+			-border-radius: 10px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+    </style>
+	</st:once>
+
+	<!-- show in a different style if the job is building or queued.  -->
+	<j:set var="clazz" value="normal" />
+	<j:if test="${entry.building || entry.queued}">
+		<j:set var="clazz" value="building" />
+	</j:if>
+
+	<div style="background-color:${entry.backgroundColor};"	class="entry ${entry.getStatus()} ${clazz}" tooltip="${entry.name}">
+
+		<!--  Build health icon -->
+		<img src="${rootURL}/images/24x24/${entry.job.buildHealth.iconUrl}" alt="${entry.job.buildHealth.description}" />
+			
+		<!--  Job Name Title -->
+		<a style="color: ${entry.color}; padding-left: 1%;"
+				href="${rootURL}/${entry.lastBuildUrl}">${entry.name.replaceAll('/',' ∕ ')}</a>
+		<!-- the slash above if present is the Unicode "Division Character, not the typical one, looking nicer
+		 See http://www.fileformat.info/info/unicode/char/2215/index.htm-->
+		
+		<!-- Job Claim Information -->
+		<j:if test="${entry.isClaimed()}">
+			<p>${entry.getClaim()}</p>
+		</j:if>
+		
+		<!-- Details of any test failures -->
+		<p>
+			<j:if test="${entry.broken == false}">
+				<j:if test="${entry.failCount == 1}">
+					<font
+						style="text-align=center; color: #000000; font-size: ${failFont}; font-weight:bold;">1/${entry.testCount} test failure</font>
+				</j:if>
+				<j:if test="${ entry.failCount > 1}">
+					<font
+						style="text-align=center; color: #000000; font-size: ${failFont}; font-weight:bold;">${entry.failCount}/${entry.testCount} test failures</font>
+				</j:if>
+				<j:if test="${entry.diff != ''}">
+					(
+					<font color="${entry.diffColor}">${entry.diff}</font>
+					tests
+					)
+				</j:if>
+			</j:if>
+		</p>
+		
+		<!--  Details of current Runs -->
+		<j:forEach var="run" items="${entry.buildsInProgress}">
+			<p>Now building: ${run.displayName}, ${run.executor.progress}% -
+				${run.executor.estimatedRemainingTime} left</p>
+		</j:forEach>
+		
+		<j:if test="${entry.queued == true}">
+			<p>Build pending ${entry.queueStatus} in queue</p>
+		</j:if>
+		
+		<j:if test="${!entry.getStable()}">
+			<j:if test="${entry.getCulprit() != &quot; - &quot;}">
+				<p>Possible culprit: ${entry.culprit}</p>
+			</j:if>
+			<j:if test="${entry.getLastStableBuild() != null}">
+				<p>
+					Last Stable Build:
+					<strong>${entry.getLastStableBuild()}</strong>
+				</p>
+			</j:if>
+		</j:if>
+	</div>
+
+</j:jelly>

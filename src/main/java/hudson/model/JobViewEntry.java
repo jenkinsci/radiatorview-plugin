@@ -5,7 +5,6 @@ import hudson.matrix.MatrixRun;
 import hudson.matrix.MatrixBuild;
 import hudson.tasks.test.AbstractTestResultAction;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -27,8 +26,6 @@ public class JobViewEntry implements IViewEntry
 
 	private static final String NOT_CLAIMED = "Not Claimed.";
 
-	private final RadiatorView radiatorView;
-
 	private Job<?, ?> job;
 
 	private String backgroundColor;
@@ -46,12 +43,10 @@ public class JobViewEntry implements IViewEntry
 	/**
 	 * C'tor
 	 * 
-	 * @param job          the job to be represented
-	 * @param radiatorView TODO
+	 * @param job the job to be represented
 	 */
-	public JobViewEntry(RadiatorView radiatorView, Job<?, ?> job)
+	public JobViewEntry(Job<?, ?> job)
 	{
-		this.radiatorView = radiatorView;
 		this.job = job;
 		this.findStatus();
 	}
@@ -85,11 +80,11 @@ public class JobViewEntry implements IViewEntry
 	}
 
 	/**
-	 * @return the job's queue number, if any
+	 * @return the job's queue status, if any
 	 */
-	public Integer getQueueNumber()
+	public String getQueueStatus()
 	{
-		return this.radiatorView.placeInQueue.get(this.job.getQueueItem());
+		return this.job.getQueueItem().getInQueueForString();
 	}
 
 	/*
@@ -153,7 +148,7 @@ public class JobViewEntry implements IViewEntry
 
 	public String getLastBuildUrl()
 	{
-		Run lastBuild = job.getLastBuild();
+		Run<?, ?> lastBuild = job.getLastBuild();
 		if (lastBuild == null) { return job.getUrl(); }
 		return lastBuild.getUrl();
 	}
@@ -368,7 +363,7 @@ public class JobViewEntry implements IViewEntry
 	public String getSuccessPercentage()
 	{
 		int testCount = getTestCount();
-		if (testCount > 0) return Integer.toString(100 * getSuccessCount() / testCount)+"%";
+		if (testCount > 0) return Integer.toString(100 * getSuccessCount() / testCount) + "%";
 		else return "0%";
 	}
 
@@ -417,7 +412,7 @@ public class JobViewEntry implements IViewEntry
 
 	private ViewEntryColors getColors()
 	{
-		return radiatorView.getColors();
+		return ViewEntryColors.DEFAULT;
 	}
 
 	/*
@@ -427,7 +422,7 @@ public class JobViewEntry implements IViewEntry
 	 */
 	public String getLastCompletedBuild()
 	{
-		Run build = job.getLastCompletedBuild();
+		Run<?, ?> build = job.getLastCompletedBuild();
 		if (build != null) { return build.getTimestampString() + " (" + build.getDurationString() + ")"; }
 		return null;
 	}
@@ -439,7 +434,7 @@ public class JobViewEntry implements IViewEntry
 	 */
 	public String getLastStableBuild()
 	{
-		Run build = job.getLastStableBuild();
+		Run<?, ?> build = job.getLastStableBuild();
 		if (build != null) { return build.getTimestampString() + " (in " + build.getDurationString() + ")"; }
 		return null;
 	}
@@ -467,7 +462,7 @@ public class JobViewEntry implements IViewEntry
 	public String getClaim()
 	{
 		// check we have claim plugin
-		if (Jenkins.getActiveInstance().getPlugin("claim") == null) { return null; }
+		if (Jenkins.get().getPlugin("claim") == null) { return null; }
 		Run<?, ?> lastBuild = getLastCompletedRun();
 		if (lastBuild == null) { return null; }
 		// find the claim
@@ -500,7 +495,7 @@ public class JobViewEntry implements IViewEntry
 
 	public String getUnclaimedMatrixBuilds()
 	{
-		if (Jenkins.getActiveInstance().getPlugin("claim") == null) { return ""; }
+		if (Jenkins.get().getPlugin("claim") == null) { return ""; }
 		Run<?, ?> lastBuild = getLastCompletedRun();
 		if (!(lastBuild instanceof hudson.matrix.MatrixBuild)) { return ""; }
 		MatrixBuild matrixBuild = (hudson.matrix.MatrixBuild) lastBuild;

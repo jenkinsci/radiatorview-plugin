@@ -1,7 +1,6 @@
 package hudson.model;
 
 import java.io.IOException;
-import java.text.NumberFormat;
 
 import javax.servlet.ServletException;
 
@@ -138,6 +137,11 @@ public class PipelineView extends ListView
 		return false;
 	}
 
+	public IViewEntry toViewEntry(TopLevelItem item)
+	{
+		return new JobViewEntry((Job<?, ?>) item);
+	}
+	
 	@Extension
 	public static class DescriptorImpl extends ListView.DescriptorImpl
 	{

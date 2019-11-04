@@ -1,5 +1,6 @@
 package hudson.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -19,7 +20,9 @@ public class PipelineViewJobFilter extends ViewJobFilter
 	@Override
 	public List<TopLevelItem> filter(List<TopLevelItem> added, List<TopLevelItem> all, View filteringView)
 	{
-		added.removeIf(new Predicate<TopLevelItem>()
+    	List<TopLevelItem> filtered = new ArrayList<TopLevelItem>(added);
+
+    	filtered.removeIf(new Predicate<TopLevelItem>()
 		{
 			@Override
 			public boolean test(TopLevelItem item)
@@ -27,7 +30,7 @@ public class PipelineViewJobFilter extends ViewJobFilter
 				return item instanceof WorkflowJob ? false : true;
 			}
 		});
-		return added;
+		return filtered;
 	}
 
 	@Extension

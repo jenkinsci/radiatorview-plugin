@@ -51,7 +51,7 @@
 	        <td class="stat failing">${failedRuns}</td>
 	        <td class="stat successful">${successRuns}</td>
 	        <td class="stat unstable">${totalRuns}</td>
-	        <td class="stat" style="background: white;">${ratio}%</td>
+	        <td class="stat" style="background: white;">${ratio}</td>
 	      </tr>
 	    </tbody>
 	     

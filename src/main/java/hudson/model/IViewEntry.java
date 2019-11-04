@@ -5,8 +5,8 @@ import java.util.Collection;
 /**
  * Interface for an entry on the radiator, which may be either a job or a group of jobs. 
  */
-public interface IViewEntry {
-
+public interface IViewEntry
+{
 	/**
 	 * @return the job's name
 	 */
@@ -28,7 +28,7 @@ public interface IViewEntry {
 	public abstract String getColor();
 
 	/**
-	 * @return true se o último build está quebrado
+	 * @return true this job is broken
 	 */
 	public abstract Boolean getBroken();
 

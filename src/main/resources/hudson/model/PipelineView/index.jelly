@@ -67,24 +67,27 @@
 					<j:invoke var="isPipeline" on="${it}" method="isPipelineJob">
 						<j:arg type="hudson.model.TopLevelItem" value="${job}" />
 					</j:invoke>
-					<div style="width: 100%; display: flex; flex-flow: row nowrap; border-bottom: 2px dotted lightgray;">
+					<div style="width: 99%; display: flex; flex-flow: row nowrap; border-bottom: 2px solid lightgray;">
 					<j:choose>
 						<j:when test="${isPipeline}">
-							<div style="height: 100%; width: 10%; padding-left: 2px;">
+							<div style="height: 100%; width: 7.5%; padding-left: 2px;">
 								<st:include page="statsV.jelly" />
 							</div>
-							<div class="cbwf-stage-view" style="height: 100%; width: 90%; padding-left: 10px;">
+							<div class="cbwf-stage-view" style="height: 100%; width: 92.5%; padding-left: 10px;">
 						        <div cbwf-controller="pipeline-staged" objectUrl="${rootURL}/${job.getShortUrl()}" fragCaption="${lastBuild}" />
 						        <st:adjunct includes="org.jenkinsci.pipeline.stageview_adjunct"/>
 						    </div>
 						</j:when>
 						<j:otherwise>
-							<div style="width: 40%;">
+							<div style="width: 30%;">
 								<st:include page="statsH.jelly" />
-							</div>
-							<div id="jobCaption" style="width: 60%;">
-								<h2>${lastBuild}</h2>
 						    </div>
+							<div style="width: 70%;">
+								<j:invoke var="entry" on="${it}" method="toViewEntry">
+									<j:arg type="hudson.model.TopLevelItem" value="${job}" />
+								</j:invoke>
+								<st:include page="job.jelly" />
+							</div>
 						</j:otherwise>
 					</j:choose>
 					</div>

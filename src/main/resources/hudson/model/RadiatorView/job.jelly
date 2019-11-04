@@ -53,7 +53,7 @@
 				${run.executor.estimatedRemainingTime} left</p>
 		</j:forEach>
 		<j:if test="${job.queued == true}">
-			<p>Build pending (#${job.queueNumber} in queue)</p>
+			<p>Build pending ${job.queueStatus} in queue</p>
 		</j:if>
 		<j:if test="${!job.getStable()}">
 			<j:if test="${job.getCulprit() != &quot; - &quot;}">
