@@ -1,0 +1,60 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
+	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
+	xmlns:i="jelly:fmt">
+	
+	<st:once>
+    <style type="text/css">
+    
+	.stats {
+		width: 100%;
+		height: 100%;
+		text-align: center;
+ 		border: 1px solid black;
+ 		border-radius: 5px;
+	}
+	
+	.stats .head {
+		font-size: 15px; 
+		vertical-align: middle;
+		background: darkgray; 
+ 		color: white;
+	}
+	
+	.stats .result {
+		font-size: 30px; 
+		vertical-align: middle;
+ 		color: black;
+	}
+
+    </style>
+	</st:once>
+
+	<table class="stats">
+	      <tr>
+	        <td class="head">FAILED</td>
+	      </tr>
+	      <tr>
+	        <td class="result failing">${failedRuns}</td>
+	      </tr>
+	      <tr>
+	        <td class="head">SUCCESS</td>
+	      </tr>
+	      <tr>
+	        <td class="result successful">${successRuns}</td>
+	      </tr>
+	      <tr>
+	        <td class="head">TOTAL</td>
+	      </tr>
+	      <tr>
+	        <td class="result unstable">${totalRuns}</td>
+	      </tr>
+	      <tr>
+	        <td class="head">TOTAL</td>
+	      </tr>
+	      <tr>
+	        <td class="result" style="background: white;">${ratio}</td>
+	      </tr>
+	</table>
+
+</j:jelly>

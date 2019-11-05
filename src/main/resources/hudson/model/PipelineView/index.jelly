@@ -1,0 +1,94 @@
+<?jelly escape-by-default='true'?>
+<st:compress xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
+<l:layout type="full-screen" css="/plugin/radiatorviewplugin/css/radiatorview.css"
+	title="${it.class.name=='hudson.model.AllView' ? '%Dashboard' : it.viewName}${not empty it.ownerItemGroup.fullDisplayName?' ['+it.ownerItemGroup.fullDisplayName+']':''}" norefresh="${!it.automaticRefreshEnabled}">
+
+  	<meta name="apple-mobile-web-app-capable" content="yes" />
+	
+  	<l:main-panel>
+
+		<div id="radiatorconfig">
+			<ul class="config" style="margin:0; padding:0;">
+				<li class="config">
+					<p align="right" style="margin:0; padding:0;">
+						<img src="${rootURL}/images/16x16/help.png" style="vertical-align:top"/>
+					</p>
+					<h2>Radiator View</h2>
+					<ul>
+						<li>
+							<a href="configure">Configure View</a>
+						</li>
+						<li>
+							<a href="delete">Delete View</a>
+						</li>
+						<li>
+							<a href="../../">Jenkins Home</a>
+						</li>
+						<li>
+							<a href="https://wiki.jenkins-ci.org/display/JENKINS/Radiator+View+Plugin">About</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	
+		<j:set var="items" value="${it.items}"/>
+
+		<j:choose>
+			
+			<j:when test="${empty(items)}">
+				<st:include page="noJob.jelly" />
+			</j:when>
+			
+			<j:otherwise>
+				
+				<j:set var="captionSize" value="${empty it.getCaptionText() ? 0 : it.getCaptionSize()}" />
+	
+				<div id="caption" style="font-size: ${captionSize}px;">
+					<h2>${it.getCaptionText()}</h2>
+				</div>
+
+				<j:forEach var="job" items="${items}">
+	
+					<j:set var="jobUrl" value="${job.getShortUrl()}" />
+
+					<j:invoke var="totalRuns" on="${it}" method="getTestCount">
+						<j:arg type="hudson.model.TopLevelItem" value="${job}" />
+					</j:invoke>
+					<j:invoke var="failedRuns" on="${it}" method="getFailCount">
+						<j:arg type="hudson.model.TopLevelItem" value="${job}" />
+					</j:invoke>
+					<j:invoke var="successRuns" on="${it}" method="getPassCount">
+						<j:arg type="hudson.model.TopLevelItem" value="${job}" />
+					</j:invoke>
+					<j:invoke var="ratio" on="${it}" method="getSuccessPercentage">
+						<j:arg type="hudson.model.TopLevelItem" value="${job}" />
+					</j:invoke>
+					<j:invoke var="isPipeline" on="${it}" method="isPipelineJob">
+						<j:arg type="hudson.model.TopLevelItem" value="${job}" />
+					</j:invoke>
+					<div style="width: 99%; display: flex; flex-flow: row nowrap; border-top: 2px solid lightgray;">
+						<div style="width: 30%;">
+							<st:include page="statsH.jelly" />
+					    </div>
+						<div style="width: 70%;">
+							<j:invoke var="entry" on="${it}" method="toViewEntry">
+								<j:arg type="hudson.model.TopLevelItem" value="${job}" />
+							</j:invoke>
+							<st:include page="job.jelly" />
+						</div>
+					</div>
+					<j:if test="${isPipeline}">
+						<div class="cbwf-stage-view" style="height: 100%; width: 100%; padding-left: 10px; margin-top: -20px;">
+					        <div cbwf-controller="pipeline-staged" objectUrl="${rootURL}/${job.getShortUrl()}" fragCaption="${job.getName()}" />
+					        <st:adjunct includes="org.jenkinsci.pipeline.stageview_adjunct"/>
+					    </div>
+					</j:if>
+
+				</j:forEach>
+				
+			</j:otherwise>
+		</j:choose>
+	</l:main-panel>
+</l:layout>
+</st:compress>

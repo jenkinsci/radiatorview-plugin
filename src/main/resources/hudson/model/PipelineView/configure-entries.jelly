@@ -1,44 +1,16 @@
-<?jelly escape-by-default='true'?>
 <!--
   Edit View Page
 -->
+<?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
 
-	<f:entry title="${%Caption text}" field="captionText"  help="/plugin/radiatorviewplugin/help/captionText.html">
+ 	<f:entry title="${%Caption text}" field="captionText"  help="/plugin/radiatorviewplugin/help/captionText.html">
         <f:textbox name="captionText" field="captionText" />
     </f:entry>
 
     <f:entry title="${%Caption size}" field="captionSize"  help="/plugin/radiatorviewplugin/help/captionSize.html">
         <f:textbox name="captionSize" field="captionSize" clazz="required positive-number" default="36" />
     </f:entry>
-
-	<f:entry title="${%Show stable builds?}" field="showStable"  help="/plugin/radiatorviewplugin/help/showstable.html">
-		<f:checkbox name="showStable" checked="${it.showStable}" value="true" field="showStable" />
-	</f:entry>
-
-	<f:entry title="${%Show stable detail?}" field="showStableDetail" help="/plugin/radiatorviewplugin/help/showstabledetail.html">
-		<f:checkbox name="showStableDetail" checked="${it.showStableDetail}" value="true" field="showStableDetail" />
-	</f:entry>
-
-	<f:entry title="${%Use Dark Background?}" field="highVis" help="/plugin/radiatorviewplugin/help/highVis.html">
-		<f:checkbox name="highVis" checked="${it.highVis}" value="true" field="highVis" />
-	</f:entry>
-
-
-	<f:entry title="${%Show as Projects?}" field="groupByPrefix" help="/plugin/radiatorviewplugin/help/groupByPrefix.html">
-		<f:checkbox name="groupByPrefix" checked="${it.groupByPrefix}" value="true" field="groupByPrefix" />
-	</f:entry>
-
-	<f:entry title="${%Show build stability?}" field="showBuildStability" help="/plugin/radiatorviewplugin/help/showbuildStability.html">
-		<f:checkbox name="showBuildStability" checked="${it.showBuildStability}" value="true" field="showBuildStability" />
-	</f:entry>
-
-	<f:optionalBlock name="flexibleRows" title="${%Flexible rows?}"
-                   checked="${it.getFlexibleRows()}" inline="true" help="/plugin/radiatorviewplugin/help/flexibleRows.html">
-	    <f:entry title="${%Font size}" field="fontSize"  help="/plugin/radiatorviewplugin/help/fontSize.html">
-	        <f:textbox name="fontSize" field="fontSize" clazz="required positive-number" default="16" />
-	    </f:entry>
-    </f:optionalBlock>
  
  <f:section title="${%Job Filters}">
   
@@ -100,4 +72,3 @@
   </script>
 
 </j:jelly>
-

@@ -3,21 +3,20 @@
 	<parent>
 		<groupId>org.jenkins-ci.plugins</groupId>
 		<artifactId>plugin</artifactId>
-		<version>2.16</version>
+		<version>3.49</version>
 		<relativePath />
 	</parent>
 
 	<artifactId>radiatorviewplugin</artifactId>
 	<packaging>hpi</packaging>
 	<name>Radiator View Plugin</name>
-	<version>1.30-SNAPSHOT</version>
-	<url>http://wiki.jenkins-ci.org/display/JENKINS/Radiator+View+Plugin</url>
+	<version>1.29.10</version>
+	<url>https://wiki.jenkins-ci.org/display/JENKINS/Radiator+View+Plugin</url>
 	<description>Adds a new high visibility view of project status.</description>
 
 	<properties>
-		<jenkins.version>1.642.3</jenkins.version>
-		<hpi-plugin.version>1.115</hpi-plugin.version>
-		<jenkins-test-harness.version>${jenkins.version}</jenkins-test-harness.version>
+		<jenkins.version>2.176.3</jenkins.version>
+		<java.level>8</java.level>
 	</properties>
 
 	<!--
@@ -26,12 +25,16 @@
 		don't specify it explicitly.
 	-->
 	<scm>
-		<connection>scm:git:git://github.com/jenkinsci/radiatorview-plugin.git</connection>
-		<developerConnection>scm:git:git@github.com:jenkinsci/radiatorview-plugin.git</developerConnection>
-		<url>https://github.com/jenkinsci/radiatorview-plugin</url>
+		<connection>scm:git:git://github.com/xdzmkus/radiatorview-plugin.git</connection>
+		<developerConnection>scm:git:git@github.com:xdzmkus/radiatorview-plugin.git</developerConnection>
+		<url>https://github.com/xdzmkus/radiatorview-plugin</url>
 		<tag>HEAD</tag>
 	</scm>
 	<developers>
+		<developer>
+			<id>xdzmkus</id>
+			<name>Dzmitry Kushniaruk</name>
+		</developer>
 		<developer>
 			<id>batmat</id>
 			<name>Baptiste Mathus</name>
@@ -68,7 +71,7 @@
 		<dependency>
 			<groupId>org.jenkins-ci.plugins</groupId>
 			<artifactId>cloudbees-folder</artifactId>
-			<version>5.13</version>
+			<version>6.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jvnet.hudson.plugins</groupId>
@@ -79,12 +82,19 @@
 		<dependency>
 			<groupId>org.jenkins-ci.plugins</groupId>
 			<artifactId>junit</artifactId>
-			<version>1.19</version>
+			<version>1.28</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jenkins-ci.plugins</groupId>
 			<artifactId>matrix-project</artifactId>
-			<version>1.4.1</version>
+			<version>1.14</version>
+		</dependency>
+		<dependency>
+			<groupId>
+				org.jenkins-ci.plugins.pipeline-stage-view
+			</groupId>
+			<artifactId>pipeline-stage-view</artifactId>
+			<version>2.12</version>
 		</dependency>
 	</dependencies>
 
