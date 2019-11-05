@@ -19,7 +19,6 @@
 			-border-radius: 10px;
 			overflow: hidden;
 			text-overflow: ellipsis;
-			white-space: nowrap;
 		}
 
     </style>
@@ -34,7 +33,7 @@
 	<div style="background-color:${entry.backgroundColor};"	class="entry ${entry.getStatus()} ${clazz}" tooltip="${entry.name}">
 
 		<!--  Build health icon -->
-		<img src="${rootURL}/images/24x24/${entry.job.buildHealth.iconUrl}" alt="${entry.job.buildHealth.description}" />
+		<img src="${rootURL}/images/48x48/${entry.job.buildHealth.iconUrl}" alt="${entry.job.buildHealth.description}" />
 			
 		<!--  Job Name Title -->
 		<a style="color: ${entry.color}; padding-left: 1%;"
